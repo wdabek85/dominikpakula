@@ -1,0 +1,61 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# WordPress core (Composer-managed)
+public/wp/
+
+# Plugins (Composer-managed)
+public/app/plugins/*
+!public/app/plugins/.gitkeep
+
+# Must-use plugins (auto-generated)
+public/app/mu-plugins/*
+!public/app/mu-plugins/.gitkeep
+
+# Uploads (media)
+public/app/uploads/
+
+# Acorn cache
+public/app/cache/
+
+# WP languages (auto-downloaded)
+public/app/languages/
+
+# Default themes (WP-managed, not needed)
+public/app/themes/twenty*/
+
+# Theme build artifacts
+public/app/themes/dominikpakula/public/build/
+
+# Theme dependencies
+public/app/themes/dominikpakula/vendor/
+public/app/themes/dominikpakula/node_modules/
+
+# Database dumps
+sql/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Composer
+composer.phar
+auth.json
+
+# Misc
+*.log
+npm-debug.log
+yarn-error.log

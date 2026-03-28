@@ -1,0 +1,9 @@
+<x-video-section
+  :image="$videoImage"
+  :youtubeId="$videoYoutubeId"
+  :heading="$videoHeading"
+  :description="$videoDescription"
+  :buttonText="$videoButtonText"
+  :buttonUrl="$videoButtonUrl"
+  :videoLabel="$videoLabel"
+/>
