@@ -15,3 +15,7 @@
 
   --color-primary: #282435;
 }
+
+a {
+  text-decoration: none;
+}
