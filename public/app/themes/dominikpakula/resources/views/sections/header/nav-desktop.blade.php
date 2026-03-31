@@ -99,18 +99,6 @@
   >
     <div class="mx-auto max-w-[1440px] px-20 py-10">
 
-      {{-- Nagłówek panelu --}}
-      <div class="flex items-center justify-between mb-8">
-        <p class="font-poppins font-semibold text-lg text-black">Nasze Usługi</p>
-        <a
-          href="{{ home_url('/uslugi/') }}"
-          class="inline-flex items-center gap-2 font-poppins text-sm font-medium text-primary hover:underline"
-        >
-          Przejdź do pełnej oferty
-          <x-icons.arrow-right class="size-4" />
-        </a>
-      </div>
-
       <div class="flex gap-12" data-mega-content>
 
         {{-- Lewa: lista usług --}}

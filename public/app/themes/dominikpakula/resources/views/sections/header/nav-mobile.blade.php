@@ -250,16 +250,14 @@
           </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto px-5 py-6">
-
-          {{-- Link do całej bazy wiedzy --}}
-          <a
-            href="{{ home_url('/baza-wiedzy/') }}"
-            class="flex items-center justify-center gap-2 bg-primary text-white font-poppins text-sm rounded-sm px-4 py-3 hover:opacity-90 transition-opacity w-full mb-6"
-          >
-            Przejdź do Bazy Wiedzy
-            <x-icons.arrow-right class="size-4" />
+        <div class="px-5 py-4 shrink-0 flex items-center justify-between">
+          <h3 class="font-poppins font-semibold text-lg text-black">Baza Wiedzy</h3>
+          <a href="{{ home_url('/baza-wiedzy/') }}" class="font-poppins text-xs font-medium text-primary">
+            Zobacz całość →
           </a>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-5 pb-6">
 
           {{-- Blog --}}
           @if (!empty($navBlog))
