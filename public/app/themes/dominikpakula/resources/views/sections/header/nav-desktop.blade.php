@@ -29,27 +29,27 @@
         @if ($isKnowledgeItem)
           {{-- Knowledge base mega-menu trigger --}}
           <div data-mega-trigger-kb>
-            <button
+            <a
+              href="{{ $item->url }}"
               class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
-              aria-expanded="false"
               aria-haspopup="true"
             >
               {{ $item->title }}
               <x-icons.chevron-down class="size-5 transition-transform duration-200" data-mega-chevron-kb />
-            </button>
+            </a>
           </div>
 
         @elseif ($isServicesItem && count($navServices) > 0)
           {{-- Mega-menu trigger --}}
           <div data-mega-trigger>
-            <button
+            <a
+              href="{{ $item->url }}"
               class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
-              aria-expanded="false"
               aria-haspopup="true"
             >
               {{ $item->title }}
               <x-icons.chevron-down class="size-5 transition-transform duration-200" data-mega-chevron />
-            </button>
+            </a>
           </div>
 
         @elseif (count($children) > 0)

@@ -40,7 +40,7 @@ function initMegaPanel({ triggerSelector, panelId, chevronSelector, hasDetailSwi
     });
     panel.classList.remove('max-h-0', 'opacity-0');
     panel.classList.add('max-h-[80vh]', 'opacity-100');
-    trigger.querySelector('button')?.setAttribute('aria-expanded', 'true');
+    trigger.querySelector('a, button')?.setAttribute('aria-expanded', 'true');
     if (chevron) chevron.classList.add('rotate-180');
   };
 
@@ -48,7 +48,7 @@ function initMegaPanel({ triggerSelector, panelId, chevronSelector, hasDetailSwi
     closeTimeout = setTimeout(() => {
       panel.classList.remove('max-h-[80vh]', 'opacity-100');
       panel.classList.add('max-h-0', 'opacity-0');
-      trigger.querySelector('button')?.setAttribute('aria-expanded', 'false');
+      trigger.querySelector('a, button')?.setAttribute('aria-expanded', 'false');
       if (chevron) chevron.classList.remove('rotate-180');
     }, 150);
   };
@@ -58,7 +58,7 @@ function initMegaPanel({ triggerSelector, panelId, chevronSelector, hasDetailSwi
   panel.addEventListener('mouseenter', () => clearTimeout(closeTimeout));
   panel.addEventListener('mouseleave', close);
 
-  trigger.querySelector('button')?.addEventListener('click', () => {
+  trigger.querySelector('a, button')?.addEventListener('click', () => {
     const isOpen = panel.classList.contains('opacity-100');
     if (isOpen) close();
     else open();
@@ -68,7 +68,7 @@ function initMegaPanel({ triggerSelector, panelId, chevronSelector, hasDetailSwi
     if (e.key === 'Escape' && panel.classList.contains('opacity-100')) {
       panel.classList.remove('max-h-[80vh]', 'opacity-100');
       panel.classList.add('max-h-0', 'opacity-0');
-      trigger.querySelector('button')?.setAttribute('aria-expanded', 'false');
+      trigger.querySelector('a, button')?.setAttribute('aria-expanded', 'false');
       if (chevron) chevron.classList.remove('rotate-180');
     }
   });
