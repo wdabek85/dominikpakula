@@ -5,11 +5,11 @@
 >
   <div class="absolute right-0 top-0 h-full w-full bg-white shadow-xl overflow-hidden">
 
-    {{-- Panel wrapper: 3 panels side by side --}}
-    <div id="mobile-panels" class="flex h-full transition-transform duration-300" style="width: 300%;">
+    {{-- Panel wrapper: 4 panels side by side --}}
+    <div id="mobile-panels" class="flex h-full transition-transform duration-300" style="width: 400%;">
 
       {{-- Panel 1: Menu główne --}}
-      <div class="w-1/3 h-full flex flex-col">
+      <div class="w-1/4 h-full flex flex-col">
         {{-- Header --}}
         <div class="flex items-center justify-between px-5 py-2 shrink-0">
           <a href="{{ home_url('/') }}" aria-label="{{ $siteName }}">
@@ -49,6 +49,11 @@
                       str_contains(strtolower($item->title), 'usług') ||
                       str_contains(strtolower($item->title), 'oferta')
                     );
+                    $isKnowledgeItem = (!empty($navBlog) || !empty($navGuides)) && (
+                      str_contains(strtolower($item->title), 'baza') ||
+                      str_contains(strtolower($item->title), 'wiedz') ||
+                      str_contains(strtolower($item->title), 'blog')
+                    );
                   @endphp
 
                   <li>
@@ -56,6 +61,14 @@
                       <button
                         class="flex items-center justify-between w-full font-poppins text-base text-black hover:text-primary transition-colors"
                         data-mobile-go="services"
+                      >
+                        <span>{{ $item->title }}</span>
+                        <x-icons.chevron-right class="size-5 text-gray-400" />
+                      </button>
+                    @elseif ($isKnowledgeItem)
+                      <button
+                        class="flex items-center justify-between w-full font-poppins text-base text-black hover:text-primary transition-colors"
+                        data-mobile-go="knowledge"
                       >
                         <span>{{ $item->title }}</span>
                         <x-icons.chevron-right class="size-5 text-gray-400" />
@@ -120,7 +133,7 @@
       </div>
 
       {{-- Panel 2: Lista usług --}}
-      <div class="w-1/3 h-full flex flex-col">
+      <div class="w-1/4 h-full flex flex-col">
         <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100 shrink-0">
           <button
             class="flex items-center gap-2 font-poppins text-sm text-primary"
@@ -167,7 +180,7 @@
       </div>
 
       {{-- Panel 3: Szczegóły usługi --}}
-      <div class="w-1/3 h-full flex flex-col">
+      <div class="w-1/4 h-full flex flex-col">
         <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100 shrink-0">
           <button
             class="flex items-center gap-2 font-poppins text-sm text-primary"
@@ -219,6 +232,84 @@
               </div>
             @endforeach
           @endif
+        </div>
+      </div>
+
+      {{-- Panel 4: Baza Wiedzy (Blog + Poradniki) --}}
+      <div class="w-1/4 h-full flex flex-col">
+        <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100 shrink-0">
+          <button
+            class="flex items-center gap-2 font-poppins text-sm text-primary"
+            aria-label="Wróć do menu"
+            data-mobile-back="main"
+          >
+            <svg class="size-5 rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+            <span>Wstecz</span>
+          </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-5 py-6">
+
+          {{-- Blog --}}
+          @if (!empty($navBlog))
+            <div class="mb-8">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-poppins font-semibold text-lg text-black">Blog</h3>
+                <a href="{{ home_url('/blog/') }}" class="font-poppins text-xs font-medium text-primary">
+                  Wszystkie →
+                </a>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                @foreach ($navBlog as $post)
+                  <a href="{{ $post['url'] }}" class="flex gap-3 group">
+                    @if ($post['image'])
+                      <div class="w-[80px] h-[56px] rounded overflow-hidden shrink-0">
+                        <img src="{{ $post['image'] }}" alt="" class="size-full object-cover" width="80" height="56" loading="lazy">
+                      </div>
+                    @else
+                      <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0"></div>
+                    @endif
+                    <span class="font-poppins text-sm text-black group-hover:text-primary transition-colors leading-snug">
+                      {{ $post['title'] }}
+                    </span>
+                  </a>
+                @endforeach
+              </div>
+            </div>
+          @endif
+
+          {{-- Poradniki --}}
+          @if (!empty($navGuides))
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-poppins font-semibold text-lg text-black">Poradniki</h3>
+                <a href="{{ home_url('/poradniki/') }}" class="font-poppins text-xs font-medium text-primary">
+                  Wszystkie →
+                </a>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                @foreach ($navGuides as $guide)
+                  <a href="{{ $guide['url'] }}" class="flex gap-3 group">
+                    @if ($guide['image'])
+                      <div class="w-[80px] h-[56px] rounded overflow-hidden shrink-0">
+                        <img src="{{ $guide['image'] }}" alt="" class="size-full object-cover" width="80" height="56" loading="lazy">
+                      </div>
+                    @else
+                      <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0"></div>
+                    @endif
+                    <span class="font-poppins text-sm text-black group-hover:text-primary transition-colors leading-snug">
+                      {{ $guide['title'] }}
+                    </span>
+                  </a>
+                @endforeach
+              </div>
+            </div>
+          @endif
+
         </div>
       </div>
 

@@ -1,9 +1,10 @@
 /**
- * Mobile Menu — 3-panel slide navigation
+ * Mobile Menu — 4-panel slide navigation
  *
  * Panel 0: Main menu
  * Panel 1: Services list
- * Panel 2: Service detail (switched by data-service-index)
+ * Panel 2: Service detail
+ * Panel 3: Knowledge base (Blog + Guides)
  */
 export default function mobileMenu() {
   const toggle = document.getElementById('mobile-menu-toggle');
@@ -13,21 +14,18 @@ export default function mobileMenu() {
 
   if (!toggle || !menu || !panels) return;
 
-  // Translate classes for 3 panels (each 1/3 of wrapper width)
+  // Translate classes for 4 panels (each 1/4 of wrapper width)
   const panelPositions = {
     main: 'translate-x-0',
-    services: '-translate-x-1/3',
-    detail: '-translate-x-2/3',
+    services: '-translate-x-1/4',
+    detail: '-translate-x-2/4',
+    knowledge: '-translate-x-3/4',
   };
 
   let currentPanel = 'main';
 
   const goToPanel = (name) => {
-    panels.classList.remove(
-      panelPositions.main,
-      panelPositions.services,
-      panelPositions.detail
-    );
+    Object.values(panelPositions).forEach((cls) => panels.classList.remove(cls));
     panels.classList.add(panelPositions[name]);
     currentPanel = name;
   };
@@ -44,19 +42,16 @@ export default function mobileMenu() {
     menu.classList.add('translate-x-full');
     toggle.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('overflow-hidden');
-    // Reset to main panel after close animation
     setTimeout(() => goToPanel('main'), 300);
   };
 
   toggle.addEventListener('click', openMenu);
   if (close) close.addEventListener('click', closeMenu);
 
-  // Close on backdrop
   menu.addEventListener('click', (e) => {
     if (e.target === menu) closeMenu();
   });
 
-  // Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !menu.classList.contains('translate-x-full')) {
       closeMenu();
@@ -69,7 +64,6 @@ export default function mobileMenu() {
       const target = btn.getAttribute('data-mobile-go');
 
       if (target === 'detail') {
-        // Show specific service detail
         const index = btn.getAttribute('data-service-index');
         const details = document.querySelectorAll('[data-mobile-detail]');
 
