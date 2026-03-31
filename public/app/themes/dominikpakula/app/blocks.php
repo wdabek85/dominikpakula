@@ -106,6 +106,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-what',
         ],
         [
+            'name' => 'knowledge-base',
+            'title' => 'Baza Wiedzy',
+            'description' => 'Najnowszy wpis blogowy + lista poradników',
+            'icon' => 'book',
+            'render_template' => 'blocks.knowledge-base',
+        ],
+        [
             'name' => 'page-header',
             'title' => 'Nagłówek Podstrony',
             'description' => 'Breadcrumb + duży tytuł + opis (kontakt, blog)',

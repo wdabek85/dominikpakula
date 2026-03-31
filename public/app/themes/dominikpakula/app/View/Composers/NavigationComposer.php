@@ -39,8 +39,46 @@ class NavigationComposer extends Composer
             ];
         }
 
+        // Latest blog posts for knowledge base mega-menu
+        $blogPosts = get_posts([
+            'post_type' => 'post',
+            'posts_per_page' => 3,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'post_status' => 'publish',
+        ]);
+
+        $navBlog = [];
+        foreach ($blogPosts as $post) {
+            $navBlog[] = [
+                'title' => get_the_title($post->ID),
+                'url' => get_permalink($post->ID),
+                'image' => get_the_post_thumbnail_url($post->ID, 'medium') ?: '',
+            ];
+        }
+
+        // Latest guides for knowledge base mega-menu
+        $guidePosts = get_posts([
+            'post_type' => 'guide',
+            'posts_per_page' => 3,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'post_status' => 'publish',
+        ]);
+
+        $navGuides = [];
+        foreach ($guidePosts as $post) {
+            $navGuides[] = [
+                'title' => get_the_title($post->ID),
+                'url' => get_permalink($post->ID),
+                'image' => get_the_post_thumbnail_url($post->ID, 'medium') ?: '',
+            ];
+        }
+
         return [
             'navServices' => $items,
+            'navBlog' => $navBlog,
+            'navGuides' => $navGuides,
         ];
     }
 }

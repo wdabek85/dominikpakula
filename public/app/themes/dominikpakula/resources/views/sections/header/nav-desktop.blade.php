@@ -19,9 +19,27 @@
             str_contains(strtolower($item->title), 'usług') ||
             str_contains(strtolower($item->title), 'oferta')
           );
+          $isKnowledgeItem = (!empty($navBlog) || !empty($navGuides)) && (
+            str_contains(strtolower($item->title), 'baza') ||
+            str_contains(strtolower($item->title), 'wiedz') ||
+            str_contains(strtolower($item->title), 'blog')
+          );
         @endphp
 
-        @if ($isServicesItem && count($navServices) > 0)
+        @if ($isKnowledgeItem)
+          {{-- Knowledge base mega-menu trigger --}}
+          <div data-mega-trigger-kb>
+            <button
+              class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              {{ $item->title }}
+              <x-icons.chevron-down class="size-5 transition-transform duration-200" data-mega-chevron-kb />
+            </button>
+          </div>
+
+        @elseif ($isServicesItem && count($navServices) > 0)
           {{-- Mega-menu trigger --}}
           <div data-mega-trigger>
             <button
@@ -151,6 +169,81 @@
             </div>
           @endforeach
         </div>
+
+      </div>
+    </div>
+  </div>
+@endif
+
+{{-- Full-width mega-menu panel: Baza Wiedzy --}}
+@if (!empty($navBlog) || !empty($navGuides))
+  <div
+    id="mega-menu-kb-panel"
+    class="absolute left-0 right-0 top-full bg-white shadow-xl border-t border-gray-100 z-40 overflow-hidden transition-all duration-300 max-h-0 opacity-0"
+  >
+    <div class="mx-auto max-w-[1440px] px-20 py-10">
+      <div class="flex gap-12">
+
+        {{-- Blog --}}
+        @if (!empty($navBlog))
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-6">
+              <p class="font-poppins font-semibold text-xs text-gray-400 uppercase tracking-wider">Blog</p>
+              <a href="{{ home_url('/blog/') }}" class="font-poppins text-sm font-medium text-primary hover:underline">
+                Wszystkie wpisy →
+              </a>
+            </div>
+
+            <div class="flex flex-col gap-4">
+              @foreach ($navBlog as $post)
+                <a href="{{ $post['url'] }}" class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group/card">
+                  @if ($post['image'])
+                    <div class="w-[120px] h-[80px] rounded-lg overflow-hidden shrink-0">
+                      <img src="{{ $post['image'] }}" alt="" class="size-full object-cover" width="120" height="80" loading="lazy">
+                    </div>
+                  @else
+                    <div class="w-[120px] h-[80px] rounded-lg bg-gray-100 shrink-0"></div>
+                  @endif
+                  <span class="font-poppins font-medium text-sm text-black group-hover/card:text-primary transition-colors leading-snug">
+                    {{ $post['title'] }}
+                  </span>
+                </a>
+              @endforeach
+            </div>
+          </div>
+        @endif
+
+        {{-- Separator --}}
+        <div class="w-px bg-gray-100"></div>
+
+        {{-- Poradniki --}}
+        @if (!empty($navGuides))
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-6">
+              <p class="font-poppins font-semibold text-xs text-gray-400 uppercase tracking-wider">Poradniki</p>
+              <a href="{{ home_url('/poradniki/') }}" class="font-poppins text-sm font-medium text-primary hover:underline">
+                Wszystkie poradniki →
+              </a>
+            </div>
+
+            <div class="flex flex-col gap-4">
+              @foreach ($navGuides as $guide)
+                <a href="{{ $guide['url'] }}" class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group/card">
+                  @if ($guide['image'])
+                    <div class="w-[120px] h-[80px] rounded-lg overflow-hidden shrink-0">
+                      <img src="{{ $guide['image'] }}" alt="" class="size-full object-cover" width="120" height="80" loading="lazy">
+                    </div>
+                  @else
+                    <div class="w-[120px] h-[80px] rounded-lg bg-gray-100 shrink-0"></div>
+                  @endif
+                  <span class="font-poppins font-medium text-sm text-black group-hover/card:text-primary transition-colors leading-snug">
+                    {{ $guide['title'] }}
+                  </span>
+                </a>
+              @endforeach
+            </div>
+          </div>
+        @endif
 
       </div>
     </div>
