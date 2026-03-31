@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Metrophobic&family=Oswald:wght@700&family=Poppins:wght@400;500;600;700&family=Work+Sans:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Metrophobic&family=Oswald:wght@700&family=PT+Serif:wght@400&family=Poppins:wght@300;400;500;600;700&family=Work+Sans:wght@400&display=swap');
 
 @import "tailwindcss" theme(static);
+@plugin "@tailwindcss/typography";
 @source "../../app/**/*.php";
 @source "../**/*.blade.php";
 @source "../**/*.js";
@@ -8,6 +9,7 @@
 @theme {
   --font-sans: 'Inter', sans-serif;
   --font-poppins: 'Poppins', sans-serif;
+  --font-serif: 'PT Serif', serif;
 
   --font-metro: 'Metrophobic', sans-serif;
   --font-oswald: 'Oswald', sans-serif;
@@ -18,4 +20,12 @@
 
 a {
   text-decoration: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

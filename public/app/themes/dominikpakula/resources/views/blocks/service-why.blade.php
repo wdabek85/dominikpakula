@@ -1,0 +1,93 @@
+<div class="py-6">
+
+  {{-- Badge --}}
+  @if ($label)
+    <div class="mb-5">
+      <x-badge :label="$label" />
+    </div>
+  @endif
+
+  {{-- Szara karta --}}
+  <div class="bg-[#f2f2f2] flex flex-col lg:flex-row rounded overflow-hidden">
+
+    {{-- Lewa: treść + benefity --}}
+    <div class="flex-1 flex flex-col gap-8 p-6 lg:pl-6 lg:py-10">
+
+      {{-- Nagłówek + opis --}}
+      @if ($title || $description)
+        <div class="flex flex-col gap-2">
+          @if ($title)
+            <h3 class="font-sans font-bold text-lg leading-normal text-black">
+              {{ $title }}
+            </h3>
+          @endif
+
+          @if ($description)
+            <div class="font-sans font-medium text-xs leading-normal text-black prose prose-sm max-w-none prose-strong:font-bold">
+              {!! $description !!}
+            </div>
+          @endif
+        </div>
+      @endif
+
+      {{-- Benefity grid 2x2 desktop, 1 col mobile --}}
+      @if ($benefits)
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          @foreach ($benefits as $benefit)
+            <div class="flex gap-2 items-start">
+              {{-- Ikona --}}
+              <div class="bg-black rounded-full p-2.5 shrink-0">
+                @if ($benefit['icon'])
+                  <img
+                    src="{{ $benefit['icon'] }}"
+                    alt="{{ $benefit['iconAlt'] }}"
+                    class="size-6 invert"
+                    width="24"
+                    height="24"
+                  >
+                @else
+                  <div class="size-6"></div>
+                @endif
+              </div>
+
+              {{-- Tekst --}}
+              <div class="flex flex-col gap-2">
+                <p class="font-sans font-semibold text-sm leading-tight text-black">
+                  {{ $benefit['title'] }}
+                </p>
+                <p class="font-sans text-xs leading-normal text-black">
+                  {{ $benefit['description'] }}
+                </p>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      @endif
+
+    </div>
+
+    {{-- Prawa: zdjęcie --}}
+    @if ($image)
+      <div class="relative w-full h-[280px] lg:w-[228px] lg:h-auto lg:self-stretch shrink-0">
+        <img
+          src="{{ $image }}"
+          alt="{{ $imageAlt }}"
+          class="absolute inset-0 size-full object-cover lg:rounded-l"
+          loading="lazy"
+          width="228"
+          height="356"
+        >
+        <div class="absolute inset-0 bg-black/20 lg:rounded-l"></div>
+
+        {{-- Podpis --}}
+        @if ($imageCaption)
+          <p class="absolute bottom-4 left-5 right-5 font-sans font-medium text-[11px] leading-normal text-white">
+            {{ $imageCaption }}
+          </p>
+        @endif
+      </div>
+    @endif
+
+  </div>
+
+</div>
