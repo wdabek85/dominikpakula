@@ -194,15 +194,15 @@
               </a>
             </div>
 
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-0">
               @foreach ($navBlog as $post)
-                <a href="{{ $post['url'] }}" class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group/card">
+                <a href="{{ $post['url'] }}" class="flex gap-4 px-3 py-1 rounded-[2px] hover:bg-gray-50 transition-colors group/card">
                   @if ($post['image'])
-                    <div class="w-[120px] h-[80px] rounded-lg overflow-hidden shrink-0">
+                    <div class="w-[120px] h-[80px] rounded-[2px] overflow-hidden shrink-0">
                       <img src="{{ $post['image'] }}" alt="" class="size-full object-cover" width="120" height="80" loading="lazy">
                     </div>
                   @else
-                    <div class="w-[120px] h-[80px] rounded-lg bg-gray-100 shrink-0"></div>
+                    <div class="w-[120px] h-[80px] rounded-[2px] bg-gray-100 shrink-0"></div>
                   @endif
                   <span class="font-poppins font-medium text-sm text-black group-hover/card:text-primary transition-colors leading-snug">
                     {{ $post['title'] }}
@@ -226,15 +226,15 @@
               </a>
             </div>
 
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-0">
               @foreach ($navGuides as $guide)
-                <a href="{{ $guide['url'] }}" class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group/card">
+                <a href="{{ $guide['url'] }}" class="flex gap-4 px-3 py-1 rounded-[2px] hover:bg-gray-50 transition-colors group/card">
                   @if ($guide['image'])
-                    <div class="w-[120px] h-[80px] rounded-lg overflow-hidden shrink-0">
+                    <div class="w-[120px] h-[80px] rounded-[2px] overflow-hidden shrink-0">
                       <img src="{{ $guide['image'] }}" alt="" class="size-full object-cover" width="120" height="80" loading="lazy">
                     </div>
                   @else
-                    <div class="w-[120px] h-[80px] rounded-lg bg-gray-100 shrink-0"></div>
+                    <div class="w-[120px] h-[80px] rounded-[2px] bg-gray-100 shrink-0"></div>
                   @endif
                   <span class="font-poppins font-medium text-sm text-black group-hover/card:text-primary transition-colors leading-snug">
                     {{ $guide['title'] }}
