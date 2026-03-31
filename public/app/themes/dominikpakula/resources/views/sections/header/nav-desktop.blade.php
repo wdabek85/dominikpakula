@@ -29,27 +29,27 @@
         @if ($isKnowledgeItem)
           {{-- Knowledge base mega-menu trigger --}}
           <div data-mega-trigger-kb>
-            <a
-              href="{{ $item->url }}"
+            <button
               class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
+              aria-expanded="false"
               aria-haspopup="true"
             >
               {{ $item->title }}
               <x-icons.chevron-down class="size-5 transition-transform duration-200" data-mega-chevron-kb />
-            </a>
+            </button>
           </div>
 
         @elseif ($isServicesItem && count($navServices) > 0)
           {{-- Mega-menu trigger --}}
           <div data-mega-trigger>
-            <a
-              href="{{ $item->url }}"
+            <button
               class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
+              aria-expanded="false"
               aria-haspopup="true"
             >
               {{ $item->title }}
               <x-icons.chevron-down class="size-5 transition-transform duration-200" data-mega-chevron />
-            </a>
+            </button>
           </div>
 
         @elseif (count($children) > 0)
@@ -98,6 +98,19 @@
     class="absolute left-0 right-0 top-full bg-white shadow-xl border-t border-gray-100 z-40 overflow-hidden transition-all duration-300 max-h-0 opacity-0"
   >
     <div class="mx-auto max-w-[1440px] px-20 py-10">
+
+      {{-- Nagłówek panelu --}}
+      <div class="flex items-center justify-between mb-8">
+        <p class="font-poppins font-semibold text-lg text-black">Nasze Usługi</p>
+        <a
+          href="{{ home_url('/uslugi/') }}"
+          class="inline-flex items-center gap-2 font-poppins text-sm font-medium text-primary hover:underline"
+        >
+          Przejdź do pełnej oferty
+          <x-icons.arrow-right class="size-4" />
+        </a>
+      </div>
+
       <div class="flex gap-12" data-mega-content>
 
         {{-- Lewa: lista usług --}}
@@ -182,6 +195,19 @@
     class="absolute left-0 right-0 top-full bg-white shadow-xl border-t border-gray-100 z-40 overflow-hidden transition-all duration-300 max-h-0 opacity-0"
   >
     <div class="mx-auto max-w-[1440px] px-20 py-10">
+
+      {{-- Nagłówek panelu --}}
+      <div class="flex items-center justify-between mb-8">
+        <p class="font-poppins font-semibold text-lg text-black">Baza Wiedzy</p>
+        <a
+          href="{{ home_url('/baza-wiedzy/') }}"
+          class="inline-flex items-center gap-2 font-poppins text-sm font-medium text-primary hover:underline"
+        >
+          Przejdź do całej Bazy Wiedzy
+          <x-icons.arrow-right class="size-4" />
+        </a>
+      </div>
+
       <div class="flex gap-12">
 
         {{-- Blog --}}

@@ -252,6 +252,15 @@
 
         <div class="flex-1 overflow-y-auto px-5 py-6">
 
+          {{-- Link do całej bazy wiedzy --}}
+          <a
+            href="{{ home_url('/baza-wiedzy/') }}"
+            class="flex items-center justify-center gap-2 bg-primary text-white font-poppins text-sm rounded-sm px-4 py-3 hover:opacity-90 transition-opacity w-full mb-6"
+          >
+            Przejdź do Bazy Wiedzy
+            <x-icons.arrow-right class="size-4" />
+          </a>
+
           {{-- Blog --}}
           @if (!empty($navBlog))
             <div class="mb-8">
