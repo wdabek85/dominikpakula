@@ -155,6 +155,14 @@
               @endforeach
             @endif
           </ul>
+
+          <a
+            href="{{ home_url('/uslugi/') }}"
+            class="inline-flex items-center gap-2 font-poppins text-sm font-medium text-primary hover:underline mt-6"
+          >
+            Zobacz wszystkie usługi
+            <x-icons.arrow-right class="size-4" />
+          </a>
         </div>
       </div>
 
