@@ -106,6 +106,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-what',
         ],
         [
+            'name' => 'page-header',
+            'title' => 'Nagłówek Podstrony',
+            'description' => 'Breadcrumb + duży tytuł + opis (kontakt, blog)',
+            'icon' => 'heading',
+            'render_template' => 'blocks.page-header',
+        ],
+        [
             'name' => 'features',
             'title' => 'Dlaczego Warto / Voucher',
             'description' => 'Sekcja z nagłówkiem i kartami (ikona + tytuł + opis)',
