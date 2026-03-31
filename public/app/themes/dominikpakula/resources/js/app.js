@@ -9,6 +9,7 @@ import liteYoutube from './components/lite-youtube.js';
 import testimonialVideo from './components/testimonial-video.js';
 import dragScroll from './components/drag-scroll.js';
 import sliderArrows from './components/slider-arrows.js';
+import faqAccordion from './components/faq-accordion.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -16,4 +17,5 @@ document.addEventListener('DOMContentLoaded', () => {
   testimonialVideo();
   dragScroll();
   sliderArrows();
+  faqAccordion();
 });

@@ -24,7 +24,8 @@
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
       @foreach ($cards as $card)
         <x-service-card
-          variant="compact"
+          :variant="$cardVariant"
+          :category="$cardVariant === 'detailed' ? 'Specjalna oferta' : ''"
           :title="$card['title']"
           :icon="$card['icon']"
           :description="$card['description']"

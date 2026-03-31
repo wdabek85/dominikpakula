@@ -15,10 +15,76 @@
         @php
           $children = array_filter($menuItems, fn($child) => (int) $child->menu_item_parent === $item->ID);
           $isActive = rtrim($item->url, '/') === rtrim($currentUrl, '/');
+          $isServicesItem = !empty($navServices) && (
+            str_contains(strtolower($item->title), 'usług') ||
+            str_contains(strtolower($item->title), 'oferta')
+          );
         @endphp
 
-        @if (count($children) > 0)
-          {{-- Dropdown item --}}
+        @if ($isServicesItem && count($navServices) > 0)
+          {{-- Mega-menu for Services --}}
+          <div class="relative group" data-mega-menu>
+            <button
+              class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              {{ $item->title }}
+              <x-icons.chevron-down class="size-5 transition-transform duration-200 group-hover:rotate-180" />
+            </button>
+
+            {{-- Mega dropdown --}}
+            <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 absolute top-full -left-20 pt-4 transition-all duration-200 z-50">
+              <div class="bg-white border border-gray-200 rounded-lg shadow-xl p-6 w-[700px]">
+                <div class="grid grid-cols-2 gap-4">
+                  @foreach ($navServices as $service)
+                    <a
+                      href="{{ $service['url'] }}"
+                      class="flex gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group/card"
+                    >
+                      @if ($service['image'])
+                        <img
+                          src="{{ $service['image'] }}"
+                          alt=""
+                          class="size-16 rounded object-cover shrink-0"
+                          width="64"
+                          height="64"
+                          loading="lazy"
+                        >
+                      @else
+                        <div class="size-16 rounded bg-gray-100 shrink-0"></div>
+                      @endif
+
+                      <div class="flex flex-col gap-1 min-w-0">
+                        <span class="font-poppins font-semibold text-sm text-black group-hover/card:text-primary transition-colors">
+                          {{ $service['title'] }}
+                        </span>
+                        @if ($service['description'])
+                          <span class="font-poppins text-xs text-gray-500 leading-normal line-clamp-2">
+                            {{ $service['description'] }}
+                          </span>
+                        @endif
+                      </div>
+                    </a>
+                  @endforeach
+                </div>
+
+                {{-- Link do wszystkich usług --}}
+                <div class="border-t border-gray-100 mt-4 pt-4">
+                  <a
+                    href="{{ $item->url }}"
+                    class="inline-flex items-center gap-2 font-poppins text-sm font-medium text-primary hover:underline"
+                  >
+                    Zobacz wszystkie usługi
+                    <x-icons.arrow-right class="size-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        @elseif (count($children) > 0)
+          {{-- Regular dropdown item --}}
           <div class="relative group">
             <button
               class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"

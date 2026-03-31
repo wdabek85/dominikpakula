@@ -106,6 +106,20 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-what',
         ],
         [
+            'name' => 'subpage-hero',
+            'title' => 'Hero Podstrona',
+            'description' => 'Hero sekcja dla podstron z tytułem i dwoma zdjęciami',
+            'icon' => 'cover-image',
+            'render_template' => 'blocks.subpage-hero',
+        ],
+        [
+            'name' => 'service-faq',
+            'title' => 'Opis Usługi / FAQ',
+            'description' => 'Accordion z najczęściej zadawanymi pytaniami',
+            'icon' => 'editor-help',
+            'render_template' => 'blocks.service-faq',
+        ],
+        [
             'name' => 'service-process',
             'title' => 'Opis Usługi / Proces Współpracy',
             'description' => 'Timeline z krokami procesu współpracy',

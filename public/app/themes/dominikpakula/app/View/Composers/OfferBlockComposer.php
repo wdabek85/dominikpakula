@@ -26,10 +26,13 @@ class OfferBlockComposer extends Composer
             ];
         }
 
+        $variant = \get_field('offer_card_variant') ?: 'compact';
+
         return [
             'label' => \get_field('offer_label') ?: '',
             'title' => \get_field('offer_title') ?: '',
             'cards' => $cards,
+            'cardVariant' => $variant,
             'buttonText' => \get_field('offer_button_text') ?: '',
             'buttonUrl' => \get_field('offer_button_url') ?: '#',
         ];
