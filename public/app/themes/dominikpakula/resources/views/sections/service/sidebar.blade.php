@@ -42,7 +42,7 @@
 
   {{-- Price box --}}
   @if ($price)
-    <div class="border border-black/50 flex flex-col gap-3 p-3">
+    <div class="border border-black/50 flex flex-col gap-3 p-3" data-price-section>
 
       {{-- Top bar (hardcode) --}}
       <div class="flex items-center justify-between pb-3 border-b border-black/50">

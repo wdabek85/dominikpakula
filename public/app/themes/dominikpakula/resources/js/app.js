@@ -11,6 +11,7 @@ import dragScroll from './components/drag-scroll.js';
 import sliderArrows from './components/slider-arrows.js';
 import faqAccordion from './components/faq-accordion.js';
 import megaMenu from './components/mega-menu.js';
+import stickyPriceBar from './components/sticky-price-bar.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -20,4 +21,5 @@ document.addEventListener('DOMContentLoaded', () => {
   sliderArrows();
   faqAccordion();
   megaMenu();
+  stickyPriceBar();
 });
