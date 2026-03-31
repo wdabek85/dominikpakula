@@ -106,6 +106,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-what',
         ],
         [
+            'name' => 'features',
+            'title' => 'Dlaczego Warto / Voucher',
+            'description' => 'Sekcja z nagłówkiem i kartami (ikona + tytuł + opis)',
+            'icon' => 'columns',
+            'render_template' => 'blocks.features',
+        ],
+        [
             'name' => 'subpage-hero',
             'title' => 'Hero Podstrona',
             'description' => 'Hero sekcja dla podstron z tytułem i dwoma zdjęciami',
