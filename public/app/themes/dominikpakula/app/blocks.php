@@ -106,6 +106,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-what',
         ],
         [
+            'name' => 'service-process',
+            'title' => 'Opis Usługi / Proces Współpracy',
+            'description' => 'Timeline z krokami procesu współpracy',
+            'icon' => 'editor-ol',
+            'render_template' => 'blocks.service-process',
+        ],
+        [
             'name' => 'service-why',
             'title' => 'Opis Usługi / Dlaczego Warto',
             'description' => 'Blok z benefitami, opisem i zdjęciem',

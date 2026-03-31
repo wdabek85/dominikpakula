@@ -1,0 +1,78 @@
+<div class="py-6">
+
+  {{-- Badge --}}
+  @if ($label)
+    <div class="mb-4">
+      <x-badge :label="$label" />
+    </div>
+  @endif
+
+  {{-- Layout: 2 kolumny desktop, 1 mobile --}}
+  <div class="flex flex-col lg:flex-row lg:gap-12">
+
+    {{-- Lewa: opis --}}
+    @if ($description)
+      <div class="lg:flex-1 mb-6 lg:mb-0">
+        <p class="font-poppins text-xl leading-6 text-black">
+          {{ $description }}
+        </p>
+      </div>
+    @endif
+
+    {{-- Prawa: timeline --}}
+    @if ($steps)
+      <div class="lg:flex-1 flex flex-col">
+        @foreach ($steps as $index => $step)
+          <div class="flex gap-10 items-stretch">
+
+            {{-- Ikona + linia pionowa --}}
+            <div class="flex flex-col items-center shrink-0 w-12">
+              {{-- Ikona --}}
+              @if ($step['icon'])
+                <img
+                  src="{{ $step['icon'] }}"
+                  alt="{{ $step['iconAlt'] }}"
+                  class="size-12 shrink-0"
+                  width="48"
+                  height="48"
+                >
+              @else
+                <div class="size-12 bg-gray-100 rounded-full shrink-0"></div>
+              @endif
+
+              {{-- Linia przerywana --}}
+              @if (! $loop->last)
+                <div class="flex-1 w-0 border-l-2 border-solid border-black/20 my-4"></div>
+              @endif
+            </div>
+
+            {{-- Treść kroku --}}
+            <div class="flex flex-col gap-4 flex-1 min-w-0 pb-8 {{ $loop->last ? 'pb-0' : '' }}">
+              <div class="flex flex-col gap-2">
+                @if ($step['stepLabel'])
+                  <p class="font-poppins font-medium text-xl leading-snug text-black">
+                    {{ $step['stepLabel'] }}
+                  </p>
+                @endif
+                @if ($step['title'])
+                  <p class="font-poppins font-bold text-xl leading-snug text-black">
+                    {{ $step['title'] }}
+                  </p>
+                @endif
+              </div>
+
+              @if ($step['description'])
+                <p class="font-poppins text-base leading-5 text-black">
+                  {{ $step['description'] }}
+                </p>
+              @endif
+            </div>
+
+          </div>
+        @endforeach
+      </div>
+    @endif
+
+  </div>
+
+</div>
