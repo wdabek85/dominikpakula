@@ -10,6 +10,7 @@ import testimonialVideo from './components/testimonial-video.js';
 import dragScroll from './components/drag-scroll.js';
 import sliderArrows from './components/slider-arrows.js';
 import faqAccordion from './components/faq-accordion.js';
+import megaMenu from './components/mega-menu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -18,4 +19,5 @@ document.addEventListener('DOMContentLoaded', () => {
   dragScroll();
   sliderArrows();
   faqAccordion();
+  megaMenu();
 });

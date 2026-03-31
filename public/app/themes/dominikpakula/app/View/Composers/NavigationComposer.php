@@ -26,7 +26,7 @@ class NavigationComposer extends Composer
 
         foreach ($services as $service) {
             $image = \get_post_thumbnail_id($service->ID)
-                ? wp_get_attachment_image_url(\get_post_thumbnail_id($service->ID), 'thumbnail')
+                ? wp_get_attachment_image_url(\get_post_thumbnail_id($service->ID), 'large')
                 : '';
 
             $description = \get_field('service_sidebar_description', $service->ID) ?: '';
