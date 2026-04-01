@@ -33,6 +33,7 @@
     </div>
 
     @include('partials.booking-modal')
+    @include('partials.voucher-modal')
 
     @php(do_action('get_footer'))
     @php(wp_footer())

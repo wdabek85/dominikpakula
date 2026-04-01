@@ -13,6 +13,7 @@ import faqAccordion from './components/faq-accordion.js';
 import megaMenu from './components/mega-menu.js';
 import stickyPriceBar from './components/sticky-price-bar.js';
 import booking from './components/booking.js';
+import voucher from './components/voucher.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -24,4 +25,5 @@ document.addEventListener('DOMContentLoaded', () => {
   megaMenu();
   stickyPriceBar();
   booking();
+  voucher();
 });

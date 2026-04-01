@@ -203,7 +203,7 @@
 </div>
 
 {{-- Floating booking button (all pages except single service) --}}
-@if (!is_singular('service'))
+@if (!is_singular('service') && !is_page('voucher'))
 <button
   class="booking-trigger fixed bottom-6 right-6 z-50 bg-primary text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2 pl-5 pr-4 py-3 font-poppins font-medium text-sm cursor-pointer"
   aria-label="Zarezerwuj wizytę"

@@ -33,12 +33,21 @@
 
       @if ($buttonText)
         <div>
-          <x-button
-            :label="$buttonText"
-            :href="$buttonUrl"
-            variant="primary"
-            size="lg"
-          />
+          @if (is_page('voucher'))
+            <button
+              class="voucher-trigger bg-primary text-white font-poppins font-medium text-base rounded-sm px-6 py-3 hover:opacity-90 transition-opacity flex items-center gap-2 cursor-pointer"
+            >
+              {{ $buttonText }}
+              <x-icons.arrow-right class="size-5" />
+            </button>
+          @else
+            <x-button
+              :label="$buttonText"
+              :href="$buttonUrl"
+              variant="primary"
+              size="lg"
+            />
+          @endif
         </div>
       @endif
     </div>
