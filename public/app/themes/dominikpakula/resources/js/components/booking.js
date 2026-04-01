@@ -134,7 +134,7 @@ export default function booking() {
         </div>
         <div class="flex flex-col items-end gap-1 shrink-0">
           ${s.price ? `<span class="font-poppins font-semibold text-base text-primary">${s.price}</span>` : ''}
-          <a href="${s.url}" target="_blank" class="font-poppins text-[10px] text-primary underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
+          <a href="${s.url}" class="font-poppins text-[10px] text-primary underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
         </div>
       `;
 

@@ -53,7 +53,7 @@ export default function voucher() {
 
     modal.querySelectorAll('[data-vstep-dot]').forEach((dot) => {
       const s = parseInt(dot.dataset.vstepDot);
-      dot.classList.toggle('bg-primary', s <= step);
+      dot.classList.toggle('bg-[#282435]', s <= step);
       dot.classList.toggle('text-white', s <= step);
       dot.classList.toggle('bg-gray-200', s > step);
       dot.classList.toggle('text-gray-400', s > step);
@@ -93,15 +93,15 @@ export default function voucher() {
 
     services.forEach((s) => {
       const card = document.createElement('button');
-      card.className = 'w-full text-left border border-gray-200 rounded-sm p-4 hover:border-primary hover:bg-gray-50 transition-colors flex items-center justify-between gap-4 cursor-pointer';
+      card.className = 'w-full text-left border border-gray-200 rounded-sm p-4 hover:border-[#282435] hover:bg-[#282435]/5 transition-colors flex items-center justify-between gap-4 cursor-pointer';
       card.innerHTML = `
         <div class="flex flex-col gap-1 min-w-0">
           <span class="font-poppins font-semibold text-sm text-black">${s.title}</span>
           ${s.excerpt ? `<span class="font-poppins text-xs text-gray-500 leading-relaxed">${s.excerpt}</span>` : ''}
         </div>
         <div class="flex flex-col items-end gap-1 shrink-0">
-          ${s.price ? `<span class="font-poppins font-semibold text-base text-primary">${s.price}</span>` : ''}
-          <a href="${s.url}" target="_blank" class="font-poppins text-[10px] text-primary underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
+          ${s.price ? `<span class="font-poppins font-semibold text-base text-[#282435]">${s.price}</span>` : ''}
+          <a href="${s.url}" class="font-poppins text-[10px] text-[#282435] underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
         </div>
       `;
 

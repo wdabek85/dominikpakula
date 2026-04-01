@@ -12,12 +12,12 @@
   {{-- Modal --}}
   <div class="absolute inset-4 lg:inset-auto lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:w-full lg:max-w-lg bg-white rounded-lg shadow-2xl flex flex-col max-h-[calc(100vh-2rem)] overflow-hidden">
 
-    {{-- Header --}}
-    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+    {{-- Header — voucher accent (#282435) --}}
+    <div class="flex items-center justify-between px-6 py-4 bg-[#282435] shrink-0 rounded-t-lg">
       <div class="flex items-center gap-3">
         <button
           id="voucher-back"
-          class="hidden text-gray-400 hover:text-black transition-colors"
+          class="hidden text-white/60 hover:text-white transition-colors"
           aria-label="Wróć"
           data-voucher-back
         >
@@ -25,9 +25,12 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
         </button>
-        <h2 class="font-poppins font-semibold text-lg text-black">Kup voucher</h2>
+        <svg class="size-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+        </svg>
+        <h2 class="font-poppins font-semibold text-lg text-white">Kup voucher</h2>
       </div>
-      <button data-voucher-close class="text-gray-400 hover:text-black transition-colors" aria-label="Zamknij">
+      <button data-voucher-close class="text-white/60 hover:text-white transition-colors" aria-label="Zamknij">
         <x-icons.x-mark class="size-6" />
       </button>
     </div>
@@ -35,7 +38,7 @@
     {{-- Step indicator --}}
     <div class="flex items-center justify-between px-6 py-3 border-b border-gray-50 shrink-0">
       <div class="flex items-center gap-1.5" data-vstep-indicator="1">
-        <span data-vstep-dot="1" class="size-6 rounded-full bg-primary text-white flex items-center justify-center font-poppins text-xs font-medium transition-colors">1</span>
+        <span data-vstep-dot="1" class="size-6 rounded-full bg-[#282435] text-white flex items-center justify-center font-poppins text-xs font-medium transition-colors">1</span>
         <span class="font-poppins text-xs text-black hidden sm:inline" data-vstep-label="1">Usługa</span>
       </div>
       <div class="flex-1 h-px bg-gray-200 mx-2"></div>
@@ -77,7 +80,7 @@
               <span class="font-poppins text-[10px] text-gray-400 uppercase tracking-wider">Voucher na</span>
               <span class="font-poppins font-semibold text-sm text-black" id="voucher-selected-service"></span>
             </div>
-            <button type="button" class="font-poppins text-xs text-primary underline cursor-pointer" id="voucher-change-service">Zmień</button>
+            <button type="button" class="font-poppins text-xs text-[#282435] underline cursor-pointer" id="voucher-change-service">Zmień</button>
           </div>
           <h3 class="font-poppins font-semibold text-base text-black mb-1">Dane obdarowanej osoby</h3>
           <p class="font-poppins text-xs text-gray-400">Dla kogo jest ten prezent?</p>
@@ -106,7 +109,7 @@
           </div>
 
           <button type="button" id="voucher-to-step3"
-            class="w-full bg-primary text-white font-poppins font-medium text-sm rounded-sm px-4 py-3 hover:opacity-90 transition-opacity flex items-center justify-center gap-2 cursor-pointer">
+            class="w-full bg-[#282435] text-white font-poppins font-medium text-sm rounded-sm px-4 py-3 hover:opacity-90 transition-opacity flex items-center justify-center gap-2 cursor-pointer">
             Dalej — Twoje dane
             <x-icons.arrow-right class="size-4" />
           </button>
@@ -162,7 +165,7 @@
           <div id="voucher-form-error" class="hidden font-poppins text-xs text-red-500"></div>
 
           <button type="submit"
-            class="w-full bg-primary text-white font-poppins font-medium text-sm rounded-sm px-4 py-3 hover:opacity-90 transition-opacity flex items-center justify-center gap-2 cursor-pointer">
+            class="w-full bg-[#282435] text-white font-poppins font-medium text-sm rounded-sm px-4 py-3 hover:opacity-90 transition-opacity flex items-center justify-center gap-2 cursor-pointer">
             Zamów voucher
             <x-icons.arrow-right class="size-4" />
           </button>
@@ -177,8 +180,8 @@
       {{-- Step 4: Potwierdzenie --}}
       <div data-voucher-step="4" class="hidden">
         <div class="flex flex-col items-center gap-4 py-8 text-center">
-          <div class="size-16 rounded-full bg-green-50 flex items-center justify-center">
-            <svg class="size-8 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+          <div class="size-16 rounded-full bg-[#282435]/10 flex items-center justify-center">
+            <svg class="size-8 text-[#282435]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
             </svg>
           </div>
@@ -191,7 +194,7 @@
             <span class="font-poppins text-xs">Sprawdź swoją skrzynkę e-mail</span>
           </div>
           <button data-voucher-close
-            class="mt-4 bg-primary text-white font-poppins text-sm rounded-sm px-6 py-2.5 hover:opacity-90 transition-opacity cursor-pointer">
+            class="mt-4 bg-[#282435] text-white font-poppins text-sm rounded-sm px-6 py-2.5 hover:opacity-90 transition-opacity cursor-pointer">
             Zamknij
           </button>
         </div>
