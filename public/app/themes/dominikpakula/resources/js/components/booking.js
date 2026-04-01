@@ -94,7 +94,7 @@ export default function booking() {
 
     // Show/hide back button
     if (backBtn) {
-      const showBack = (step === 2 && !skippedStep1) || step === 3;
+      const showBack = step === 2 || step === 3;
       backBtn.classList.toggle('hidden', !showBack);
     }
 
@@ -107,7 +107,16 @@ export default function booking() {
   if (backBtn) {
     backBtn.addEventListener('click', () => {
       if (currentStep === 3) goToStep(2);
-      else if (currentStep === 2 && !skippedStep1) goToStep(1);
+      else if (currentStep === 2) goToStep(1);
+    });
+  }
+
+  // Change service button (on calendar step)
+  const changeServiceBtn = document.getElementById('booking-change-service');
+  if (changeServiceBtn) {
+    changeServiceBtn.addEventListener('click', () => {
+      skippedStep1 = false;
+      goToStep(1);
     });
   }
 

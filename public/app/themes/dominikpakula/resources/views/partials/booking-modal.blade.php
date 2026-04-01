@@ -72,8 +72,18 @@
       {{-- Step 2: Kalendarz --}}
       <div data-booking-step="2" class="hidden">
         <div class="mb-5">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="font-poppins text-xs bg-primary text-white rounded-sm px-2 py-0.5" id="booking-selected-service"></span>
+          <div class="flex items-center justify-between bg-gray-50 rounded-sm p-3 mb-3">
+            <div class="flex flex-col gap-0.5">
+              <span class="font-poppins text-[10px] text-gray-400 uppercase tracking-wider">Wybrana usługa</span>
+              <span class="font-poppins font-semibold text-sm text-black" id="booking-selected-service"></span>
+            </div>
+            <button
+              type="button"
+              class="font-poppins text-xs text-primary underline cursor-pointer"
+              id="booking-change-service"
+            >
+              Zmień
+            </button>
           </div>
           <h3 class="font-poppins font-semibold text-base text-black mb-1">Wybierz termin</h3>
           <p class="font-poppins text-xs text-gray-400">Wybierz wolny dzień z kalendarza</p>
