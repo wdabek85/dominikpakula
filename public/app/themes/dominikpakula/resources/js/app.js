@@ -12,6 +12,7 @@ import sliderArrows from './components/slider-arrows.js';
 import faqAccordion from './components/faq-accordion.js';
 import megaMenu from './components/mega-menu.js';
 import stickyPriceBar from './components/sticky-price-bar.js';
+import booking from './components/booking.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -22,4 +23,5 @@ document.addEventListener('DOMContentLoaded', () => {
   faqAccordion();
   megaMenu();
   stickyPriceBar();
+  booking();
 });

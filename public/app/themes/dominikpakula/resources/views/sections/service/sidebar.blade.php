@@ -65,13 +65,13 @@
         </span>
 
         <div class="flex flex-col gap-2 flex-1">
-          <a
-            href="#"
-            class="bg-primary flex items-center justify-between rounded-sm px-4 py-2 text-white font-poppins text-sm leading-none hover:opacity-90 transition-opacity"
+          <button
+            class="booking-trigger bg-primary flex items-center justify-between rounded-sm px-4 py-2 text-white font-poppins text-sm leading-none hover:opacity-90 transition-opacity cursor-pointer w-full"
+            data-service="{{ $sidebarTitle }}"
           >
             <span>Zarezerwuj Termin</span>
             <x-icons.arrow-right class="size-4" />
-          </a>
+          </button>
 
           <div class="flex items-start gap-1">
             <svg class="size-2.5 text-black shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
