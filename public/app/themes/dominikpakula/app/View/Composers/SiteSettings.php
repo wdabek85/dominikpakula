@@ -33,10 +33,11 @@ class SiteSettings extends Composer
 
     protected function social(): array
     {
+        // Fallbacki hardcoded — ACF nadpisze gdy user utworzy pola na Options Page
         return [
             'facebook' => \get_field('social_facebook_url', 'option') ?: '',
-            'instagram' => \get_field('social_instagram_url', 'option') ?: '',
-            'instagram_handle' => \get_field('social_instagram_handle', 'option') ?: '',
+            'instagram' => \get_field('social_instagram_url', 'option') ?: 'https://www.instagram.com/dpakula_stylist/',
+            'instagram_handle' => \get_field('social_instagram_handle', 'option') ?: 'dpakula_stylist',
             'tiktok' => \get_field('social_tiktok_url', 'option') ?: '',
             'twitter' => \get_field('social_twitter_url', 'option') ?: '',
         ];
