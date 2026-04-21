@@ -64,18 +64,16 @@
           Pokazuję stylizacje na różne okazje, kawałki z mojej szafy, pytania od klientów i kulisy pracy ze stylistą. Krótkie, konkretne, codziennie.
         </p>
 
-        @if ($social['instagram'])
-          <a
-            href="{{ $social['instagram'] }}"
-            target="_blank"
-            rel="noopener"
-            class="group inline-flex items-center gap-2 bg-white text-black font-poppins font-medium text-sm py-3 px-5 rounded-sm w-fit hover:bg-white/90 transition-colors mt-2"
-          >
-            <x-icons.instagram class="size-5" />
-            <span>Śledź @{{ $social['instagram_handle'] ?: 'handle' }}</span>
-            <x-icons.arrow-right class="size-4 transition-transform group-hover:translate-x-1" />
-          </a>
-        @endif
+        <a
+          href="https://www.instagram.com/dpakula_stylist/"
+          target="_blank"
+          rel="noopener"
+          class="group inline-flex items-center gap-2 bg-white text-black font-poppins font-medium text-sm py-3 px-5 rounded-sm w-fit hover:bg-white/90 transition-colors mt-2"
+        >
+          <x-icons.instagram class="size-5" />
+          <span>Śledź @dpakula_stylist</span>
+          <x-icons.arrow-right class="size-4 transition-transform group-hover:translate-x-1" />
+        </a>
       </div>
     </div>
 
