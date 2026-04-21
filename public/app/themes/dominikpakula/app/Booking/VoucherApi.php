@@ -16,12 +16,18 @@ add_action('rest_api_init', function () {
 
 function api_voucher_order(\WP_REST_Request $request): \WP_REST_Response
 {
+    // Rate limit: max 5 attempts per 10 min per IP
+    if ($limited = check_rate_limit('voucher', 5, 10 * MINUTE_IN_SECONDS)) {
+        return $limited;
+    }
+
     $data = $request->get_json_params();
 
     $service = sanitize_text_field($data['service'] ?? '');
     $recipientFirst = sanitize_text_field($data['recipient_first_name'] ?? '');
     $recipientLast = sanitize_text_field($data['recipient_last_name'] ?? '');
-    $recipientEmail = sanitize_email($data['recipient_email'] ?? '');
+    $recipientEmailRaw = trim((string) ($data['recipient_email'] ?? ''));
+    $recipientEmail = $recipientEmailRaw !== '' ? sanitize_email($recipientEmailRaw) : '';
     $buyerFirst = sanitize_text_field($data['buyer_first_name'] ?? '');
     $buyerLast = sanitize_text_field($data['buyer_last_name'] ?? '');
     $buyerEmail = sanitize_email($data['buyer_email'] ?? '');
@@ -39,6 +45,10 @@ function api_voucher_order(\WP_REST_Request $request): \WP_REST_Response
 
     if (! is_email($buyerEmail)) {
         return new \WP_REST_Response(['error' => 'Nieprawidłowy adres e-mail zamawiającego.'], 400);
+    }
+
+    if ($recipientEmailRaw !== '' && ! is_email($recipientEmail)) {
+        return new \WP_REST_Response(['error' => 'Nieprawidłowy adres e-mail obdarowanego.'], 400);
     }
 
     // Send admin notification
@@ -59,29 +69,30 @@ function api_voucher_order(\WP_REST_Request $request): \WP_REST_Response
     $body .= '<li><strong>E-mail:</strong> ' . esc_html($buyerEmail) . '</li>';
     $body .= '<li><strong>Telefon:</strong> ' . esc_html($buyerPhone) . '</li>';
     $body .= '</ul>';
+    $body .= '<p style="color:#888;font-size:12px;">GDPR zaakceptowane: ' . esc_html(current_time('mysql')) . ' (IP: ' . esc_html(get_client_ip()) . ')</p>';
 
-    $htmlBody = '<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;padding:20px;color:#333">' . $body . '</body></html>';
+    $adminSubject = 'Nowe zamówienie vouchera — ' . $service;
 
     wp_mail(
         $adminEmail,
-        'Nowe zamówienie vouchera — ' . $service,
-        $htmlBody,
-        ['Content-Type: text/html; charset=UTF-8']
+        $adminSubject,
+        booking_wrap_html($body, $adminSubject),
+        booking_mail_headers()
     );
 
     // Send buyer confirmation
     $buyerBody = '<p>Cześć ' . esc_html($buyerFirst) . '!</p>';
     $buyerBody .= '<p>Dziękujemy za zamówienie vouchera na usługę <strong>' . esc_html($service) . '</strong>.</p>';
     $buyerBody .= '<p>Skontaktujemy się z Tobą w ciągu 24h z instrukcją płatności i szczegółami vouchera.</p>';
-    $buyerBody .= '<p>Pozdrawiamy,<br>' . get_bloginfo('name') . '</p>';
+    $buyerBody .= '<p>Pozdrawiamy,<br>' . esc_html(get_bloginfo('name')) . '</p>';
 
-    $buyerHtml = '<!DOCTYPE html><html><body style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;padding:20px;color:#333">' . $buyerBody . '</body></html>';
+    $buyerSubject = 'Zamówienie vouchera — ' . get_bloginfo('name');
 
     wp_mail(
         $buyerEmail,
-        'Zamówienie vouchera — ' . get_bloginfo('name'),
-        $buyerHtml,
-        ['Content-Type: text/html; charset=UTF-8']
+        $buyerSubject,
+        booking_wrap_html($buyerBody, $buyerSubject),
+        booking_mail_headers()
     );
 
     return new \WP_REST_Response([

@@ -14,6 +14,10 @@ import megaMenu from './components/mega-menu.js';
 import stickyPriceBar from './components/sticky-price-bar.js';
 import booking from './components/booking.js';
 import voucher from './components/voucher.js';
+import contactForm from './components/contact-form.js';
+import blogToc from './components/blog-toc.js';
+import blogShare from './components/blog-share.js';
+import newsletterForm from './components/newsletter-form.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -26,4 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
   stickyPriceBar();
   booking();
   voucher();
+  contactForm();
+  blogToc();
+  blogShare();
+  newsletterForm();
 });

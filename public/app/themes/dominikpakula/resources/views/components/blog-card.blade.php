@@ -5,6 +5,7 @@
   'author' => '',
   'url' => '#',
   'image' => '',
+  'readingTime' => null,
 ])
 
 <article class="flex flex-col gap-4 rounded-[20px]">
@@ -25,9 +26,9 @@
 
   {{-- Treść --}}
   <div class="flex flex-col gap-2 px-2.5 pb-4">
-    @if ($author || $date)
+    @if ($author || $date || $readingTime)
       <p class="font-sans text-xs leading-tight text-[#8f8f8f]">
-        {{ $author }}@if ($author && $date) | @endif{{ $date }}
+        {{ $author }}@if ($author && $date) &middot; @endif{{ $date }}@if (($author || $date) && $readingTime) &middot; @endif{{ $readingTime ? $readingTime . ' min czytania' : '' }}
       </p>
     @endif
 

@@ -32,12 +32,14 @@
       </p>
     </div>
 
-    <div class="bg-[#dbdbdb] flex items-center rounded-sm px-3 py-2">
-      <p class="text-[10px]">
-        <span class="font-sans font-semibold text-black">Zarezerwuj Termin Telefonicznie</span>
-        <a href="tel:+48536731515" class="font-sans text-[#655098] underline ml-2">+48 536 731 515</a>
-      </p>
-    </div>
+    @if ($contact['sidebar_phone'])
+      <div class="bg-[#dbdbdb] flex items-center rounded-sm px-3 py-2">
+        <p class="text-[10px]">
+          <span class="font-sans font-semibold text-black">Zarezerwuj Termin Telefonicznie</span>
+          <a href="tel:{{ $contact['sidebar_phone_link'] ?: $contact['sidebar_phone'] }}" class="font-sans text-[#655098] underline ml-2">{{ $contact['sidebar_phone'] }}</a>
+        </p>
+      </div>
+    @endif
   </div>
 
   {{-- Price box --}}

@@ -81,8 +81,43 @@ function api_get_available(\WP_REST_Request $request): \WP_REST_Response
     ], 200);
 }
 
+function get_client_ip(): string
+{
+    foreach (['HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR'] as $key) {
+        if (! empty($_SERVER[$key])) {
+            $ip = explode(',', $_SERVER[$key])[0];
+            $ip = trim($ip);
+            if (filter_var($ip, FILTER_VALIDATE_IP)) {
+                return $ip;
+            }
+        }
+    }
+    return '0.0.0.0';
+}
+
+function check_rate_limit(string $action, int $max, int $window): ?\WP_REST_Response
+{
+    $ip = get_client_ip();
+    $key = 'booking_rl_' . $action . '_' . md5($ip);
+    $count = (int) get_transient($key);
+
+    if ($count >= $max) {
+        return new \WP_REST_Response([
+            'error' => 'Zbyt wiele prób. Spróbuj ponownie za kilka minut.',
+        ], 429);
+    }
+
+    set_transient($key, $count + 1, $window);
+    return null;
+}
+
 function api_reserve(\WP_REST_Request $request): \WP_REST_Response
 {
+    // Rate limit: max 5 attempts per 10 min per IP
+    if ($limited = check_rate_limit('reserve', 5, 10 * MINUTE_IN_SECONDS)) {
+        return $limited;
+    }
+
     $data = $request->get_json_params();
 
     $date = sanitize_text_field($data['date'] ?? '');
@@ -166,7 +201,9 @@ function api_reserve(\WP_REST_Request $request): \WP_REST_Response
     update_post_meta($bookingId, '_booking_last_name', $lastName);
     update_post_meta($bookingId, '_booking_email', $email);
     update_post_meta($bookingId, '_booking_phone', $phone);
-    update_post_meta($bookingId, '_booking_status', 'confirmed');
+    update_post_meta($bookingId, '_booking_status', 'pending');
+    update_post_meta($bookingId, '_booking_gdpr_accepted_at', current_time('mysql'));
+    update_post_meta($bookingId, '_booking_gdpr_ip', get_client_ip());
 
     // Send emails
     send_booking_confirmation($bookingId);
@@ -174,6 +211,6 @@ function api_reserve(\WP_REST_Request $request): \WP_REST_Response
 
     return new \WP_REST_Response([
         'success' => true,
-        'message' => 'Rezerwacja została potwierdzona! Sprawdź swoją skrzynkę e-mail.',
+        'message' => 'Rezerwacja została przyjęta! Sprawdź swoją skrzynkę e-mail — potwierdzimy ją wkrótce.',
     ], 200);
 }

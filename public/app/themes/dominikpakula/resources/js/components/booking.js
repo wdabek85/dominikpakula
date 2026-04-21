@@ -5,11 +5,14 @@
  * Triggers: any element with .booking-trigger class
  * data-service="Name" on trigger skips step 1
  */
+import createModalA11y from '../lib/modal-a11y.js';
+
 export default function booking() {
   const modal = document.getElementById('booking-modal');
   if (!modal || !window.bookingData) return;
 
   const { restUrl, nonce, services } = window.bookingData;
+  const a11y = createModalA11y(modal);
 
   let currentStep = 1;
   let selectedService = null;
@@ -43,11 +46,13 @@ export default function booking() {
 
     modal.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
+    a11y.activate();
   }
 
   function close() {
     modal.classList.add('hidden');
     document.body.classList.remove('overflow-hidden');
+    a11y.deactivate();
   }
 
   // Triggers
@@ -265,7 +270,9 @@ export default function booking() {
 
     if (serviceBadge) serviceBadge.textContent = selectedService;
     if (dateBadge) {
-      const d = new Date(selectedDate);
+      // Parse YYYY-MM-DD as local date (new Date(str) parses as UTC)
+      const [y, m, dd] = selectedDate.split('-').map(Number);
+      const d = new Date(y, m - 1, dd);
       const months = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
       dateBadge.textContent = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
     }

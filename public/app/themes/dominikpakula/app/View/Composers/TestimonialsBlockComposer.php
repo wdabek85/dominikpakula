@@ -16,24 +16,26 @@ class TestimonialsBlockComposer extends Composer
         $subtitle = \get_field('testimonials_subtitle') ?: '';
 
         $selectedPosts = \get_field('testimonials_items') ?: [];
+
+        $posts = array_values(array_filter($selectedPosts, fn ($p) => $p instanceof \WP_Post));
+
+        if ($posts) {
+            $ids = wp_list_pluck($posts, 'ID');
+            update_post_thumbnail_cache(new \WP_Query(['post__in' => $ids, 'post_type' => 'testimonial', 'posts_per_page' => -1]));
+            update_meta_cache('post', $ids);
+        }
+
         $testimonials = [];
-
-        foreach ($selectedPosts as $post) {
-            if (! $post instanceof \WP_Post) {
-                continue;
-            }
-
+        foreach ($posts as $post) {
+            $thumbId = \get_post_thumbnail_id($post->ID);
             $mediaType = strtolower(\get_field('testimonial_media_type', $post->ID) ?: 'image');
-            $image = \get_post_thumbnail_id($post->ID)
-                ? wp_get_attachment_image_url(\get_post_thumbnail_id($post->ID), 'large')
-                : '';
 
             $testimonials[] = [
                 'quote' => \get_field('testimonial_quote', $post->ID) ?: '',
                 'author' => get_the_title($post->ID),
                 'service' => \get_field('testimonial_service', $post->ID) ?: '',
                 'media_type' => $mediaType,
-                'image' => $image,
+                'image' => $thumbId ? (wp_get_attachment_image_url($thumbId, 'large') ?: '') : '',
                 'video_url' => \get_field('testimonial_video_url', $post->ID) ?: '',
             ];
         }

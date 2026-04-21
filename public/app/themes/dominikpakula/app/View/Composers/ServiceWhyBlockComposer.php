@@ -14,7 +14,7 @@ class ServiceWhyBlockComposer extends Composer
     {
         $label = \get_field('why_label') ?: '';
         $title = \get_field('why_title') ?: '';
-        $description = \get_field('why_description') ?: '';
+        $description = wp_kses_post(\get_field('why_description') ?: '');
 
         $benefitsRaw = \get_field('why_benefits') ?: [];
         $benefits = [];

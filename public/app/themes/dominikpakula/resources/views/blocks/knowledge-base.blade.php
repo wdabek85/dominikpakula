@@ -15,7 +15,7 @@
             loading="lazy"
           >
         @else
-          <div class="absolute inset-0 bg-gray-200"></div>
+          <div class="absolute inset-0 bg-gray-200" aria-hidden="true"></div>
         @endif
 
         <h3 class="relative font-poppins font-semibold text-2xl leading-[26px] lg:text-[30px] lg:leading-[38px] text-black z-10">

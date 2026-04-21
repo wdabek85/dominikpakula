@@ -27,7 +27,7 @@ class ServicesBlockComposer extends Composer
         }
 
         return [
-            'title' => \get_field('services_title') ?: '',
+            'title' => wp_kses_post(\get_field('services_title') ?: ''),
             'subtitle' => \get_field('services_subtitle') ?: '',
             'highlightImage' => \get_field('services_highlight_image'),
             'highlightTitle' => \get_field('services_highlight_title') ?: '',

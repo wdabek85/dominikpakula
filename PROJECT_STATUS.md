@@ -260,10 +260,69 @@ arrow-long-right, arrow-right, arrow-up-right, chevron-down, chevron-right, face
 - [x] Mega-menu desktop + mobile
 - [x] Hero Podstrona + szablon "Strona z blokami"
 - [x] Staging deployment pipeline
+- [x] Code review — wszystkie 20 issues naprawione (2026-04-21)
+- [ ] **Utworzyć ręcznie pola ACF na Options Page "Ustawienia strony"** (patrz sekcja "Ustawienia strony" niżej)
 - [ ] Footer — dopracować treść i linki
 - [ ] Podstrony (o mnie, kontakt)
-- [ ] Social media — prawdziwe linki
+- [ ] Social media — wpisać URL w Options Page
 - [ ] Export pól ACF do JSON
+
+## Code review — naprawione 2026-04-21
+Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
+
+### Krytyczne
+- **#1 Rate limiting** — `app/Booking/Api.php` funkcje `get_client_ip()`, `check_rate_limit()`. Booking 5/10min, voucher 5/10min, kontakt 3/10min per IP.
+- **#2 GDPR timestamp** — `update_post_meta($id, '_booking_gdpr_accepted_at', ...)` + `_booking_gdpr_ip` zapisywane przy każdej rezerwacji.
+- **#3 XSS** — `wp_kses_post()` dodane w OfferBlockComposer, ProcessBlockComposer, ServiceWhyBlockComposer, ServicesBlockComposer.
+- **#4 Formularz kontaktowy** — nowy endpoint `/booking/v1/contact` (`app/Booking/ContactApi.php`) + JS `resources/js/components/contact-form.js` + honeypot + GDPR checkbox.
+- **#5 Hardcoded dane kontaktowe** — przeniesione do ACF Options Page "Ustawienia strony" (`app/site-settings.php`) + Composer `SiteSettings` ($contact, $social globalnie).
+
+### Wysoki priorytet
+- **#6 N+1 queries** — `update_post_thumbnail_cache()` + `update_meta_cache()` w NavigationComposer, TestimonialsBlockComposer, KnowledgeBaseBlockComposer.
+- **#7 Focus trap** — nowy helper `resources/js/lib/modal-a11y.js` (Tab/Shift+Tab nie wyskakuje z modala) + integracja w booking.js, voucher.js.
+- **#8 Email From: header** — wspólny helper `booking_mail_headers()` z From + Reply-To dla kontaktu, stosowany w Mail.php, VoucherApi.php, ContactApi.php.
+
+### Średni priorytet
+- **#9 Booking status** — domyślnie `pending` (nie `confirmed`); wiadomość UI zmieniona na "Rezerwacja przyjęta".
+- **#10 FAQ focus-visible** — już było (service-faq.blade.php).
+- **#11 Timezone JS** — kalendarz booking.js i admin używają `parseLocalDate()` (split + new Date(y, m-1, d)), nie `new Date(str)`.
+- **#12 Podwójne get_post_thumbnail_id** — ServiceComposer cache'uje `$thumbId` w zmiennej.
+- **#13 Modal focus return** — `modal-a11y.js` przywraca focus na trigger po close.
+- **#14 Empty states** — blog block renderuje sekcję tylko gdy są posty; mega-menu już miało.
+- **#15 Hardcoded kolory** — `#282435` w voucher.js → klasy Tailwind `bg-primary`/`text-primary`/`border-primary`.
+
+### Niski priorytet
+- **#16 Email template HTML** — booking_wrap_html ma `<html lang>`, `<meta charset>`, viewport, x-apple-disable-message-reformatting, tytuł, email CSS reset.
+- **#17 Voucher recipient email** — walidowane `is_email()` jeśli podane, 400 gdy niepoprawne.
+- **#18 Drag scroll keyboard** — arrow left/right, Home/End + role="region", aria-label, tabindex.
+- **#19 Service card icon fallback** — aria-hidden dodane do placeholderów w features, knowledge-base, nav-desktop, nav-mobile.
+- **#20 Admin calendar inline JS** — przeniesione do `resources/js/admin/booking-calendar.js`, enqueue przez Vite + cap check `manage_options` w AJAX.
+
+## Ustawienia strony (ACF Options Page)
+**Utwórz ręcznie w panelu WP grupę pól ACF z lokalizacją „Options Page → Ustawienia strony":**
+
+Grupa: **Kontakt**
+- `contact_email` (Email)
+- `contact_phone` (Text, format wyświetlania: `+48 884 826 068`)
+- `contact_phone_link` (Text, format `tel:`: `+48884826068`)
+- `contact_address_line1` (Text)
+- `contact_address_line2` (Text)
+- `contact_sidebar_phone` (Text, telefon w sidebarze usługi)
+- `contact_sidebar_phone_link` (Text, format `tel:`)
+
+Grupa: **Social media**
+- `social_facebook_url` (URL)
+- `social_instagram_url` (URL)
+- `social_tiktok_url` (URL)
+- `social_twitter_url` (URL)
+
+## Nowe pliki dodane 2026-04-21
+- `app/site-settings.php` — rejestracja Options Page
+- `app/View/Composers/SiteSettings.php` — globalnie udostępnia `$contact` i `$social` w każdym widoku
+- `app/Booking/ContactApi.php` — REST endpoint `/booking/v1/contact`
+- `resources/js/lib/modal-a11y.js` — focus trap + focus return helper
+- `resources/js/components/contact-form.js` — handler formularza kontaktowego
+- `resources/js/admin/booking-calendar.js` — admin JS (wcześniej inline)
 
 ## Zasady pracy
 - ACF pola tworzone ręcznie w panelu WP, nie kodem PHP

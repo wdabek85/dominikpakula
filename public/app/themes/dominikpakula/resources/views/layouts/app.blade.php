@@ -19,7 +19,7 @@
 
       @include('sections.header')
 
-      <main id="main" class="main">
+      <main id="main" class="main overflow-x-clip">
         @yield('content')
       </main>
 
