@@ -14,71 +14,74 @@ class NavigationComposer extends Composer
 
     public function with(): array
     {
+        return [
+            'navServices' => $this->services(),
+            'navBlog' => $this->postsForNav('post', 3),
+            'navGuides' => $this->postsForNav('guide', 3),
+        ];
+    }
+
+    protected function services(): array
+    {
         $services = get_posts([
             'post_type' => 'service',
             'posts_per_page' => -1,
             'orderby' => 'menu_order',
             'order' => 'ASC',
             'post_status' => 'publish',
+            'update_post_term_cache' => false,
         ]);
 
+        if (! $services) {
+            return [];
+        }
+
+        $ids = wp_list_pluck($services, 'ID');
+        update_post_thumbnail_cache(new \WP_Query(['post__in' => $ids, 'post_type' => 'service', 'posts_per_page' => -1]));
+        update_meta_cache('post', $ids);
+
         $items = [];
-
         foreach ($services as $service) {
-            $image = \get_post_thumbnail_id($service->ID)
-                ? wp_get_attachment_image_url(\get_post_thumbnail_id($service->ID), 'large')
-                : '';
-
-            $description = \get_field('service_sidebar_description', $service->ID) ?: '';
-
+            $thumbId = \get_post_thumbnail_id($service->ID);
             $items[] = [
                 'title' => get_the_title($service->ID),
                 'url' => get_permalink($service->ID),
-                'image' => $image,
-                'description' => $description,
+                'image' => $thumbId ? (wp_get_attachment_image_url($thumbId, 'large') ?: '') : '',
+                'description' => \get_field('service_sidebar_description', $service->ID) ?: '',
             ];
         }
 
-        // Latest blog posts for knowledge base mega-menu
-        $blogPosts = get_posts([
-            'post_type' => 'post',
-            'posts_per_page' => 3,
+        return $items;
+    }
+
+    protected function postsForNav(string $postType, int $limit): array
+    {
+        $posts = get_posts([
+            'post_type' => $postType,
+            'posts_per_page' => $limit,
             'orderby' => 'date',
             'order' => 'DESC',
             'post_status' => 'publish',
+            'update_post_term_cache' => false,
         ]);
 
-        $navBlog = [];
-        foreach ($blogPosts as $post) {
-            $navBlog[] = [
+        if (! $posts) {
+            return [];
+        }
+
+        $ids = wp_list_pluck($posts, 'ID');
+        update_post_thumbnail_cache(new \WP_Query(['post__in' => $ids, 'post_type' => $postType, 'posts_per_page' => -1]));
+
+        $items = [];
+        foreach ($posts as $post) {
+            $thumbId = \get_post_thumbnail_id($post->ID);
+            $items[] = [
                 'title' => get_the_title($post->ID),
                 'url' => get_permalink($post->ID),
-                'image' => get_the_post_thumbnail_url($post->ID, 'medium') ?: '',
+                'image' => $thumbId ? (wp_get_attachment_image_url($thumbId, 'medium') ?: '') : '',
             ];
         }
 
-        // Latest guides for knowledge base mega-menu
-        $guidePosts = get_posts([
-            'post_type' => 'guide',
-            'posts_per_page' => 3,
-            'orderby' => 'date',
-            'order' => 'DESC',
-            'post_status' => 'publish',
-        ]);
-
-        $navGuides = [];
-        foreach ($guidePosts as $post) {
-            $navGuides[] = [
-                'title' => get_the_title($post->ID),
-                'url' => get_permalink($post->ID),
-                'image' => get_the_post_thumbnail_url($post->ID, 'medium') ?: '',
-            ];
-        }
-
-        return [
-            'navServices' => $items,
-            'navBlog' => $navBlog,
-            'navGuides' => $navGuides,
-        ];
+        return $items;
     }
 }

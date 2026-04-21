@@ -14,6 +14,8 @@ require_once __DIR__ . '/Booking/Calendar.php';
 require_once __DIR__ . '/Booking/EmailTemplates.php';
 require_once __DIR__ . '/Booking/Mail.php';
 require_once __DIR__ . '/Booking/VoucherApi.php';
+require_once __DIR__ . '/Booking/ContactApi.php';
+require_once __DIR__ . '/Booking/NewsletterApi.php';
 
 // Inject booking data into frontend
 add_action('wp_head', function () {

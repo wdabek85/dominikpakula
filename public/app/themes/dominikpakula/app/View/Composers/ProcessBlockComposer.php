@@ -26,9 +26,9 @@ class ProcessBlockComposer extends Composer
         return [
             'label' => \get_field('process_label') ?: '',
             'title' => \get_field('process_title') ?: '',
-            'description' => \get_field('process_description') ?: '',
+            'description' => wp_kses_post(\get_field('process_description') ?: ''),
             'steps' => $steps,
-            'footer' => \get_field('process_footer') ?: '',
+            'footer' => wp_kses_post(\get_field('process_footer') ?: ''),
         ];
     }
 }

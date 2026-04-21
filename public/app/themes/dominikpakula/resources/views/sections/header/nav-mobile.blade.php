@@ -277,7 +277,7 @@
                         <img src="{{ $post['image'] }}" alt="" class="size-full object-cover" width="80" height="56" loading="lazy">
                       </div>
                     @else
-                      <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0"></div>
+                      <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0" aria-hidden="true"></div>
                     @endif
                     <span class="font-poppins text-sm text-black group-hover:text-primary transition-colors leading-snug">
                       {{ $post['title'] }}
@@ -306,7 +306,7 @@
                         <img src="{{ $guide['image'] }}" alt="" class="size-full object-cover" width="80" height="56" loading="lazy">
                       </div>
                     @else
-                      <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0"></div>
+                      <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0" aria-hidden="true"></div>
                     @endif
                     <span class="font-poppins text-sm text-black group-hover:text-primary transition-colors leading-snug">
                       {{ $guide['title'] }}

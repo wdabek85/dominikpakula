@@ -147,7 +147,7 @@
                   >
                 </div>
               @else
-                <div class="w-full h-[240px] rounded-lg bg-gray-100"></div>
+                <div class="w-full h-[240px] rounded-lg bg-gray-100" aria-hidden="true"></div>
               @endif
 
               <h3 class="font-poppins font-semibold text-xl text-black">
@@ -216,7 +216,7 @@
                       <img src="{{ $post['image'] }}" alt="" class="size-full object-cover" width="120" height="80" loading="lazy">
                     </div>
                   @else
-                    <div class="w-[120px] h-[80px] rounded-[2px] bg-gray-100 shrink-0"></div>
+                    <div class="w-[120px] h-[80px] rounded-[2px] bg-gray-100 shrink-0" aria-hidden="true"></div>
                   @endif
                   <span class="font-poppins font-medium text-sm text-black group-hover/card:text-primary transition-colors leading-snug">
                     {{ $post['title'] }}
@@ -248,7 +248,7 @@
                       <img src="{{ $guide['image'] }}" alt="" class="size-full object-cover" width="120" height="80" loading="lazy">
                     </div>
                   @else
-                    <div class="w-[120px] h-[80px] rounded-[2px] bg-gray-100 shrink-0"></div>
+                    <div class="w-[120px] h-[80px] rounded-[2px] bg-gray-100 shrink-0" aria-hidden="true"></div>
                   @endif
                   <span class="font-poppins font-medium text-sm text-black group-hover/card:text-primary transition-colors leading-snug">
                     {{ $guide['title'] }}

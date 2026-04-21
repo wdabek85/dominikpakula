@@ -4,11 +4,14 @@
  * Steps: 1) Select service  2) Recipient data  3) Buyer data + GDPR  4) Confirmation
  * Trigger: any element with .voucher-trigger class
  */
+import createModalA11y from '../lib/modal-a11y.js';
+
 export default function voucher() {
   const modal = document.getElementById('voucher-modal');
   if (!modal || !window.bookingData) return;
 
   const { restUrl, nonce, services } = window.bookingData;
+  const a11y = createModalA11y(modal);
 
   let currentStep = 1;
   let selectedService = null;
@@ -20,11 +23,13 @@ export default function voucher() {
     goToStep(1);
     modal.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
+    a11y.activate();
   }
 
   function close() {
     modal.classList.add('hidden');
     document.body.classList.remove('overflow-hidden');
+    a11y.deactivate();
   }
 
   document.addEventListener('click', (e) => {
@@ -53,7 +58,7 @@ export default function voucher() {
 
     modal.querySelectorAll('[data-vstep-dot]').forEach((dot) => {
       const s = parseInt(dot.dataset.vstepDot);
-      dot.classList.toggle('bg-[#282435]', s <= step);
+      dot.classList.toggle('bg-primary', s <= step);
       dot.classList.toggle('text-white', s <= step);
       dot.classList.toggle('bg-gray-200', s > step);
       dot.classList.toggle('text-gray-400', s > step);
@@ -93,15 +98,15 @@ export default function voucher() {
 
     services.forEach((s) => {
       const card = document.createElement('button');
-      card.className = 'w-full text-left border border-gray-200 rounded-sm p-4 hover:border-[#282435] hover:bg-[#282435]/5 transition-colors flex items-center justify-between gap-4 cursor-pointer';
+      card.className = 'w-full text-left border border-gray-200 rounded-sm p-4 hover:border-primary hover:bg-primary/5 transition-colors flex items-center justify-between gap-4 cursor-pointer';
       card.innerHTML = `
         <div class="flex flex-col gap-1 min-w-0">
           <span class="font-poppins font-semibold text-sm text-black">${s.title}</span>
           ${s.excerpt ? `<span class="font-poppins text-xs text-gray-500 leading-relaxed">${s.excerpt}</span>` : ''}
         </div>
         <div class="flex flex-col items-end gap-1 shrink-0">
-          ${s.price ? `<span class="font-poppins font-semibold text-base text-[#282435]">${s.price}</span>` : ''}
-          <a href="${s.url}" class="font-poppins text-[10px] text-[#282435] underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
+          ${s.price ? `<span class="font-poppins font-semibold text-base text-primary">${s.price}</span>` : ''}
+          <a href="${s.url}" class="font-poppins text-[10px] text-primary underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
         </div>
       `;
 

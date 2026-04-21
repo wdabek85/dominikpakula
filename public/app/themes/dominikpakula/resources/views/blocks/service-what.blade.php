@@ -7,7 +7,7 @@
     @endif
 
     @if ($title)
-      <h3 class="font-sans font-bold text-2xl leading-normal text-black">
+      <h3 class="font-poppins text-xl font-bold leading-snug text-black">
         {{ $title }}
       </h3>
     @endif
@@ -28,14 +28,14 @@
               height="24"
             >
           @else
-            <div class="size-6 shrink-0"></div>
+            <div class="size-6 shrink-0" aria-hidden="true"></div>
           @endif
 
           {{-- Tekst --}}
-          <p class="font-sans text-lg leading-normal text-black">
-            <span class="font-medium">{{ $item['title'] }}</span>
+          <p class="font-poppins text-base leading-relaxed text-black">
+            <span class="font-semibold">{{ $item['title'] }}</span>
             @if ($item['description'])
-              <span class="font-normal"> {{ $item['description'] }}</span>
+              <span> {{ $item['description'] }}</span>
             @endif
           </p>
         </div>

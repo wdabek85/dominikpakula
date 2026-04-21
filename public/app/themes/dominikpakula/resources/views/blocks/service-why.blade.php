@@ -11,19 +11,19 @@
   <div class="bg-[#f2f2f2] flex flex-col lg:flex-row rounded overflow-hidden">
 
     {{-- Lewa: treść + benefity --}}
-    <div class="flex-1 flex flex-col gap-8 p-6 lg:pl-6 lg:py-10">
+    <div class="flex-1 flex flex-col gap-8 p-4 lg:pl-6 lg:py-10">
 
       {{-- Nagłówek + opis --}}
       @if ($title || $description)
         <div class="flex flex-col gap-2">
           @if ($title)
-            <h3 class="font-sans font-bold text-lg leading-normal text-black">
+            <h3 class="font-poppins text-lg font-bold leading-normal text-black">
               {{ $title }}
             </h3>
           @endif
 
           @if ($description)
-            <div class="font-sans font-medium text-xs leading-normal text-black prose prose-sm max-w-none prose-strong:font-bold">
+            <div class="font-poppins text-xs font-medium leading-normal text-black prose prose-sm max-w-none prose-strong:font-bold">
               {!! $description !!}
             </div>
           @endif
@@ -46,16 +46,16 @@
                     height="24"
                   >
                 @else
-                  <div class="size-6"></div>
+                  <div class="size-6" aria-hidden="true"></div>
                 @endif
               </div>
 
               {{-- Tekst --}}
               <div class="flex flex-col gap-2">
-                <p class="font-sans font-semibold text-sm leading-tight text-black">
+                <p class="font-poppins text-sm font-semibold leading-[14px] text-black">
                   {{ $benefit['title'] }}
                 </p>
-                <p class="font-sans text-xs leading-normal text-black">
+                <p class="font-poppins text-xs leading-[12px] text-black">
                   {{ $benefit['description'] }}
                 </p>
               </div>
@@ -81,7 +81,7 @@
 
         {{-- Podpis --}}
         @if ($imageCaption)
-          <p class="absolute bottom-4 left-5 right-5 font-sans font-medium text-[11px] leading-normal text-white">
+          <p class="absolute bottom-4 left-5 right-5 font-poppins text-[11px] font-medium leading-normal text-white">
             {{ $imageCaption }}
           </p>
         @endif

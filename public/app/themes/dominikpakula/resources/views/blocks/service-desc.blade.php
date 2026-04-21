@@ -9,9 +9,9 @@
 
   {{-- Treść WYSIWYG --}}
   @if ($content)
-    <div class="prose prose-sm lg:prose-base max-w-none
-      prose-p:font-poppins prose-p:text-base prose-p:leading-[1.3] prose-p:text-black
-      prose-li:font-poppins prose-li:text-base prose-li:leading-normal prose-li:text-black prose-li:font-semibold
+    <div class="prose max-w-none
+      prose-p:font-poppins prose-p:text-base prose-p:leading-relaxed prose-p:text-black
+      prose-li:font-poppins prose-li:text-base prose-li:leading-relaxed prose-li:text-black prose-li:font-semibold
       prose-ul:list-disc prose-ul:pl-6
       prose-a:text-black prose-a:underline
     ">

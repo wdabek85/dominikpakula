@@ -32,7 +32,7 @@
               height="48"
             >
           @else
-            <div class="size-12"></div>
+            <div class="size-12" aria-hidden="true"></div>
           @endif
 
           {{-- Tytuł --}}

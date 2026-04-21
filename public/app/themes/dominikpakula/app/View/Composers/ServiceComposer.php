@@ -12,13 +12,9 @@ class ServiceComposer extends Composer
 
     public function with(): array
     {
-        $image = \get_post_thumbnail_id()
-            ? wp_get_attachment_image_url(\get_post_thumbnail_id(), 'large')
-            : '';
-
-        $imageAlt = \get_post_thumbnail_id()
-            ? get_post_meta(\get_post_thumbnail_id(), '_wp_attachment_image_alt', true)
-            : '';
+        $thumbId = \get_post_thumbnail_id();
+        $image = $thumbId ? (wp_get_attachment_image_url($thumbId, 'large') ?: '') : '';
+        $imageAlt = $thumbId ? (get_post_meta($thumbId, '_wp_attachment_image_alt', true) ?: '') : '';
 
         $sidebarTitle = \get_field('service_sidebar_title') ?: get_the_title();
         $sidebarDescription = \get_field('service_sidebar_description') ?: '';

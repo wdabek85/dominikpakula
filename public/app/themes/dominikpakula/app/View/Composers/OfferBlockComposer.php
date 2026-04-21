@@ -30,7 +30,7 @@ class OfferBlockComposer extends Composer
 
         return [
             'label' => \get_field('offer_label') ?: '',
-            'title' => \get_field('offer_title') ?: '',
+            'title' => wp_kses_post(\get_field('offer_title') ?: ''),
             'cards' => $cards,
             'cardVariant' => $variant,
             'buttonText' => \get_field('offer_button_text') ?: '',
