@@ -1,6 +1,6 @@
 {{-- Blog hero — cover style, w naszym kontenerze z paddingami jak pozostałe sekcje --}}
-<section class="mx-auto max-w-[1440px] px-4 lg:px-20 py-4 lg:py-6">
-  <div class="relative w-full h-[560px] lg:h-[600px] overflow-hidden rounded-sm">
+<section class="mx-auto max-w-[1440px] px-4 lg:px-20">
+  <div class="relative w-full h-[560px] lg:h-[600px] overflow-hidden">
 
     {{-- Featured image (or dark gradient fallback) --}}
     @if ($heroImageTag)
