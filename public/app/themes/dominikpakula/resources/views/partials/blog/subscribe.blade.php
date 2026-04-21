@@ -57,7 +57,7 @@
 
       <div class="relative z-10 flex flex-col gap-5">
         <span class="font-metro text-xs uppercase tracking-[3px] text-white/60">Instagram</span>
-        <h2 class="font-serif text-3xl leading-tight">
+        <h2 class="font-poppins text-[30px] lg:text-4xl leading-tight">
           Codzienne inspiracje stylowe
         </h2>
         <p class="font-poppins text-base text-white/85 leading-relaxed">
