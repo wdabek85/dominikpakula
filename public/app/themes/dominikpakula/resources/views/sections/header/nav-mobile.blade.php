@@ -279,9 +279,16 @@
                     @else
                       <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0" aria-hidden="true"></div>
                     @endif
-                    <span class="font-poppins text-sm text-black group-hover:text-primary transition-colors leading-snug">
-                      {{ $post['title'] }}
-                    </span>
+                    <div class="flex flex-col gap-0.5 min-w-0">
+                      <span class="font-poppins text-sm text-black group-hover:text-primary transition-colors leading-snug">
+                        {{ $post['title'] }}
+                      </span>
+                      @if (!empty($post['excerpt']))
+                        <p class="font-poppins text-xs text-gray-500 leading-snug line-clamp-2">
+                          {{ $post['excerpt'] }}
+                        </p>
+                      @endif
+                    </div>
                   </a>
                 @endforeach
               </div>
@@ -308,9 +315,16 @@
                     @else
                       <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0" aria-hidden="true"></div>
                     @endif
-                    <span class="font-poppins text-sm text-black group-hover:text-primary transition-colors leading-snug">
-                      {{ $guide['title'] }}
-                    </span>
+                    <div class="flex flex-col gap-0.5 min-w-0">
+                      <span class="font-poppins text-sm text-black group-hover:text-primary transition-colors leading-snug">
+                        {{ $guide['title'] }}
+                      </span>
+                      @if (!empty($guide['excerpt']))
+                        <p class="font-poppins text-xs text-gray-500 leading-snug line-clamp-2">
+                          {{ $guide['excerpt'] }}
+                        </p>
+                      @endif
+                    </div>
                   </a>
                 @endforeach
               </div>
