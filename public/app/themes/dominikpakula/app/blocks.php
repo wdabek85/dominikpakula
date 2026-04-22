@@ -154,6 +154,20 @@ add_action('acf/init', function () {
             'icon' => 'star-filled',
             'render_template' => 'blocks.service-why',
         ],
+        [
+            'name' => 'blog-archive',
+            'title' => 'Blog – Archiwum z filtrami',
+            'description' => 'Pasek filtrów (kategorie + sezon) + grid wszystkich wpisów + paginacja',
+            'icon' => 'list-view',
+            'render_template' => 'blocks.blog-archive',
+        ],
+        [
+            'name' => 'subscribe',
+            'title' => 'Newsletter + Instagram',
+            'description' => 'Dwie karty obok siebie: zapis na newsletter + zachęta do śledzenia Instagrama',
+            'icon' => 'megaphone',
+            'render_template' => 'blocks.subscribe',
+        ],
     ];
 
     foreach ($blocks as $block) {
