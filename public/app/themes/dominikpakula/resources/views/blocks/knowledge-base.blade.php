@@ -64,6 +64,11 @@
                 <p class="font-sans font-medium text-base leading-[18px] text-black group-hover:text-primary transition-colors">
                   {{ $guide['title'] }}
                 </p>
+                @if (!empty($guide['excerpt']))
+                  <p class="font-sans text-xs leading-snug text-gray-500 line-clamp-2">
+                    {{ $guide['excerpt'] }}
+                  </p>
+                @endif
                 <span class="font-sans font-bold text-xs leading-[14px] text-[#4158f2]">
                   Czytaj  Więcej >
                 </span>

@@ -75,10 +75,15 @@ class NavigationComposer extends Composer
         $items = [];
         foreach ($posts as $post) {
             $thumbId = \get_post_thumbnail_id($post->ID);
+            $excerpt = $post->post_excerpt !== ''
+                ? wp_trim_words($post->post_excerpt, 16, '…')
+                : wp_trim_words(strip_shortcodes($post->post_content), 16, '…');
+
             $items[] = [
                 'title' => get_the_title($post->ID),
                 'url' => get_permalink($post->ID),
                 'image' => $thumbId ? (wp_get_attachment_image_url($thumbId, 'medium') ?: '') : '',
+                'excerpt' => $excerpt,
             ];
         }
 
