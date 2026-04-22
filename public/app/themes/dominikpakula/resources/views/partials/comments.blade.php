@@ -30,7 +30,7 @@
     @endif
 
     @if ($closed())
-      <p class="font-poppins italic text-black/60 bg-[#f9f9f9] rounded-sm p-4">
+      <p class="font-poppins italic text-black/60 bg-[#f1f1f1] rounded-sm p-4">
         Komentarze do tego wpisu zostały zamknięte.
       </p>
     @endif

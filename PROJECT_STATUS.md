@@ -266,6 +266,7 @@ arrow-long-right, arrow-right, arrow-up-right, chevron-down, chevron-right, face
 - [ ] Podstrony (o mnie, kontakt)
 - [ ] Social media — wpisać URL w Options Page
 - [ ] Export pól ACF do JSON
+- [ ] **Ujednolicić wizualnie blok "Opis Usługi / Dla Kogo"** (`blocks.service-desc`) z blokiem "Opis Usługi / Dlaczego Warto" (`blocks.service-why`) — pierwsza sekcja pod zdjęciem na stronie usługi ma używać tego samego wzorca karty co "Dlaczego Warto" na dole strony
 
 ## Code review — naprawione 2026-04-21
 Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.

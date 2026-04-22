@@ -9,7 +9,7 @@
   'linkUrl' => '#',
 ])
 
-<div class="bg-[#f9f9f9] flex flex-col rounded p-4 h-full {{ $variant === 'default' ? 'gap-[120px]' : 'gap-2.5' }}">
+<div class="group bg-[#f1f1f1] flex flex-col rounded p-4 h-full transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $variant === 'default' ? 'gap-[120px]' : 'gap-2.5' }}">
 
   @if ($variant === 'default')
     {{-- Variant: default --}}
@@ -37,7 +37,7 @@
           src="{{ $icon['url'] }}"
           alt=""
           aria-hidden="true"
-          class="size-20 object-cover opacity-30"
+          class="size-20 object-cover opacity-30 transition-opacity duration-300 group-hover:opacity-100"
         >
       @endif
 
@@ -52,7 +52,7 @@
         class="inline-flex items-center gap-2 border border-black rounded-sm px-2.5 py-0.5 font-poppins text-xs leading-[14px] text-[#19121e] hover:bg-black/5 transition-colors w-fit"
       >
         {{ $linkText }}
-        <x-icons.arrow-long-right class="w-8 h-auto" />
+        <x-icons.arrow-long-right class="w-8 h-auto transition-transform duration-300 group-hover:translate-x-1" />
       </a>
     </div>
 
@@ -82,7 +82,7 @@
           src="{{ $icon['url'] }}"
           alt=""
           aria-hidden="true"
-          class="size-20 object-cover opacity-30"
+          class="size-20 object-cover opacity-30 transition-opacity duration-300 group-hover:opacity-100"
         >
       @endif
 
@@ -103,7 +103,7 @@
         class="inline-flex items-center gap-1.5 border border-[#19121e] rounded-sm px-2.5 py-0.5 font-poppins text-xs text-[#19121e] hover:bg-black/5 transition-colors w-fit"
       >
         {{ $linkText }}
-        <x-icons.arrow-long-right class="w-8 h-auto" />
+        <x-icons.arrow-long-right class="w-8 h-auto transition-transform duration-300 group-hover:translate-x-1" />
       </a>
     </div>
 
@@ -121,7 +121,7 @@
           src="{{ $icon['url'] }}"
           alt=""
           aria-hidden="true"
-          class="size-[50px] object-cover opacity-30 shrink-0"
+          class="size-[50px] object-cover opacity-30 shrink-0 transition-opacity duration-300 group-hover:opacity-100"
         >
       @endif
     </div>
@@ -144,7 +144,7 @@
         class="inline-flex items-center gap-1.5 border border-[#19121e] rounded-sm px-2.5 py-0.5 font-poppins text-xs text-[#19121e] hover:bg-black/5 transition-colors w-fit"
       >
         {{ $linkText }}
-        <x-icons.arrow-long-right class="w-8 h-auto" />
+        <x-icons.arrow-long-right class="w-8 h-auto transition-transform duration-300 group-hover:translate-x-1" />
       </a>
     </div>
   @endif

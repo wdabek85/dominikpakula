@@ -3,7 +3,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
     {{-- Card A: Newsletter --}}
-    <div class="flex flex-col gap-5 bg-[#f9f9f9] p-6 lg:p-10 rounded-sm">
+    <div class="flex flex-col gap-5 bg-[#f1f1f1] p-6 lg:p-10 rounded-sm">
       <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">Newsletter</span>
       <h2 class="font-poppins text-[30px] lg:text-4xl leading-tight text-black">
         Nie przegap kolejnego wpisu

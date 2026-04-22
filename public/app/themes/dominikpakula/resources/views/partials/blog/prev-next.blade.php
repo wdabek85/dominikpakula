@@ -6,7 +6,7 @@
       @if ($prevPost)
         <a
           href="{{ $prevPost['url'] }}"
-          class="group flex flex-col gap-2 p-6 bg-[#f9f9f9] hover:bg-[#efefef] rounded-sm transition-colors"
+          class="group flex flex-col gap-2 p-6 bg-[#f1f1f1] hover:bg-[#e7e7e7] rounded-sm transition-colors"
         >
           <span class="inline-flex items-center gap-2 font-metro text-xs uppercase tracking-[3px] text-black/60">
             <x-icons.arrow-left class="size-4" />
@@ -23,7 +23,7 @@
       @if ($nextPost)
         <a
           href="{{ $nextPost['url'] }}"
-          class="group flex flex-col gap-2 p-6 bg-[#f9f9f9] hover:bg-[#efefef] rounded-sm transition-colors md:items-end md:text-right"
+          class="group flex flex-col gap-2 p-6 bg-[#f1f1f1] hover:bg-[#e7e7e7] rounded-sm transition-colors md:items-end md:text-right"
         >
           <span class="inline-flex items-center gap-2 font-metro text-xs uppercase tracking-[3px] text-black/60">
             Następny

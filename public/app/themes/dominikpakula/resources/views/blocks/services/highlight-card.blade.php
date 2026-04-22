@@ -1,10 +1,10 @@
-<div class="relative flex flex-col justify-end rounded overflow-hidden h-[436px] lg:min-w-[300px] lg:flex-1 px-5 py-4">
+<div class="group relative flex flex-col justify-end rounded overflow-hidden h-[436px] lg:h-auto lg:min-h-[436px] lg:min-w-[300px] lg:flex-1 px-5 py-4">
 
   @if ($image)
     <img
       src="{{ $image['url'] }}"
       alt="{{ $image['alt'] ?? '' }}"
-      class="absolute inset-0 size-full object-cover"
+      class="absolute inset-0 size-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
       width="{{ $image['width'] ?? '' }}"
       height="{{ $image['height'] ?? '' }}"
       loading="lazy"
