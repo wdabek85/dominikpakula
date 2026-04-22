@@ -10,6 +10,7 @@ class NavigationComposer extends Composer
         'sections.header',
         'sections.header.nav-desktop',
         'sections.header.nav-mobile',
+        'sections.footer',
     ];
 
     public function with(): array
@@ -18,7 +19,37 @@ class NavigationComposer extends Composer
             'navServices' => $this->services(),
             'navBlog' => $this->postsForNav('post', 3),
             'navGuides' => $this->postsForNav('guide', 3),
+            'footerMenu' => $this->menuForLocation('footer_navigation'),
         ];
+    }
+
+    protected function menuForLocation(string $location): array
+    {
+        $locations = get_nav_menu_locations();
+        $menuId = $locations[$location] ?? 0;
+
+        if (! $menuId) {
+            return [];
+        }
+
+        $items = wp_get_nav_menu_items($menuId);
+        if (! $items) {
+            return [];
+        }
+
+        $current = home_url(add_query_arg(null, null));
+
+        $links = [];
+        foreach ($items as $item) {
+            $links[] = [
+                'label' => $item->title,
+                'url' => $item->url,
+                'target' => $item->target ?: '_self',
+                'isCurrent' => untrailingslashit($item->url) === untrailingslashit($current),
+            ];
+        }
+
+        return $links;
     }
 
     protected function services(): array

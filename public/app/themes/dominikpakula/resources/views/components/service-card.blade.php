@@ -37,7 +37,7 @@
           src="{{ $icon['url'] }}"
           alt=""
           aria-hidden="true"
-          class="size-20 object-cover opacity-30 transition-opacity duration-300 group-hover:opacity-100"
+          class="h-20 w-auto self-start opacity-30 transition-opacity duration-300 group-hover:opacity-100"
         >
       @endif
 
@@ -82,7 +82,7 @@
           src="{{ $icon['url'] }}"
           alt=""
           aria-hidden="true"
-          class="size-20 object-cover opacity-30 transition-opacity duration-300 group-hover:opacity-100"
+          class="h-20 w-auto self-start opacity-30 transition-opacity duration-300 group-hover:opacity-100"
         >
       @endif
 
@@ -121,7 +121,7 @@
           src="{{ $icon['url'] }}"
           alt=""
           aria-hidden="true"
-          class="size-[50px] object-cover opacity-30 shrink-0 transition-opacity duration-300 group-hover:opacity-100"
+          class="h-[50px] w-auto opacity-30 shrink-0 transition-opacity duration-300 group-hover:opacity-100"
         >
       @endif
     </div>

@@ -58,16 +58,14 @@
 
     </div>
 
-    {{-- Zdjęcie --}}
-    <div class="size-[250px] lg:size-[325px] shrink-0 rounded overflow-hidden bg-[#c0c0c0]">
-      {{-- Placeholder — zamienisz na <img> z właściwym zdjęciem --}}
+    {{-- Ilustracja --}}
+    <div class="h-[250px] lg:h-[325px] shrink-0">
       <img
-        src=""
-        alt="Newsletter"
-        class="size-full object-cover"
+        src="{{ Vite::asset('resources/images/newsletter.svg') }}"
+        alt=""
+        aria-hidden="true"
+        class="h-full w-auto"
         loading="lazy"
-        width="325"
-        height="325"
       >
     </div>
 
