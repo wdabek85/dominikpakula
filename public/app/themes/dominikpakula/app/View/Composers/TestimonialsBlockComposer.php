@@ -19,6 +19,17 @@ class TestimonialsBlockComposer extends Composer
 
         $posts = array_values(array_filter($selectedPosts, fn ($p) => $p instanceof \WP_Post));
 
+        // Fallback gdy w panelu nic nie wybrano — 3 najnowsze opinie z CPT.
+        if (! $posts) {
+            $posts = get_posts([
+                'post_type' => 'testimonial',
+                'posts_per_page' => 3,
+                'orderby' => 'date',
+                'order' => 'DESC',
+                'post_status' => 'publish',
+            ]);
+        }
+
         if ($posts) {
             $ids = wp_list_pluck($posts, 'ID');
             update_post_thumbnail_cache(new \WP_Query(['post__in' => $ids, 'post_type' => 'testimonial', 'posts_per_page' => -1]));

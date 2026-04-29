@@ -26,7 +26,7 @@ Masz podłączoną Figmę przez MCP — korzystaj z niej. Jak dam Ci link do Fig
 
 - **Bedrock** — zarządzanie WordPressem przez Composer, zmienne w .env, separacja środowisk
 - **Sage 11** — motyw z Blade templates, Vite, Acorn (Laravel w WP), PSR-4 autoloading
-- **Tailwind CSS** — utility-first CSS, Sage automatycznie generuje theme.json z tailwind.config.js
+- **Tailwind CSS v4** — utility-first CSS, konfiguracja przez `@theme` w `resources/css/app.css` (NIE `tailwind.config.js`). Sage automatycznie generuje `theme.json` z tokenów Tailwinda przez `@roots/vite-plugin` (`wordpressThemeJson`)
 - **ACF Pro** — pola dynamiczne (repeater, flexible content, group) i ACF Blocks
 - **Rank Math** — SEO, jest lżejszy od Yoast. Nie nadpisuj title/meta, breadcrumbs z Rank Math
 

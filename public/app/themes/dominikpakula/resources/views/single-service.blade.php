@@ -3,10 +3,10 @@
 @section('content')
   @include('sections.service.breadcrumbs')
 
-  <article class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-8 lg:py-12">
+  <article class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-8 lg:pt-4 lg:pb-12">
 
-    {{-- Two-column grid: 7fr left + 3fr right, 40px gap --}}
-    <div class="lg:grid lg:grid-cols-[7fr_3fr] lg:gap-10">
+    {{-- Two-column grid: 7fr left + 3fr right, 40px gap horizontal, 16px vertical --}}
+    <div class="lg:grid lg:grid-cols-[7fr_3fr] lg:gap-x-10 lg:gap-y-4">
 
       {{-- Lewa kolumna: header (social proof + zdjęcie) --}}
       <div class="lg:row-start-1 lg:col-start-1">

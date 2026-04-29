@@ -1,1 +1,85 @@
 @import "tailwindcss";
+
+/*
+ * Stylowanie standardowych Gutenberg blocks (paragraph, heading, list, blockquote)
+ * w edytorze WP — żeby wygląd zgadzał się z theme i autor widział "true preview".
+ *
+ * Frontend rendering for the_content() używa @plugin "@tailwindcss/typography"
+ * + custom .post-content classes w app.css (jeśli potrzebne).
+ */
+
+/* Editor canvas — kontekst pisania artykułu */
+.editor-styles-wrapper,
+.wp-block-post-content {
+  font-family: 'Poppins', sans-serif;
+  color: #19121e;
+}
+
+/* Paragraf */
+.wp-block-paragraph,
+.editor-styles-wrapper p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #19121e;
+}
+
+/* Headings */
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #19121e;
+  letter-spacing: -0.01em;
+}
+
+.editor-styles-wrapper h2 {
+  font-size: 1.875rem;
+  line-height: 1.2;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.editor-styles-wrapper h3 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.editor-styles-wrapper h4 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Listy */
+.editor-styles-wrapper ul,
+.editor-styles-wrapper ol {
+  padding-left: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.7;
+}
+
+.editor-styles-wrapper ul li::marker {
+  color: rgba(25, 18, 30, 0.4);
+}
+
+/* Blockquote */
+.editor-styles-wrapper blockquote {
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+  border-left: 3px solid #282435;
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  color: rgba(25, 18, 30, 0.8);
+}
+
+/* Linki */
+.editor-styles-wrapper a {
+  color: #282435;
+  text-decoration: underline;
+}

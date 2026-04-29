@@ -18,6 +18,7 @@ import contactForm from './components/contact-form.js';
 import blogToc from './components/blog-toc.js';
 import blogShare from './components/blog-share.js';
 import newsletterForm from './components/newsletter-form.js';
+import lightbox from './components/lightbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -34,4 +35,5 @@ document.addEventListener('DOMContentLoaded', () => {
   blogToc();
   blogShare();
   newsletterForm();
+  lightbox();
 });
