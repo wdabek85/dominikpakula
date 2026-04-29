@@ -36,9 +36,11 @@
     @endif
 
     {{-- Comment form --}}
-    <div class="mt-10">
-      <?php comment_form($formArgs); ?>
-    </div>
+    @if (comments_open())
+      <div class="mt-10">
+        <?php comment_form(is_array($formArgs) ? $formArgs : $formArgs()); ?>
+      </div>
+    @endif
 
   </section>
 @endif

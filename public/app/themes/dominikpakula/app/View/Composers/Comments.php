@@ -73,7 +73,7 @@ class Comments extends Composer
         $logoutUrl = wp_logout_url(get_permalink());
         $profileUrl = admin_url('profile.php');
 
-        $inputClass = 'w-full border border-black/20 px-4 py-3 font-poppins text-base text-black placeholder:text-black/40 outline-none focus:border-primary transition-colors';
+        $inputClass = 'w-full bg-white border-2 border-black/40 rounded-sm px-4 py-3 font-poppins text-base text-black placeholder:text-black/40 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors';
         $labelClass = 'font-metro text-xs uppercase tracking-[2px] text-black/70';
         $req = '<span class="text-red-600">*</span>';
 
@@ -82,8 +82,9 @@ class Comments extends Composer
             'title_reply_to' => 'Odpowiedź: %s',
             'cancel_reply_link' => 'anuluj odpowiedź',
             'label_submit' => 'Opublikuj komentarz',
-            'class_submit' => 'bg-primary text-white font-poppins font-medium text-base px-6 py-3 rounded-sm hover:bg-primary/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer',
-            'submit_field' => '<p class="form-submit mt-4">%1$s %2$s</p>',
+            'class_submit' => 'inline-flex items-center justify-center bg-primary text-white font-poppins font-medium text-base px-8 py-4 rounded-sm hover:bg-primary/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer border-0',
+            'submit_button' => '<button name="%1$s" type="submit" id="%2$s" class="%3$s">%4$s →</button>',
+            'submit_field' => '<p class="form-submit mt-6">%1$s %2$s</p>',
             'title_reply_before' => '<h3 class="font-serif text-2xl text-black mb-4">',
             'title_reply_after' => '</h3>',
             'must_log_in' => '<p class="font-poppins text-sm text-black/70 mb-4">Musisz być <a href="' . esc_url(wp_login_url(get_permalink())) . '" class="text-primary underline">zalogowany</a>, aby dodać komentarz.</p>',

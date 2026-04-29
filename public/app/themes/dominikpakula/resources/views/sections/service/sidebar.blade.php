@@ -87,6 +87,27 @@
     </div>
   @endif
 
+  {{-- W cenie znajdziesz (checklista) --}}
+  @if (! empty($includedItems))
+    <div class="flex flex-col gap-3 bg-[#f1f1f1] rounded p-4">
+      @if ($includedHeading)
+        <p class="font-poppins font-semibold text-sm text-black">
+          {{ $includedHeading }}
+        </p>
+      @endif
+      <ul class="flex flex-col gap-2 list-none p-0 m-0">
+        @foreach ($includedItems as $item)
+          <li class="flex items-start gap-2">
+            <span class="text-primary shrink-0 mt-0.5" aria-hidden="true">
+              <x-icons.check class="size-4 stroke-2" />
+            </span>
+            <span class="font-poppins text-xs leading-relaxed text-black">{{ $item }}</span>
+          </li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
+
   {{-- Linki (hardcode) --}}
   <div class="flex items-center justify-between">
     <a href="{{ home_url('/voucher/') }}" class="flex items-center gap-0.5 text-[#655098] text-[10px] underline font-sans">
@@ -103,6 +124,78 @@
       Sprawdź Regulamin Oferty
     </a>
   </div>
+
+  {{-- Testimonial snippet (auto-pulled najnowsza opinia) --}}
+  @if (! empty($sidebarTestimonial))
+    <div class="bg-[#f1f1f1] rounded p-4 flex flex-col gap-3">
+      <span class="font-metro text-[10px] uppercase tracking-[3px] text-black/60">
+        Opinia klienta
+      </span>
+      @if ($sidebarTestimonial['quote'])
+        <blockquote class="font-poppins text-xs leading-relaxed text-black line-clamp-5 italic">
+          „{{ $sidebarTestimonial['quote'] }}"
+        </blockquote>
+      @endif
+      <div class="flex items-center gap-2.5 mt-1">
+        @if ($sidebarTestimonial['image'])
+          <img
+            src="{{ $sidebarTestimonial['image'] }}"
+            alt=""
+            aria-hidden="true"
+            class="size-9 rounded-full object-cover shrink-0"
+            width="36"
+            height="36"
+            loading="lazy"
+          >
+        @else
+          <div class="size-9 rounded-full bg-black/10 shrink-0" aria-hidden="true"></div>
+        @endif
+        <div class="flex flex-col leading-tight">
+          <span class="font-poppins font-semibold text-xs text-black">{{ $sidebarTestimonial['author'] }}</span>
+          @if ($sidebarTestimonial['service'])
+            <span class="font-poppins text-[10px] text-black/60">{{ $sidebarTestimonial['service'] }}</span>
+          @endif
+        </div>
+      </div>
+    </div>
+  @endif
+
+  {{-- Related services (cross-sell) --}}
+  @if (! empty($relatedServices))
+    <div class="flex flex-col gap-3">
+      <p class="font-poppins font-semibold text-sm text-black">
+        Sprawdź też inne usługi
+      </p>
+      <div class="flex flex-col gap-2">
+        @foreach ($relatedServices as $service)
+          <a
+            href="{{ $service['url'] }}"
+            class="flex items-center gap-3 group bg-[#f1f1f1] hover:bg-[#e7e7e7] rounded p-2 transition-colors"
+          >
+            @if ($service['image'])
+              <div class="size-12 rounded overflow-hidden shrink-0">
+                <img
+                  src="{{ $service['image'] }}"
+                  alt=""
+                  aria-hidden="true"
+                  class="size-full object-cover"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                >
+              </div>
+            @else
+              <div class="size-12 rounded bg-black/10 shrink-0" aria-hidden="true"></div>
+            @endif
+            <span class="font-poppins font-medium text-xs leading-snug text-black group-hover:text-primary transition-colors flex-1 min-w-0">
+              {{ $service['title'] }}
+            </span>
+            <x-icons.arrow-right class="size-4 text-black/40 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+          </a>
+        @endforeach
+      </div>
+    </div>
+  @endif
 
   {{-- Tagi (ACF) --}}
   @if ($tags)

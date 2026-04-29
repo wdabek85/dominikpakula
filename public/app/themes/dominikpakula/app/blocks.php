@@ -168,6 +168,62 @@ add_action('acf/init', function () {
             'icon' => 'megaphone',
             'render_template' => 'blocks.subscribe',
         ],
+        [
+            'name' => 'contact-bar',
+            'title' => 'Pasek kontaktowy',
+            'description' => 'Adres + dane formalne (NIP) + telefon + email w 3 kolumnach (np. pod headerem strony Kontakt)',
+            'icon' => 'id-alt',
+            'render_template' => 'blocks.contact-bar',
+        ],
+        [
+            'name' => 'personal-intro',
+            'title' => 'Personal Intro',
+            'description' => 'Zdjęcie + krótki tekst od Dominika (humanizacja, obniżenie bariery kontaktu)',
+            'icon' => 'admin-users',
+            'render_template' => 'blocks.personal-intro',
+        ],
+        [
+            'name' => 'contact-channels',
+            'title' => 'Kanały kontaktu',
+            'description' => '4 kafelki: Zadzwoń / WhatsApp / Instagram DM / Email — instant CTA bez formularza',
+            'icon' => 'phone',
+            'render_template' => 'blocks.contact-channels',
+        ],
+        [
+            'name' => 'next-steps',
+            'title' => 'Co dalej? (3 kroki)',
+            'description' => 'Timeline 3 kroków: co się stanie po kontakcie. Set expectations dla użytkownika.',
+            'icon' => 'list-view',
+            'render_template' => 'blocks.next-steps',
+        ],
+        [
+            'name' => 'lookbook-section',
+            'title' => 'Lookbook — sekcja produktowa',
+            'description' => 'Heading + opis + galeria zdjęć z brandami i linkami do sklepu. 3 layouty (grid-3 / grid-4 / split z modelem).',
+            'icon' => 'screenoptions',
+            'render_template' => 'blocks.lookbook-section',
+        ],
+        [
+            'name' => 'blog-pullquote',
+            'title' => 'Pull quote (wyróżniona myśl)',
+            'description' => 'Duża wyróżniona myśl z cudzysłowem — do akcentowania kluczowych wniosków w artykule.',
+            'icon' => 'format-quote',
+            'render_template' => 'blocks.blog-pullquote',
+        ],
+        [
+            'name' => 'blog-callout',
+            'title' => 'Callout (Pro tip / info / warning)',
+            'description' => 'Boxed wstawka z ikoną i krótkim akcentowanym tekstem (3 warianty: tip / info / warning).',
+            'icon' => 'lightbulb',
+            'render_template' => 'blocks.blog-callout',
+        ],
+        [
+            'name' => 'blog-personal-quote',
+            'title' => 'Cytat osobisty (Dominik z foto)',
+            'description' => 'Cytat od Dominika z jego foto i rolą — buduje personal brand wewnątrz artykułu.',
+            'icon' => 'businessperson',
+            'render_template' => 'blocks.blog-personal-quote',
+        ],
     ];
 
     foreach ($blocks as $block) {
