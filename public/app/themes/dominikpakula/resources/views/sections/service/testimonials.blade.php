@@ -10,28 +10,22 @@
     </p>
   </div>
 
-  {{-- Slider z opiniami --}}
+  {{-- Grid opinii --}}
   @if ($testimonials)
-    <div class="-mr-4 lg:-mr-20 overflow-hidden">
-      <div
-        class="flex gap-6 lg:gap-12 overflow-x-auto snap-x snap-mandatory pb-4 pr-4 lg:pr-20 scrollbar-hide select-none"
-        role="list"
-        aria-label="Opinie klientów"
-        data-drag-scroll
-      >
-        @foreach ($testimonials as $testimonial)
-          <div class="snap-start shrink-0" role="listitem">
-            <x-testimonial-card
-              :quote="$testimonial['quote']"
-              :author="$testimonial['author']"
-              :service="$testimonial['service']"
-              :mediaType="$testimonial['media_type']"
-              :image="$testimonial['image']"
-              :videoUrl="$testimonial['video_url']"
-            />
-          </div>
-        @endforeach
-      </div>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12"
+      role="list"
+      aria-label="Opinie klientów"
+    >
+      @foreach ($testimonials as $testimonial)
+        <div role="listitem">
+          <x-testimonial-card
+            :quote="$testimonial['quote']"
+            :author="$testimonial['author']"
+            :service="$testimonial['service']"
+          />
+        </div>
+      @endforeach
     </div>
   @endif
 
