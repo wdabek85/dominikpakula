@@ -351,7 +351,7 @@ resources/images/
 | Portfolio Card | components/portfolio-card.blade.php | Karta realizacji |
 | Section | components/section.blade.php | Wrapper sekcji z paddingami |
 | Service Card | components/service-card.blade.php | 3 warianty + hover lift/shadow + ikona aspect-fit (h-20 w-auto self-start) |
-| Testimonial Card | components/testimonial-card.blade.php | Karta opinii (zdjęcie/wideo) |
+| Testimonial Card | components/testimonial-card.blade.php | Karta opinii (text-only, duży serif cudzysłów + hanging quote, sezon 5) |
 | Video Section | components/video-section.blade.php | YouTube lazy embed |
 
 ## Ikony (20)
@@ -540,6 +540,32 @@ Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
 - Staging: ⏳ ACF field group "Profil autora" (eksport JSON z lokalu → import na staging)
 - Staging: ⏳ WP Menu "Stopka" przypisany do "Footer Navigation"
 - Oba: ⏳ Logo w Wygląd → Konfigurator → Tożsamość witryny
+
+## Sesja 2026-05-11 — drobne UI poprawki
+
+### Blog — sidebar "Czytaj też"
+- `partials/blog/related-teaser.blade.php` — usunięty obrazek 16:9 z teasera (konkurował z głównym kontentem). Sidebar pokazuje teraz samo typo: label "CZYTAJ TEŻ" + tytuł serif + czas czytania.
+
+### Service-why block — białe ikony
+- `blocks/service-why.blade.php` — klasa ikon w czarnych kółkach: `size-6 invert` → `size-6 brightness-0 invert`. Niezawodnie wymusza biel niezależnie od oryginalnego koloru pliku uploadowanego przez ACF (PNG/SVG).
+
+### Testimonials — przebudowa karty
+**Slider → grid + text-only.** Karta opinii (`components/testimonial-card.blade.php`) zrefaktoryzowana z full-rewrite:
+- Usunięta sekcja media (obrazek 240/320px + przycisk wideo)
+- Usunięte fixed widths `w-[85vw] sm:w-[380px] lg:w-[600px]` — karta wypełnia komórkę gridu
+- Duży serif cudzysłów `&ldquo;` na górze: `text-7xl lg:text-8xl text-primary`, `leading-[0.8]`, `-mb-6 lg:-mb-8` (kompensata typograficznego whitespace pod glyphem)
+- Cytat: `text-base lg:text-lg leading-relaxed`, `pl-6 lg:pl-8` (hanging-quote indent)
+- Autor: `— Imię` (czerń) + `service` (text-black/60), `pl-6 lg:pl-8`
+- `h-full` + `flex-1` na cytacie → wyrównuje wysokości kart w rzędzie, autor zawsze na dole
+
+**Layout:** w `blocks/testimonials/index.blade.php` i `sections/service/testimonials.blade.php` slider `flex + drag-scroll + snap-x` zamieniony na `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12`. Wywalone propsy `mediaType/image/videoUrl` z wywołań `<x-testimonial-card>`.
+
+**Composer nietknięty** — `TestimonialsBlockComposer` dalej zwraca `media_type/image/video_url`, ale karta ich nie używa. Dane ACF (zdjęcia, wideo opinii) zostają w bazie na wypadek powrotu do poprzedniego designu.
+
+### Portfolio — mniejsze karty
+- `components/portfolio-card.blade.php` — wymiary zredukowane (~20%): mobile `280×480` → `240×380`, desktop `h-600px` → `h-460px` (aspect-[3/4] zachowany).
+- Typografia i padding przeskalowane proporcjonalnie: padding `p-8` → `p-6`, tytuł `text-[30/32]` → `text-xl lg:text-2xl`, kategoria `text-base` → `text-sm`, strzałka `size-10/icon-6` → `size-9/icon-5`, `gap-6` → `gap-4`.
+- Dodane `min-w-0` na bloku tekstu — zapobiega rozpychaniu długimi tytułami w węższej karcie.
 
 ## Zasady pracy
 - ACF pola tworzone ręcznie w panelu WP, nie kodem PHP

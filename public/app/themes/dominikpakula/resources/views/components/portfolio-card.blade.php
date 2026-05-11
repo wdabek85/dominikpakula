@@ -5,7 +5,7 @@
   'link' => '',
 ])
 
-<article class="relative shrink-0 w-[280px] h-[480px] lg:w-auto lg:h-[600px] lg:aspect-[3/4] rounded overflow-hidden group">
+<article class="relative shrink-0 w-[240px] h-[380px] lg:w-auto lg:h-[460px] lg:aspect-[3/4] rounded overflow-hidden group">
 
   {{-- Zdjęcie --}}
   @if ($image)
@@ -23,19 +23,19 @@
   <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
 
   {{-- Content --}}
-  <div class="relative flex items-end h-full p-4 lg:p-8">
-    <div class="flex items-end gap-6 w-full">
+  <div class="relative flex items-end h-full p-4 lg:p-6">
+    <div class="flex items-end gap-4 w-full">
 
       {{-- Tekst --}}
-      <div class="flex flex-col gap-2 flex-1">
+      <div class="flex flex-col gap-1.5 flex-1 min-w-0">
         @if ($category)
-          <p class="font-poppins text-base leading-5 text-white">
+          <p class="font-poppins text-sm leading-5 text-white">
             {{ $category }}
           </p>
         @endif
 
         @if ($title)
-          <h3 class="font-serif text-[30px] lg:text-[32px] leading-none text-white">
+          <h3 class="font-serif text-xl lg:text-2xl leading-none text-white">
             {{ $title }}
           </h3>
         @endif
@@ -45,10 +45,10 @@
       @if ($link)
         <a
           href="{{ $link }}"
-          class="flex items-center justify-center size-10 rounded-full bg-white text-[#19121e] shrink-0 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          class="flex items-center justify-center size-9 rounded-full bg-white text-[#19121e] shrink-0 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label="Zobacz realizację: {{ $title }}"
         >
-          <x-icons.arrow-up-right class="size-6" />
+          <x-icons.arrow-up-right class="size-5" />
         </a>
       @endif
 
