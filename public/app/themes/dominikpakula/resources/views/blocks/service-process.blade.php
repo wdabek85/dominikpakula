@@ -31,7 +31,7 @@
                 <img
                   src="{{ $step['icon'] }}"
                   alt="{{ $step['iconAlt'] }}"
-                  class="size-12 shrink-0"
+                  class="size-12 shrink-0 object-contain object-center"
                   width="48"
                   height="48"
                 >
