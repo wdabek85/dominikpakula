@@ -23,12 +23,12 @@
             <img
               src="{{ $item['icon'] }}"
               alt="{{ $item['iconAlt'] }}"
-              class="size-6 shrink-0"
-              width="24"
-              height="24"
+              class="size-12 shrink-0 object-contain"
+              width="48"
+              height="48"
             >
           @else
-            <div class="size-6 shrink-0" aria-hidden="true"></div>
+            <div class="size-12 shrink-0" aria-hidden="true"></div>
           @endif
 
           {{-- Tekst --}}
