@@ -117,6 +117,54 @@ Jak nie powiem którego podejścia chcę — zapytaj mnie.
 
 ---
 
+## Deploy — checklist (develop → staging)
+
+Pełny deploy NIE kończy się na `git push`. Bez kroku SSH + `npm run build` zmiany nie pojawią się na stagingu — Vite musi przekompilować CSS/JS na serwerze (m.in. żeby Tailwind v4 wykrył nowe klasy użyte w Blade). Trzymaj się tej kolejności:
+
+### Środowisko staging
+- Domena: `dominikpakula.wdb-creative.pl` (dhosting)
+- SSH: `wiktor1249@wiktor1249.ssh.dhosting.pl`
+- Ścieżka projektu: `/home/klient.dhosting.pl/wiktor1249/dominikpakula.wdb-creative.pl/app`
+- PHP CLI: `/usr/bin/php84` (default to 5.4 — NIE używaj `php` bez ścieżki)
+- Node: 20+ przez NVM (`export NVM_DIR=$HOME/.nvm && . $NVM_DIR/nvm.sh`)
+
+### Kroki deploya
+
+1. **Commit na `develop`** — czysty commit message ("Sekcja: opis zmiany"). Nie commituj `node_modules/`, `vendor/`, `public/build/`, `.env`, `.DS_Store`, `.claude/`.
+2. **Push develop:** `git push origin develop`
+3. **Merge develop → staging** (--no-ff, opisowy message):
+   ```
+   git checkout staging && git pull --ff-only
+   git merge develop --no-ff -m "Merge develop: <opis>"
+   git push origin staging
+   git checkout develop
+   ```
+4. **SSH pull + build na serwerze** (KROK KRYTYCZNY — bez niego strona pokazuje stare CSS):
+   ```bash
+   ssh wiktor1249@wiktor1249.ssh.dhosting.pl
+   cd /home/klient.dhosting.pl/wiktor1249/dominikpakula.wdb-creative.pl/app && \
+     git pull && \
+     cd public/app/themes/dominikpakula && \
+     export NVM_DIR=$HOME/.nvm && . $NVM_DIR/nvm.sh && \
+     npm run build
+   ```
+5. **Weryfikacja w przeglądarce** — hard reload (`Cmd+Shift+R`) na `https://dominikpakula.wdb-creative.pl`. Jeśli zmiany nie widać, sprawdź czy build się powiódł i czy nie ma cache plugin / Cloudflare po drodze.
+
+### Kiedy ostrzegasz mnie
+
+- Push na `staging` bez kroku 4 → przypomnij że muszę zrobić SSH build, inaczej zmiany się nie pojawią
+- Zmiany w klasach Tailwinda których wcześniej nie było w żadnym pliku (np. `size-12` jeśli używaliśmy tylko `size-6`) → bezwzględnie wymagają rebuilda
+- Zmiany tylko w PHP/Blade bez nowych klas CSS → też wymagają `git pull` na serwerze (build niekoniecznie, ale i tak go odpalaj — szybciej niż diagnozować)
+
+### Czego NIE robisz przy deployu
+
+- Nie wykonuj kroku 4 sam (SSH wymaga interaktywnej autoryzacji) — daj mi komendy, ja je wkleję
+- Nie pushuj `main` (produkcja) bez mojej explicit zgody
+- Nie rób `git push --force` na żaden branch
+- Nie commituj plików buildu (`public/build/`) — są w `.gitignore`
+
+---
+
 ## Czego NIE robisz
 
 - Nie generujesz kodu bez mojej akceptacji planu
