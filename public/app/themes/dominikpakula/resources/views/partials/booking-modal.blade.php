@@ -4,7 +4,7 @@
   class="fixed inset-0 z-[60] hidden"
   aria-modal="true"
   role="dialog"
-  aria-label="Rezerwacja wizyty"
+  aria-label="Rezerwacja rozmowy"
 >
   {{-- Overlay --}}
   <div class="absolute inset-0 bg-black/60" data-booking-close></div>
@@ -25,7 +25,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
         </button>
-        <h2 class="font-poppins font-semibold text-lg text-black" id="booking-modal-title">Zarezerwuj wizytę</h2>
+        <h2 class="font-poppins font-semibold text-lg text-black" id="booking-modal-title">Zarezerwuj rozmowę</h2>
       </div>
       <button data-booking-close class="text-gray-400 hover:text-black transition-colors" aria-label="Zamknij">
         <x-icons.x-mark class="size-6" />
@@ -62,7 +62,7 @@
       <div data-booking-step="1">
         <div class="mb-5">
           <h3 class="font-poppins font-semibold text-base text-black mb-1">Wybierz usługę</h3>
-          <p class="font-poppins text-xs text-gray-400">Kliknij na usługę, która Cię interesuje</p>
+          <p class="font-poppins text-xs text-gray-400">Wybierz usługę, którą chcesz omówić</p>
         </div>
         <div class="flex flex-col gap-2" id="booking-services-list">
           {{-- JS wypełni dynamicznie --}}
@@ -118,7 +118,7 @@
             <span class="font-poppins text-xs bg-gray-100 text-black rounded-sm px-2 py-0.5" id="booking-confirm-date"></span>
           </div>
           <h3 class="font-poppins font-semibold text-base text-black mb-1">Podaj swoje dane</h3>
-          <p class="font-poppins text-xs text-gray-400">Potrzebujemy ich żeby potwierdzić rezerwację</p>
+          <p class="font-poppins text-xs text-gray-400">Potrzebujemy ich żeby potwierdzić termin rozmowy</p>
         </div>
 
         <form id="booking-form" class="flex flex-col gap-4">
@@ -164,7 +164,7 @@
 
           <button type="submit"
             class="w-full bg-primary text-white font-poppins font-medium text-sm rounded-sm px-4 py-3 hover:opacity-90 transition-opacity flex items-center justify-center gap-2 cursor-pointer">
-            Potwierdź rezerwację
+            Zarezerwuj rozmowę
             <x-icons.arrow-right class="size-4" />
           </button>
 
@@ -183,9 +183,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
           </div>
-          <h3 class="font-poppins font-semibold text-xl text-black">Rezerwacja potwierdzona!</h3>
+          <h3 class="font-poppins font-semibold text-xl text-black">Rozmowa zaplanowana!</h3>
           <p class="font-poppins text-sm text-gray-500 max-w-xs" id="booking-success-message">
-            Wysłaliśmy szczegóły rezerwacji na Twój adres e-mail. Do zobaczenia!
+            Wysłaliśmy szczegóły rozmowy na Twój adres e-mail. Do usłyszenia!
           </p>
           <div class="flex items-center gap-2 mt-2 text-gray-400">
             <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
@@ -206,11 +206,11 @@
 @if (!is_singular('service') && !is_page('voucher'))
 <button
   class="booking-trigger fixed bottom-6 right-6 z-50 bg-primary text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2 pl-5 pr-4 py-3 font-poppins font-medium text-sm cursor-pointer"
-  aria-label="Zarezerwuj wizytę"
+  aria-label="Zarezerwuj rozmowę"
 >
   <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
   </svg>
-  Zarezerwuj
+  Zarezerwuj rozmowę
 </button>
 @endif
