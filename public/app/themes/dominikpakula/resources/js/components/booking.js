@@ -132,13 +132,15 @@ export default function booking() {
     services.forEach((s) => {
       const card = document.createElement('button');
       card.className = 'w-full text-left border border-gray-200 rounded-sm p-4 hover:border-primary hover:bg-gray-50 transition-colors flex items-center justify-between gap-4';
+      // Cena ukryta w selektorze booking modal (flow "Zarezerwuj rozmowę").
+      // Aby przywrócić, dodaj z powrotem `${s.price ? <span ...>${s.price}</span> : ''}`
+      // do prawego kontenera (przed <a>Dowiedz się więcej</a>).
       card.innerHTML = `
         <div class="flex flex-col gap-1 min-w-0">
           <span class="font-poppins font-semibold text-sm text-black">${s.title}</span>
           ${s.excerpt ? `<span class="font-poppins text-xs text-gray-500 leading-relaxed">${s.excerpt}</span>` : ''}
         </div>
         <div class="flex flex-col items-end gap-1 shrink-0">
-          ${s.price ? `<span class="font-poppins font-semibold text-base text-primary">${s.price}</span>` : ''}
           <a href="${s.url}" class="font-poppins text-[10px] text-primary underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
         </div>
       `;

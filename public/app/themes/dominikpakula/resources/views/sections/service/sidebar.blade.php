@@ -71,7 +71,7 @@
             class="booking-trigger bg-primary flex items-center justify-between rounded-sm px-4 py-2 text-white font-poppins text-sm leading-none hover:opacity-90 transition-opacity cursor-pointer w-full"
             data-service="{{ $sidebarTitle }}"
           >
-            <span>Zarezerwuj Termin</span>
+            <span>Zarezerwuj rozmowę</span>
             <x-icons.arrow-right class="size-4" />
           </button>
 

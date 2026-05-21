@@ -18,7 +18,7 @@
       type="button"
       class="booking-trigger inline-flex items-center gap-2 bg-white text-black font-poppins font-medium text-base px-8 py-4 rounded-sm hover:bg-white/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary transition-colors cursor-pointer mt-2"
     >
-      <span>Zarezerwuj konsultację</span>
+      <span>Zarezerwuj rozmowę</span>
       <x-icons.arrow-right class="size-5" />
     </button>
 
