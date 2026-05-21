@@ -162,6 +162,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-trust',
         ],
         [
+            'name' => 'service-video',
+            'title' => 'Opis Usługi / Video CTA',
+            'description' => 'Wariant compact bloku video — hardcoded teksty, przycisk do /o-mnie/. Bez ACF (na razie).',
+            'icon' => 'video-alt3',
+            'render_template' => 'blocks.service-video',
+        ],
+        [
             'name' => 'blog-archive',
             'title' => 'Blog – Archiwum z filtrami',
             'description' => 'Pasek filtrów (kategorie + sezon) + grid wszystkich wpisów + paginacja',
