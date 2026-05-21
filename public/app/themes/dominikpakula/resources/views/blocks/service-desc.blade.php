@@ -1,8 +1,8 @@
-<div class="py-4">
+<div class="py-10 lg:py-14">
 
   {{-- Badge "Dla kogo" — POZA szarym tłem --}}
   @if ($label)
-    <div class="mb-3">
+    <div class="mb-6 lg:mb-8">
       <x-badge :label="$label" />
     </div>
   @endif

@@ -1,7 +1,7 @@
-<div class="py-6">
+<div class="py-10 lg:py-14">
 
   {{-- Badge + nagłówek --}}
-  <div class="flex flex-col gap-2 items-start mb-6">
+  <div class="flex flex-col gap-2 items-start mb-6 lg:mb-8">
     @if ($label)
       <x-badge :label="$label" />
     @endif
