@@ -1,4 +1,4 @@
-<div class="py-6">
+<div class="py-10 lg:py-14">
 
   {{-- Badge --}}
   @if ($label)

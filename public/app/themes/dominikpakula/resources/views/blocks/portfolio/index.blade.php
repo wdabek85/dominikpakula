@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-8 lg:py-12 overflow-hidden">
+<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14 overflow-hidden">
 
   {{-- Nagłówek --}}
   @if ($title || $subtitle)

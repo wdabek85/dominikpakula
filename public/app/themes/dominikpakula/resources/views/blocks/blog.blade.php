@@ -1,5 +1,5 @@
 @if ($posts)
-  <section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-8 lg:py-12">
+  <section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
 
     {{-- Nagłówek --}}
     <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-7 mb-12">

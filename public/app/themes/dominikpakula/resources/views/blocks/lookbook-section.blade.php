@@ -1,4 +1,4 @@
-<section class="not-prose py-8 lg:py-12">
+<section class="not-prose py-10 lg:py-14">
 
   {{-- Header sekcji: tytuł + kreska + opis (wycentrowane) --}}
   @if ($title || $description)

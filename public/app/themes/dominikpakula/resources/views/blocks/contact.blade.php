@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-8 lg:py-12">
+<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
 
   <div class="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-20">
 
