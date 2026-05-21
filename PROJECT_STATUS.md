@@ -653,6 +653,81 @@ Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
 - Podmienić email admina (na stagingu) z `dev-email@wpengine.local` na prawdziwy, żeby reset hasła emailem działał w przyszłości.
 - Rotacja hasła SSH dhosting (było w plain text w czacie tej sesji) — SSH działa już bez hasła (klucze id_ed25519 wgrane), więc rotacja nic nie zepsuje, tylko zabezpieczy konto.
 
+## Sesja 2026-05-21 (cd.) — service-what halo+check, badge spacing, sidebar readability, service-why icon fix, 2 nowe bloki (trust, video)
+
+### Service-what — ikony zastąpione krążkiem halo z białym ptaszkiem
+- `blocks/service-what.blade.php` — wgrywane ikony 48×48 zamienione na "halo" style: outer `size-12 rounded-full bg-primary/10` (lekkie lawendowe halo) + inner `size-9 rounded-full bg-primary` (solidny krążek) + `<x-icons.check class="size-5 text-white">`. Semantycznie pasuje lepiej do "co dostaniesz" niż wgrywane ikony różnej jakości; ACF pole `service_what_item_icon` zostawione w schemacie (nie renderowane).
+- `aria-hidden="true"` na halo — czytniki nie odczytają symbolu jako informacji, tytuł elementu pozostaje pierwszą sensowną treścią.
+
+### Badge spacing — ujednolicony rytm pionowy we wszystkich 5 sekcjach service-*
+- Sekcje `dla kogo` i `dlaczego warto` miały już `mb-6 lg:mb-8` (24/32px) jako wzorzec. Trzy pozostałe odstawały:
+  - `service-process` i `service-faq`: badge wrapper `mb-4` (16px) → `mb-6 lg:mb-8`.
+  - `service-what`: badge dzielił flex container z `<h3>` przez `gap-2` (8px, najgorzej). Wyrwany z flexa, dostaje własny wrapper `mb-6 lg:mb-8`, h3 też z `mb-6 lg:mb-8` do items.
+- Po zmianie wszystkie 5 sekcji ma identyczny odstęp pod badge.
+
+### Sidebar single-service — czytelność short opisu nad ceną
+- `sections/service/sidebar.blade.php`, paragraf z `$sidebarDescription` (cienki opis usługi nad price boxem):
+  - `font-metro` → `font-poppins`: Metrophobic to font dekoracyjny (monoline), przy `text-xs` na wielowierszowym body jest praktycznie nieczytelny. Poppins to standard body w reszcie projektu.
+  - `leading-none` → `leading-relaxed`: line-height 1 powodowało zlewanie się wierszy.
+- Zapisane do memory `feedback-fonts`: Metrophobic tylko do single-line labelów/eyebrows, nigdy do multi-line body.
+
+### Service-why — `object-contain` na ikonie benefitu
+- `blocks/service-why.blade.php`, ikona w `<img class="size-6 brightness-0 invert">` — brak `object-contain` powodował rozciąganie ikon o niekwadratowych proporcjach do kwadratu 24×24. Reszta projektu (service-what, service-process) konsekwentnie używa object-contain.
+- Filtr `brightness-0 invert` zostaje — design intent to biała ikona na czarnym kółku, wymaga monochromatycznego czarnego SVG (user świadomie zostawił to ograniczenie zamiast przepisywać na Heroicons select).
+
+### Nowy blok `service-trust` — 2 karty side-by-side (zaufanie + doświadczenie)
+- Implementacja Figma node `897:831` ("Zadowolenie") jako blok do wgrania w opisie usługi.
+- Layout: `grid grid-cols-1 lg:grid-cols-[240px_1fr]` BEZ gapa (Figma `content-stretch flex items-start`), karty stykają się flush. Mobile stack, rounded corners responsywnie (`rounded-t-sm lg:rounded-t-none lg:rounded-l-sm` po lewej / analog po prawej).
+- **Lewa karta** (240px): `bg-[#f2f2f2]` + obraz uploadu (`object-cover absolute inset-0`) + tekst w lewym dolnym rogu (Poppins text-xs, czarny).
+- **Prawa karta** (1fr): obraz uploadu pełny bleed + ciemny overlay `bg-black/20` + tekst biały w lewym dolnym rogu (Poppins text-sm).
+- Plus icon był w pierwotnej propozycji jako osobny element — usunięty (user: ma być częścią grafiki tła, nie osobnym elementem). `components/icons/plus.blade.php` utworzony i od razu skasowany jako nieużywany.
+- Pola ACF (utworzone w panelu, zsynchronizowane do `acf-json/group_6a0f41ba5be68.json`): `trust_left_image`, `trust_left_text`, `trust_right_image`, `trust_right_text` (text fields, nie textarea — user wybrał krótkie pojedyncze linie).
+- Composer `ServiceTrustBlockComposer.php` z helperem `normalizeImage()` zwracającym `{url, alt, width, height}`. `nl2br(e($text))` w blade na wypadek wielowierszowych textów.
+
+### Nowy blok `service-video` — compact wariant `<x-video-section>` dla opisu usługi
+- User chciał "taki sam blok jak na home tylko żeby się zmieścił w opisie" — kolumna w `single-service` ma `~868px` (grid `7fr_3fr` z `gap-x-10` w `max-w-[1440px]`), homepage video używa `1280px`.
+- **`components/video-section.blade.php`** rozszerzony o prop `variant` z wartościami:
+  - `hero` (default) — homepage style, bez zmian dla istniejącego bloku `video`.
+  - `contained` — compact: heading 26/34px (vs 30/50), description text-sm (vs base), play button size-10 (vs 12), height 480/420 (vs 680/600), własny `rounded-sm overflow-hidden` bez `max-w-[1440px] mx-auto` wrappera (już jest w kolumnie).
+- **Layout dla contained przestrukturyzowany**: heading u góry, w dolnym rzędzie `flex items-center justify-between` z play button po lewej i CTA button po prawej (zamiast hero-style "heading + description + button w jednym rzędzie, play poniżej"). Button nie ma `w-full` na mobile (żeby nie wypychał play do nowej linii).
+- **Description renderowany warunkowo** (`@if ($description)`) — bezpieczne dla pustych opisów (`description=""` w service-video).
+- **`blocks/service-video.blade.php`** — hardcoded, **bez ACF na razie** (świadoma decyzja user, "potem się poprawi"):
+  - Image: `Vite::asset('resources/images/video-bg.jpg')` — fallback z theme bundlowany przez Vite, działa identycznie lokalnie i na stagingu.
+  - YouTube ID: `ZieW_OSkuiQ` — wyciągnięte z homepage ACF na stagingu przez wp-cli (`wp post get 6 --field=post_content`), żeby było spójne.
+  - Heading/description/button text — defaults z `<x-video-section>` (matchują homepage).
+  - Button URL: `home_url('/o-mnie/')` (placeholder, user "potem się poprawi").
+
+### Deploy — w pełni autonomiczny end-to-end
+- Wszystkie commits powyżej zostały sprowadzone na staging tym samym pipelinem: commit develop → push → checkout staging → merge --no-ff → push → SSH pull + `npm run build` na serwerze.
+- Pierwsza próba (`puscmy` przy service-what halo+check) zakończyła się tym, że pominąłem krok SSH+build na serwerze i user zobaczył nic na stagingu. Zapisane do memory `feedback-deploy-ssh`: przy "puśćmy na staging" zawsze lecę pełnym pipelinem bez pytania o SSH (klucz skonfigurowany, BatchMode=yes przechodzi).
+
+### Pliki zmienione / dodane
+- `resources/views/blocks/service-what.blade.php` — halo+check, badge wyrwany z flex
+- `resources/views/blocks/service-process.blade.php` — badge spacing
+- `resources/views/blocks/service-faq.blade.php` — badge spacing
+- `resources/views/blocks/service-why.blade.php` — `object-contain` na ikonie
+- `resources/views/sections/service/sidebar.blade.php` — font + leading w sidebarDescription
+- `resources/views/blocks/service-trust.blade.php` (nowy)
+- `resources/views/blocks/service-video.blade.php` (nowy)
+- `resources/views/components/video-section.blade.php` — prop `variant`, conditional rendering hero/contained
+- `app/View/Composers/ServiceTrustBlockComposer.php` (nowy)
+- `app/blocks.php` — rejestracja `service-trust` i `service-video`
+- `acf-json/group_6a0f41ba5be68.json` (nowy, auto-sync z panelu ACF)
+
+### Commits
+- `eb872bb` Service blocks: halo+check w "Co dostaniesz" + ujednolicony odstep pod badge
+- `2545f90` Sidebar usługi: czytelność short opisu nad ceną
+- `b1ebda3` service-why: object-contain na ikonie benefitu
+- `1d27bce` Nowy blok service-trust: 2 karty (zaufanie + doswiadczenie)
+- `fa50612` Nowy blok service-video: compact wariant video-section dla opisu uslugi
+
+### Otwarte do zrobienia
+- **Dodać blok "Opis Usługi / Zaufanie i Doświadczenie" na stronach usług** na stagingu i lokalnie — content (block + 2 zdjęcia + 2 teksty) siedzi w postmeta, nie kopiuje się przez git.
+- **Dodać blok "Opis Usługi / Video CTA" na stronach usług** na stagingu i lokalnie — analogicznie postmeta.
+- **`service-video` przepisać na ACF** kiedy user będzie chciał edytowalne pola (image / youtube_id / heading / button URL). Na razie hardcoded.
+- **Button URL `/o-mnie/`** w service-video — sprawdzić czy taka strona istnieje, jeśli nie to stworzyć albo zmienić URL.
+- **Pole `service_what_item_icon` w ACF** — można usunąć (już nie renderujemy ikony, wystarczy halo+check). Zostawione na razie żeby nie tracić ewentualnych już wgranych ikon.
+
 ## Zasady pracy
 - ACF pola tworzone ręcznie w panelu WP, ale **auto-syncowane do `acf-json/`** — od teraz każda zmiana jest wersjonowana w git automatycznie (nie kodem PHP, nie ręcznym eksportem)
 - Ikony z Heroicons + Lucide (hanger), w `views/components/icons/`
