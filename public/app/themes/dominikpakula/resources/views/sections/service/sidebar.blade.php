@@ -136,27 +136,16 @@
           „{{ $sidebarTestimonial['quote'] }}"
         </blockquote>
       @endif
-      <div class="flex items-center gap-2.5 mt-1">
-        @if ($sidebarTestimonial['image'])
-          <img
-            src="{{ $sidebarTestimonial['image'] }}"
-            alt=""
-            aria-hidden="true"
-            class="size-9 rounded-full object-cover shrink-0"
-            width="36"
-            height="36"
-            loading="lazy"
-          >
-        @else
-          <div class="size-9 rounded-full bg-black/10 shrink-0" aria-hidden="true"></div>
-        @endif
-        <div class="flex flex-col leading-tight">
-          <span class="font-poppins font-semibold text-xs text-black">{{ $sidebarTestimonial['author'] }}</span>
+      @if ($sidebarTestimonial['author'] || $sidebarTestimonial['service'])
+        <div class="font-poppins font-light text-xs mt-1">
+          @if ($sidebarTestimonial['author'])
+            <p class="text-black">&mdash; {{ $sidebarTestimonial['author'] }}</p>
+          @endif
           @if ($sidebarTestimonial['service'])
-            <span class="font-poppins text-[10px] text-black/60">{{ $sidebarTestimonial['service'] }}</span>
+            <p class="text-black/60">{{ $sidebarTestimonial['service'] }}</p>
           @endif
         </div>
-      </div>
+      @endif
     </div>
   @endif
 
