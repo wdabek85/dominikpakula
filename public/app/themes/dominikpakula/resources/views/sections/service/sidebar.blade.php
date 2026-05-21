@@ -16,7 +16,7 @@
     </h1>
 
     @if ($sidebarDescription)
-      <p class="font-metro text-xs leading-none text-primary">
+      <p class="font-poppins text-xs leading-relaxed text-primary">
         {{ $sidebarDescription }}
       </p>
     @endif
