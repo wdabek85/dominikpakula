@@ -1,35 +1,30 @@
 <div class="py-10 lg:py-14">
 
-  {{-- Badge + nagłówek --}}
-  <div class="flex flex-col gap-2 items-start mb-6 lg:mb-8">
-    @if ($label)
+  {{-- Badge --}}
+  @if ($label)
+    <div class="mb-6 lg:mb-8">
       <x-badge :label="$label" />
-    @endif
+    </div>
+  @endif
 
-    @if ($title)
-      <h3 class="font-poppins text-xl font-bold leading-snug text-black">
-        {{ $title }}
-      </h3>
-    @endif
-  </div>
+  {{-- Nagłówek --}}
+  @if ($title)
+    <h3 class="font-poppins text-xl font-bold leading-snug text-black mb-6 lg:mb-8">
+      {{ $title }}
+    </h3>
+  @endif
 
   {{-- Lista elementów: 2 kolumny desktop, 1 mobile --}}
   @if ($items)
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       @foreach ($items as $item)
         <div class="flex gap-2 items-start">
-          {{-- Ikona --}}
-          @if ($item['icon'])
-            <img
-              src="{{ $item['icon'] }}"
-              alt="{{ $item['iconAlt'] }}"
-              class="size-12 shrink-0 object-contain"
-              width="48"
-              height="48"
-            >
-          @else
-            <div class="size-12 shrink-0" aria-hidden="true"></div>
-          @endif
+          {{-- Halo + solidny krążek z białym ptaszkiem (zamiast wgrywanej ikony) --}}
+          <div class="size-12 shrink-0 rounded-full bg-primary/10 flex items-center justify-center" aria-hidden="true">
+            <div class="size-9 rounded-full bg-primary flex items-center justify-center">
+              <x-icons.check class="size-5 text-white" />
+            </div>
+          </div>
 
           {{-- Tekst --}}
           <p class="font-poppins text-base leading-relaxed text-black">

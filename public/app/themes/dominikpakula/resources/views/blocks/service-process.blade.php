@@ -2,7 +2,7 @@
 
   {{-- Badge --}}
   @if ($label)
-    <div class="mb-4">
+    <div class="mb-6 lg:mb-8">
       <x-badge :label="$label" />
     </div>
   @endif
