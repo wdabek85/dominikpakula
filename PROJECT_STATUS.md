@@ -392,7 +392,7 @@ arrow-left, arrow-long-right, arrow-right, arrow-up-right, check, chevron-down, 
 - [x] **Pola ACF dla bloków blogowych** ✅ (2026-04-29) — `acf/lookbook-section`, `acf/blog-pullquote`, `acf/blog-callout`, `acf/blog-personal-quote` utworzone w panelu lokalnie
 - [x] **Pola ACF service-desc — refactor 3 sekcji** ✅ (2026-04-29) — desc_label, desc_heading, desc_positive_eyebrow/title, desc_highlight_eyebrow/title, desc_negative_eyebrow/title; usunięte stare desc_content (WYSIWYG)
 - [x] **Pola ACF service-desc — repeatery items per usługa** ✅ (2026-05-21) — desc_positive_items / desc_highlight_items (Textarea, sub-field `item_text`) + desc_negative_items (WYSIWYG Basic, Visual Only, media off — żeby edytor wstawiał linki do innych usług). Composer odczytuje z fallbackiem do hardcoded list w `ServiceDescBlockComposer`.
-- [x] **Pola ACF service — W cenie znajdziesz** ✅ (2026-04-29) — service_included_heading, service_included_items (repeater)
+- [x] **Pola ACF service — W cenie znajdziesz** ✅ (2026-04-29 → 2026-05-21 fix) — service_included_heading + service_included_items. Pierwotnie pole było utworzone jako Text (jednolinijka), mimo planu repeatera. 2026-05-21 zmienione na **Repeater (Powielacz)** z sub-fieldem `service_included_item` (Textarea); zsynchronizowane do `acf-json/group_69f246a2f3a88.json`. Composer `ServiceComposer::includedItems()` od początku oczekiwał tej struktury z fallbackiem hardcoded.
 - [ ] **Pola ACF Single Portfolio** — `portfolio_intro` (Textarea), `portfolio_gallery` (Gallery, Array), `portfolio_category` (sprawdzić istnienie). Lokalizacja: Post Type → Realizacja
 - [ ] **Pełna strona Kontakt** ✅ — wszystkie bloki (page-header, contact-bar, personal-intro, contact-channels, next-steps, contact form, testimonials, subscribe) wstawione na stronie ID 270 (sezon 3, 2026-04-23/04-28)
 - [ ] **service-desc rebuild** ✅ — editorial layout 3 sekcje stackowane na szarym tle (sezon 3)
@@ -568,7 +568,7 @@ Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
 - Typografia i padding przeskalowane proporcjonalnie: padding `p-8` → `p-6`, tytuł `text-[30/32]` → `text-xl lg:text-2xl`, kategoria `text-base` → `text-sm`, strzałka `size-10/icon-6` → `size-9/icon-5`, `gap-6` → `gap-4`.
 - Dodane `min-w-0` na bloku tekstu — zapobiega rozpychaniu długimi tytułami w węższej karcie.
 
-## Sesja 2026-05-20 / 2026-05-21 — service-what icons, deploy auto, service-desc repeatery, ACF JSON sync
+## Sesja 2026-05-20 / 2026-05-21 — service-what icons, deploy auto, service-desc repeatery, ACF JSON sync, sidebar opinia, unifikacja paddingów
 
 ### Service-what — większe ikony, bez rozjazdów
 - `blocks/service-what.blade.php` — ikony "Co dostajesz" powiększone z 24×24 do 48×48 (`size-6` → `size-12`) + `object-contain`. Wcześniej różne aspect ratio uploadowanych SVG-ów się rozciągały w sztywnym kwadracie, teraz każda ikona dopasowuje się zachowując proporcje.
@@ -593,25 +593,65 @@ Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
 ### ACF JSON sync — setup jednorazowy
 - Utworzony folder `public/app/themes/dominikpakula/acf-json/` — ACF Pro auto-zapisuje field groupy do tego folderu przy każdym save i auto-wczytuje przy braku w DB (`local=json`).
 - Pierwsza zsynchronizowana grupa: `group_69cbafc509318.json` ("Opis Usługi/Dla kogo") — 11 pól (3 repeatery + 8 text/heading).
-- Na stagingu ACF dynamicznie ładuje JSON bez ręcznego "Sync" w panelu — `acf_get_field_group()` zwraca grupę z `local=json`, 11 pól resolved.
+- Druga i trzecia grupa zsynchronizowane później w sesji: `group_69cbab9dbca4e.json` ("Usługa" — 3 pola: sidebar_title/description/price) i `group_69f246a2f3a88.json` ("Usługa Obejmuje" — 2 pola: heading + repeater items).
+- Na stagingu ACF dynamicznie ładuje JSON bez ręcznego "Sync" w panelu — `acf_get_field_group()` zwraca grupę z `local=json`, łącznie **3 grupy resolved**.
 - **Implikacja na przyszłość:** każda zmiana field group lokalnie → JSON się zapisuje automatycznie → commit → na stagingu od razu działa po `git pull` (zero eksportów/importów przez panel ACF). Stara metoda eksportu JSON ręcznie przez ACF Tools jest niepotrzebna.
 
+### Naprawa typu pola `service_included_items` (text → repeater)
+- Pole było utworzone 2026-04-29 jako Text (jednolinijka), mimo że composer `ServiceComposer::includedItems()` od początku oczekiwał repeatera z sub-fieldem `service_included_item`. PROJECT_STATUS:394 ten stan błędnie raportował jako "repeater".
+- Naprawione przez panel ACF: zmiana typu pola na **Repeater (Powielacz)** + dodanie sub-field `service_included_item` (Textarea). Layout repeatera: `table`, button label: "Dodaj wiersz".
+- Composer już dawno obsługiwał ten case z fallbackiem hardcoded (4 punkty stylistyczne) — teraz panel dostarcza prawidłową strukturę.
+- Field group zsynchronizowana do `acf-json/group_69f246a2f3a88.json`.
+
+### Sidebar opinia klienta — redesign (bez zdjęcia, podpis w stylu home)
+- `sections/service/sidebar.blade.php` — sekcja "Opinia klienta":
+  - **Usunięte** zdjęcie autora (`<img>` 36px round) i szare kółko-placeholder, bo wiele opinii nie ma zdjęcia → wyglądało dziwnie.
+  - **Podpis przeorganizowany** z poziomego layoutu (avatar + autor + service obok) na pionowy stack: `— Imię` (czerń, font-light) + service (60% black) pod spodem. Spójnie z `components/testimonial-card.blade.php` (testimonials na home).
+  - **Zachowane:** eyebrow "Opinia klienta" (font-metro, small caps), italic cytat z polskimi cudzysłowami „...", `line-clamp-5`, `bg-[#f1f1f1] rounded p-4`.
+- **Uwaga z sesji:** próba pełnego portu stylu home (duży serif `&ldquo;`, usunięcie eyebrow) była przesadzona — user explicite poprosił o cofnięcie. Zapisane do memory `feedback-minimal-scope`: zmieniać tylko to o co user prosi, nie "ulepszać przy okazji" sąsiednich elementów.
+
+### Ujednolicenie pionowego paddingu sekcji (`py-10 lg:py-14`)
+- Cel: spójny rytm pionowy na całej stronie wzorowany na stronie Kontakt (która miała `py-10 lg:py-16`). Standardowy 8pt grid, mobile 40px → desktop 56px.
+- **13 plików** sprowadzonych do `py-10 lg:py-14` (TYLKO `padding-y`, boczne `px-*` nietknięte):
+  - **Service bloki (najpierw):** `blocks/service-desc.blade.php`, `blocks/service-what.blade.php`, `blocks/service-why.blade.php` — z `py-4` / `py-6` (16-24px) → `py-10 lg:py-14`. Plus badge → treść sekcji ujednolicone: niespójne `mb-3 / mb-5 / mb-6` → wszędzie `mb-6 lg:mb-8`.
+  - **Content bloki (drugi batch):** `blocks/blog.blade.php`, `blog-archive.blade.php`, `contact.blade.php`, `features.blade.php`, `lookbook-section.blade.php`, `newsletter.blade.php`, `service-faq.blade.php`, `service-process.blade.php`.
+  - **Bloki w podfolderach (trzeci batch, pierwszy audit pominął):** `blocks/offer/index.blade.php`, `process/index.blade.php`, `portfolio/index.blade.php` (zachowane `overflow-hidden`), `services/index.blade.php`, `testimonials/index.blade.php` (zachowane `overflow-hidden`).
+- **Pominięte (świadomie):**
+  - `hero`, `subpage-hero`, `page-header` — własna logika hero/header.
+  - `blocks/contact-bar`, `contact-channels`, `subscribe`, `voucher`, `video` — bez outer `py-*` (mają wewnętrzne paddingi w kartach).
+  - `blocks/blog-callout`, `blog-personal-quote`, `blog-pullquote` — inline w treści posta, nie sekcje (pullquote ma `py-8 lg:py-10` na karcie cytatu, świadome).
+  - `blocks/knowledge-base` — `py-8 lg:pt-0 lg:pb-12` (świadome — sąsiaduje z czymś co już ma padding).
+  - `blocks/personal-intro` — `py-10 lg:py-16` (świadomie większe niż standard, intro hero kontaktu).
+  - `blocks/next-steps` — `py-10 lg:py-14` (już zgodne).
+- **Weryfikacja przez curl:** wszystkie 8 sekcji na home używają teraz `py-10 lg:py-14`, brak mieszanki ze starymi wartościami.
+
 ### Pliki zmienione / dodane
-- `public/app/themes/dominikpakula/resources/views/blocks/service-what.blade.php` (rozmiar ikon)
-- `public/app/themes/dominikpakula/resources/views/blocks/service-desc.blade.php` (warunkowy {!! !!}, link styling)
+- `public/app/themes/dominikpakula/resources/views/blocks/service-what.blade.php` (rozmiar ikon → 48px)
+- `public/app/themes/dominikpakula/resources/views/blocks/service-desc.blade.php` (warunkowy `{!! !!}`, link styling)
+- `public/app/themes/dominikpakula/resources/views/blocks/service-why.blade.php` (padding)
 - `public/app/themes/dominikpakula/app/View/Composers/ServiceDescBlockComposer.php` (repeatery + WYSIWYG handling)
-- `public/app/themes/dominikpakula/acf-json/group_69cbafc509318.json` (nowy, auto-generated)
+- `public/app/themes/dominikpakula/resources/views/sections/service/sidebar.blade.php` (opinia: bez zdjęcia, byline w stylu home)
+- `public/app/themes/dominikpakula/resources/views/blocks/` × **13 plików** outer `py-*` → `py-10 lg:py-14`
+- `public/app/themes/dominikpakula/acf-json/group_69cbafc509318.json` (Opis Usługi/Dla kogo, auto-generated)
+- `public/app/themes/dominikpakula/acf-json/group_69cbab9dbca4e.json` (Usługa, auto-generated)
+- `public/app/themes/dominikpakula/acf-json/group_69f246a2f3a88.json` (Usługa Obejmuje, auto-generated, repeater naprawiony)
 - `CLAUDE.md` (sekcja Deploy)
 
 ### Commits
 - `af63c17` Service-what: enlarge icons to 48px + object-contain
 - `1f8a85b` CLAUDE.md: dodaj sekcję Deploy z checklistą develop→staging
 - `4f6b091` Service-desc: 3 listy "Dla kogo" jako repeatery ACF + WYSIWYG dla "Raczej nie"
+- `8493e5d` PROJECT_STATUS: sesja 2026-05-20/21 + zaznacz service-desc repeatery jako done
+- `cac842c` Sidebar opinia: usuń zdjęcie, podpis w stylu home + ACF JSON sync: dwie nowe grupy
+- `b05070d` Service blocks: większe odstępy sekcji + spójny badge gap (8pt grid)
+- `f020441` Ujednolicenie pionowego paddingu sekcji: wszystkie content bloki → py-10 lg:py-14
 
 ### Otwarte do zrobienia (data per usługa)
 - Wypełnić listy `desc_*_items` per usługa **na stagingu** (dane nie kopiują się z lokala — siedzą w postmeta, nie w field group). Bez wypełnienia staging dalej pokazuje hardcoded fallback.
 - Wypełnić listy `desc_*_items` per usługa **na lokalu** — analogicznie.
+- Wypełnić listy `service_included_items` per usługa **na lokalu i na stagingu** — analogicznie (postmeta, nie kopiuje się przez JSON).
 - Podmienić email admina (na stagingu) z `dev-email@wpengine.local` na prawdziwy, żeby reset hasła emailem działał w przyszłości.
+- Rotacja hasła SSH dhosting (było w plain text w czacie tej sesji) — SSH działa już bez hasła (klucze id_ed25519 wgrane), więc rotacja nic nie zepsuje, tylko zabezpieczy konto.
 
 ## Zasady pracy
 - ACF pola tworzone ręcznie w panelu WP, ale **auto-syncowane do `acf-json/`** — od teraz każda zmiana jest wersjonowana w git automatycznie (nie kodem PHP, nie ręcznym eksportem)
