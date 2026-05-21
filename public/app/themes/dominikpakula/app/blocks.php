@@ -155,6 +155,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-why',
         ],
         [
+            'name' => 'service-trust',
+            'title' => 'Opis Usługi / Zaufanie i Doświadczenie',
+            'description' => '2 karty side-by-side: lewa (społeczny dowód) + prawa (zdjęcie + doświadczenie)',
+            'icon' => 'images-alt2',
+            'render_template' => 'blocks.service-trust',
+        ],
+        [
             'name' => 'blog-archive',
             'title' => 'Blog – Archiwum z filtrami',
             'description' => 'Pasek filtrów (kategorie + sezon) + grid wszystkich wpisów + paginacja',
