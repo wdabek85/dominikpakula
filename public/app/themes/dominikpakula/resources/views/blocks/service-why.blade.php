@@ -41,7 +41,7 @@
                   <img
                     src="{{ $benefit['icon'] }}"
                     alt="{{ $benefit['iconAlt'] }}"
-                    class="size-6 brightness-0 invert"
+                    class="size-6 object-contain brightness-0 invert"
                     width="24"
                     height="24"
                   >
