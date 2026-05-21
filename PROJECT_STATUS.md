@@ -391,12 +391,13 @@ arrow-left, arrow-long-right, arrow-right, arrow-up-right, check, chevron-down, 
 - [ ] **Pola ACF dla bloków na stronie Kontakt** (patrz sekcja "Strona Kontakt" niżej) — `acf/personal-intro` (intro_image, intro_heading, intro_text, intro_badge) + `acf/contact-channels` (channels_heading, channels_subtitle) + `acf/next-steps` (steps_heading, steps_subtitle). Bez nich bloki działają z fallbacków w Composerach
 - [x] **Pola ACF dla bloków blogowych** ✅ (2026-04-29) — `acf/lookbook-section`, `acf/blog-pullquote`, `acf/blog-callout`, `acf/blog-personal-quote` utworzone w panelu lokalnie
 - [x] **Pola ACF service-desc — refactor 3 sekcji** ✅ (2026-04-29) — desc_label, desc_heading, desc_positive_eyebrow/title, desc_highlight_eyebrow/title, desc_negative_eyebrow/title; usunięte stare desc_content (WYSIWYG)
+- [x] **Pola ACF service-desc — repeatery items per usługa** ✅ (2026-05-21) — desc_positive_items / desc_highlight_items (Textarea, sub-field `item_text`) + desc_negative_items (WYSIWYG Basic, Visual Only, media off — żeby edytor wstawiał linki do innych usług). Composer odczytuje z fallbackiem do hardcoded list w `ServiceDescBlockComposer`.
 - [x] **Pola ACF service — W cenie znajdziesz** ✅ (2026-04-29) — service_included_heading, service_included_items (repeater)
 - [ ] **Pola ACF Single Portfolio** — `portfolio_intro` (Textarea), `portfolio_gallery` (Gallery, Array), `portfolio_category` (sprawdzić istnienie). Lokalizacja: Post Type → Realizacja
 - [ ] **Pełna strona Kontakt** ✅ — wszystkie bloki (page-header, contact-bar, personal-intro, contact-channels, next-steps, contact form, testimonials, subscribe) wstawione na stronie ID 270 (sezon 3, 2026-04-23/04-28)
 - [ ] **service-desc rebuild** ✅ — editorial layout 3 sekcje stackowane na szarym tle (sezon 3)
 - [ ] **Sidebar single-service wzbogacony** ✅ — W cenie znajdziesz + Opinia klienta + Sprawdź też inne usługi (sezon 3)
-- [ ] **Refaktor hardcodów na ACF** — patrz sekcja "Hardcode w blokach (do przepisania na dynamiczne ACF)" niżej. Priorytet: Options Page → service-desc repeatery → service_included_items → personal-intro
+- [ ] **Refaktor hardcodów na ACF** — patrz sekcja "Hardcode w blokach (do przepisania na dynamiczne ACF)" niżej. Priorytet: Options Page → service_included_items → personal-intro (~~service-desc repeatery~~ ✅ 2026-05-21)
 - [ ] **Utworzyć WP menu i przypisać do "Footer Navigation"** (Wygląd → Menu) — bez tego kolumna "Nawigacja" w stopce się ukrywa
 - [ ] **Polityka prywatności** + **Regulamin** — strony prawne (footer linki obecnie w 404)
 - [ ] Podstrony "O mnie", "Kontakt"
@@ -448,13 +449,13 @@ Blok na stronie Kontakt, 3-stopniowy timeline.
 - *(opcjonalnie później jeśli chcesz pełną kontrolę nad krokami: repeater `steps_items` z polami `step_number`, `step_title`, `step_text` — obecnie 3 kroki hardcoded w `NextStepsBlockComposer.php`)*
 
 ### Grupa: **Opis Usługi / Dla Kogo** (lokalizacja: `Block is equal to acf/service-desc`)
-Po przebudowie sezon 3 — editorial layout, 3 sekcje stackowane (TAK / POLECAM / RACZEJ NIE) z hardcodem w composerze.
-- [ ] `desc_label` (Text, fallback "Dla kogo")
-- [ ] `desc_heading` (Text, fallback "Czy ta usługa jest dla Ciebie?")
-- [ ] `desc_positive_eyebrow` / `desc_positive_title` (Text — eyebrow i title sekcji "Tak")
-- [ ] `desc_highlight_eyebrow` / `desc_highlight_title` (Text — sekcji "Polecam")
-- [ ] `desc_negative_eyebrow` / `desc_negative_title` (Text — sekcji "Raczej nie")
-- *(opcjonalnie 3 repeatery `desc_positive_items` / `desc_highlight_items` / `desc_negative_items` per usługa — obecnie wszystkie listy hardcoded w `ServiceDescBlockComposer::positiveItems()/highlightItems()/negativeItems()`. Per CPT service ma sens jeśli każda usługa ma inne kryteria 'dla kogo')*
+Po przebudowie sezon 3 — editorial layout, 3 sekcje stackowane (TAK / POLECAM / RACZEJ NIE) z hardcodem w composerze. **Field group `group_69cbafc509318` w `acf-json/` — wersjonowana w git, na stagingu auto-wczytywana z JSON (local=json).**
+- [x] `desc_label` (Text, fallback "Dla kogo")
+- [x] `desc_heading` (Text, fallback "Czy ta usługa jest dla Ciebie?")
+- [x] `desc_positive_eyebrow` / `desc_positive_title` (Text — eyebrow i title sekcji "Tak")
+- [x] `desc_highlight_eyebrow` / `desc_highlight_title` (Text — sekcji "Polecam")
+- [x] `desc_negative_eyebrow` / `desc_negative_title` (Text — sekcji "Raczej nie")
+- [x] **Repeatery items** ✅ (2026-05-21) — `desc_positive_items` (Textarea), `desc_highlight_items` (Textarea), `desc_negative_items` (WYSIWYG Basic/Visual Only/media off). Każdy ma sub-field `item_text`. Hardcoded fallback w composerze zachowany — usługi z pustym repeaterem dalej działają.
 
 ### Grupa: **Usługa** (lokalizacja: `Post Type is equal to service`) — rozszerzona w sezonie 3
 Pola dodatkowe do tych co już istnieją (service_sidebar_title/description/price/tags):
@@ -567,8 +568,53 @@ Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
 - Typografia i padding przeskalowane proporcjonalnie: padding `p-8` → `p-6`, tytuł `text-[30/32]` → `text-xl lg:text-2xl`, kategoria `text-base` → `text-sm`, strzałka `size-10/icon-6` → `size-9/icon-5`, `gap-6` → `gap-4`.
 - Dodane `min-w-0` na bloku tekstu — zapobiega rozpychaniu długimi tytułami w węższej karcie.
 
+## Sesja 2026-05-20 / 2026-05-21 — service-what icons, deploy auto, service-desc repeatery, ACF JSON sync
+
+### Service-what — większe ikony, bez rozjazdów
+- `blocks/service-what.blade.php` — ikony "Co dostajesz" powiększone z 24×24 do 48×48 (`size-6` → `size-12`) + `object-contain`. Wcześniej różne aspect ratio uploadowanych SVG-ów się rozciągały w sztywnym kwadracie, teraz każda ikona dopasowuje się zachowując proporcje.
+
+### Deploy — automatyzacja SSH
+- `ssh-copy-id` z `~/.ssh/id_ed25519.pub` na `wiktor1249@wiktor1249.ssh.dhosting.pl` — od teraz krok 4 deploya (SSH pull + `npm run build`) jest wykonywany autonomicznie z poziomu agenta (key auth, BatchMode=yes). Wcześniej każdy deploy wymagał ręcznego SSH z hasłem.
+- `CLAUDE.md` — dodana sekcja `## Deploy — checklist (develop → staging)` z 5-krokową procedurą i listami "kiedy ostrzegasz" / "czego nie robisz przy deployu". Wcześniej krok SSH+build siedział tylko w PROJECT_STATUS:586 i łatwo go pominąć.
+- Reset hasła WP admin przez wp-cli na SSH (`user update admin --user_pass=...`) — admin user ma placeholder email `dev-email@wpengine.local`, reset emailowy by nie zadziałał. **Do zrobienia:** podmienić email na prawdziwy.
+
+### Service-desc — 3 listy "Dla kogo" jako repeatery ACF + WYSIWYG dla "Raczej nie"
+- ACF: 3 repeatery (`desc_positive_items` / `desc_highlight_items` / `desc_negative_items`), każdy z sub-fieldem `item_text`. Positive/highlight = Textarea (krótkie buletny). Negative = WYSIWYG (toolbar **Basic**, tabs **Visual Only**, media upload **off**) — żeby edytor mógł wstawiać linki do innych usług bez ryzyka rozwalenia layoutu obrazkami.
+- `ServiceDescBlockComposer.php` — `itemsFromRepeater($field, $allowHtml = false)`:
+  - Positive/highlight zwracają plain text (trim).
+  - Negative przepuszczone przez `wp_kses_post`, ze stripowanym `<p>` (wpautop wrapper) i z doklejaną " →" wewnątrz każdego `<a>` (regex `<a[^>]*>...</a>` → `<a...>$content →</a>`). Strzałka jest częścią linku — klikalna, nie odrywa się przy zawijaniu.
+  - Hardcoded fallbacki zachowane — usługi z pustym repeaterem dalej działają.
+- `service-desc.blade.php` — render warunkowy: `{!! $item !!}` dla sekcji z `allow_html=true`, `{{ $item }}` dla pozostałych. Każda sekcja w `$sections` ma flagę `allow_html`. Stylowanie linku przez Tailwind arbitrary variant w wrapping `<span>`:
+  ```
+  [&_a]:font-semibold [&_a]:underline [&_a]:underline-offset-2
+  [&_a]:whitespace-nowrap [&_a]:hover:text-black/70 [&_a]:transition-colors
+  ```
+
+### ACF JSON sync — setup jednorazowy
+- Utworzony folder `public/app/themes/dominikpakula/acf-json/` — ACF Pro auto-zapisuje field groupy do tego folderu przy każdym save i auto-wczytuje przy braku w DB (`local=json`).
+- Pierwsza zsynchronizowana grupa: `group_69cbafc509318.json` ("Opis Usługi/Dla kogo") — 11 pól (3 repeatery + 8 text/heading).
+- Na stagingu ACF dynamicznie ładuje JSON bez ręcznego "Sync" w panelu — `acf_get_field_group()` zwraca grupę z `local=json`, 11 pól resolved.
+- **Implikacja na przyszłość:** każda zmiana field group lokalnie → JSON się zapisuje automatycznie → commit → na stagingu od razu działa po `git pull` (zero eksportów/importów przez panel ACF). Stara metoda eksportu JSON ręcznie przez ACF Tools jest niepotrzebna.
+
+### Pliki zmienione / dodane
+- `public/app/themes/dominikpakula/resources/views/blocks/service-what.blade.php` (rozmiar ikon)
+- `public/app/themes/dominikpakula/resources/views/blocks/service-desc.blade.php` (warunkowy {!! !!}, link styling)
+- `public/app/themes/dominikpakula/app/View/Composers/ServiceDescBlockComposer.php` (repeatery + WYSIWYG handling)
+- `public/app/themes/dominikpakula/acf-json/group_69cbafc509318.json` (nowy, auto-generated)
+- `CLAUDE.md` (sekcja Deploy)
+
+### Commits
+- `af63c17` Service-what: enlarge icons to 48px + object-contain
+- `1f8a85b` CLAUDE.md: dodaj sekcję Deploy z checklistą develop→staging
+- `4f6b091` Service-desc: 3 listy "Dla kogo" jako repeatery ACF + WYSIWYG dla "Raczej nie"
+
+### Otwarte do zrobienia (data per usługa)
+- Wypełnić listy `desc_*_items` per usługa **na stagingu** (dane nie kopiują się z lokala — siedzą w postmeta, nie w field group). Bez wypełnienia staging dalej pokazuje hardcoded fallback.
+- Wypełnić listy `desc_*_items` per usługa **na lokalu** — analogicznie.
+- Podmienić email admina (na stagingu) z `dev-email@wpengine.local` na prawdziwy, żeby reset hasła emailem działał w przyszłości.
+
 ## Zasady pracy
-- ACF pola tworzone ręcznie w panelu WP, nie kodem PHP
+- ACF pola tworzone ręcznie w panelu WP, ale **auto-syncowane do `acf-json/`** — od teraz każda zmiana jest wersjonowana w git automatycznie (nie kodem PHP, nie ręcznym eksportem)
 - Ikony z Heroicons + Lucide (hanger), w `views/components/icons/`
 - JS dzielony na osobne pliki w `resources/js/components/`, app.js tylko importuje
 - W Composerach `\get_field()` z backslashem (namespace)
