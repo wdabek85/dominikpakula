@@ -44,7 +44,13 @@
               @foreach ($section['items'] as $item)
                 <li class="flex items-start gap-2">
                   <span class="font-metro text-xs text-black/40 shrink-0 leading-[12px] mt-1" aria-hidden="true">—</span>
-                  <span class="font-poppins text-xs leading-relaxed text-black">{{ $item }}</span>
+                  <span class="font-poppins text-xs leading-relaxed text-black [&_a]:font-semibold [&_a]:underline [&_a]:underline-offset-2 [&_a]:whitespace-nowrap [&_a]:hover:text-black/70 [&_a]:transition-colors">
+                    @if (!empty($section['allow_html']))
+                      {!! $item !!}
+                    @else
+                      {{ $item }}
+                    @endif
+                  </span>
                 </li>
               @endforeach
             </ul>
