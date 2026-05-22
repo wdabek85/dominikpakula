@@ -25,19 +25,13 @@
         @foreach ($steps as $index => $step)
           <div class="flex gap-10 items-stretch">
 
-            {{-- Ikona + linia pionowa --}}
+            {{-- Halo + solidny krążek z numerem kroku (styl jak halo+check w service-what) --}}
             <div class="flex flex-col items-center shrink-0 w-12">
-              @if ($step['icon'])
-                <img
-                  src="{{ $step['icon'] }}"
-                  alt="{{ $step['iconAlt'] }}"
-                  class="size-12 shrink-0 object-contain object-center"
-                  width="48"
-                  height="48"
-                >
-              @else
-                <div class="size-12 bg-gray-100 rounded-full shrink-0" aria-hidden="true"></div>
-              @endif
+              <div class="size-12 shrink-0 rounded-full bg-primary/10 flex items-center justify-center" aria-hidden="true">
+                <div class="size-9 rounded-full bg-primary flex items-center justify-center">
+                  <span class="font-poppins font-bold text-white text-base leading-none">{{ $loop->iteration }}</span>
+                </div>
+              </div>
 
               @if (! $loop->last)
                 <div class="flex-1 w-0 border-l-2 border-solid border-black/20 my-4"></div>
