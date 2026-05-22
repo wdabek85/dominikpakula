@@ -8,6 +8,29 @@
       width="868"
       height="400"
     >
+
+    {{-- Dark overlay całego zdjęcia z silniejszym fade na dole (moody look jak w referencji) --}}
+    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20 pointer-events-none"></div>
+
+    {{-- Overlay: ikona (sama, bez kółka) + krótki tekst; ACF: service_hero_icon + service_hero_caption --}}
+    <div class="absolute inset-0 flex flex-col items-center justify-end pb-12 lg:pb-16 gap-6 px-4 text-center">
+      @if ($heroIcon)
+        <img
+          src="{{ $heroIcon }}"
+          alt="{{ $heroIconAlt }}"
+          class="size-32 object-contain brightness-0 invert drop-shadow-lg"
+          width="128"
+          height="128"
+        >
+      @else
+        <x-icons.hanger class="size-32 text-white drop-shadow-lg" />
+      @endif
+      @if ($heroCaption)
+        <p class="font-poppins text-base lg:text-lg font-semibold text-white max-w-md leading-snug">
+          {!! nl2br(e($heroCaption)) !!}
+        </p>
+      @endif
+    </div>
   </div>
 @endif
 
