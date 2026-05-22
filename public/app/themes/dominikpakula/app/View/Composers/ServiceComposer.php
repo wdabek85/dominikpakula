@@ -21,6 +21,12 @@ class ServiceComposer extends Composer
         $price = \get_field('service_price') ?: '';
         $tags = \get_field('service_tags') ?: [];
 
+        // Overlay nad zdjęciem usługi (ikona + tekst) — pola ACF z fallbackiem.
+        $heroIconRaw = \get_field('service_hero_icon');
+        $heroIcon = is_array($heroIconRaw) ? ($heroIconRaw['url'] ?? '') : '';
+        $heroIconAlt = is_array($heroIconRaw) ? ($heroIconRaw['alt'] ?? '') : '';
+        $heroCaption = \get_field('service_hero_caption') ?: "Indywidualna stylizacja dopasowana\ndo Twojego stylu życia";
+
         return [
             'image' => $image,
             'imageAlt' => $imageAlt,
@@ -28,6 +34,9 @@ class ServiceComposer extends Composer
             'sidebarDescription' => $sidebarDescription,
             'price' => $price,
             'tags' => $tags,
+            'heroIcon' => $heroIcon,
+            'heroIconAlt' => $heroIconAlt,
+            'heroCaption' => $heroCaption,
             'includedHeading' => \get_field('service_included_heading') ?: 'W cenie znajdziesz',
             'includedItems' => $this->includedItems(),
             'sidebarTestimonial' => $this->sidebarTestimonial(),
