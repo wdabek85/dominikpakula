@@ -5,7 +5,7 @@
     @if ($latestPost)
       <a
         href="{{ $latestPost['url'] }}"
-        class="relative flex flex-col gap-2.5 justify-end p-4 h-[367px] lg:flex-1 overflow-hidden group mb-6 lg:mb-0"
+        class="relative flex flex-col gap-2.5 justify-end p-4 h-[367px] lg:flex-1 overflow-hidden group mb-6 lg:mb-0 rounded-sm"
       >
         @if ($latestPost['image'])
           <img
@@ -18,11 +18,14 @@
           <div class="absolute inset-0 bg-gray-200" aria-hidden="true"></div>
         @endif
 
-        <h3 class="relative font-poppins font-semibold text-2xl leading-[26px] lg:text-[30px] lg:leading-[38px] text-black z-10">
+        {{-- Dark gradient overlay (jak w service hero) — czytelność białego tekstu --}}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20 pointer-events-none"></div>
+
+        <h3 class="relative font-poppins font-semibold text-2xl leading-[26px] lg:text-[30px] lg:leading-[38px] text-white z-10">
           {{ $latestPost['title'] }}
         </h3>
-        <span class="relative font-sans font-bold text-xs leading-[14px] text-[#4158f2] z-10">
-          Czytaj  Więcej >
+        <span class="relative font-sans font-bold text-xs leading-[14px] text-accent z-10 group-hover:underline">
+          Czytaj Więcej &rarr;
         </span>
       </a>
     @endif
@@ -35,8 +38,8 @@
         <h3 class="font-sans font-medium text-[30px] leading-[38px] text-[#1d1d1d]">
           Poradniki
         </h3>
-        <a href="{{ home_url('/poradniki/') }}" class="font-sans font-bold text-base leading-[18px] text-[#4158f2]">
-          Zobacz  Więcej >
+        <a href="{{ home_url('/poradniki/') }}" class="font-sans font-bold text-base leading-[18px] text-accent hover:underline">
+          Zobacz Więcej &rarr;
         </a>
       </div>
 
@@ -69,8 +72,8 @@
                     {{ $guide['excerpt'] }}
                   </p>
                 @endif
-                <span class="font-sans font-bold text-xs leading-[14px] text-[#4158f2]">
-                  Czytaj  Więcej >
+                <span class="font-sans font-bold text-xs leading-[14px] text-accent group-hover:underline">
+                  Czytaj Więcej &rarr;
                 </span>
               </div>
             </a>
