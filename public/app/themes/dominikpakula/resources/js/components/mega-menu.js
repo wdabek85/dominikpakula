@@ -80,28 +80,51 @@ function initMegaPanel({ triggerSelector, panelId, chevronSelector, hasDetailSwi
 
     if (!items.length || !details.length) return;
 
+    // Hover-intent delay: switch right column dopiero po ~200ms zatrzymania
+    // na danym item. Szybki przejazd myszką po liście NIE przełącza detailu —
+    // tylko zatrzymanie się na jednym item triggeruje switch.
+    const HOVER_DELAY_MS = 200;
+    let switchTimeout = null;
+
+    const switchTo = (item) => {
+      const index = item.getAttribute('data-mega-item');
+
+      items.forEach((el) => {
+        el.removeAttribute('data-active');
+        const arrow = el.querySelector('[data-mega-arrow]');
+        if (arrow) arrow.classList.add('opacity-0');
+      });
+      item.setAttribute('data-active', '');
+      const arrow = item.querySelector('[data-mega-arrow]');
+      if (arrow) arrow.classList.remove('opacity-0');
+
+      details.forEach((detail) => {
+        if (detail.getAttribute('data-mega-detail') === index) {
+          detail.classList.remove('hidden');
+          detail.classList.add('!flex');
+        } else {
+          detail.classList.add('hidden');
+          detail.classList.remove('!flex');
+        }
+      });
+    };
+
     items.forEach((item) => {
       item.addEventListener('mouseenter', () => {
-        const index = item.getAttribute('data-mega-item');
+        clearTimeout(switchTimeout);
+        // Jeśli item jest już aktywny, nie schedulujemy switcha (nic by się nie zmieniło).
+        if (item.hasAttribute('data-active')) return;
+        switchTimeout = setTimeout(() => switchTo(item), HOVER_DELAY_MS);
+      });
 
-        items.forEach((el) => {
-          el.removeAttribute('data-active');
-          const arrow = el.querySelector('[data-mega-arrow]');
-          if (arrow) arrow.classList.add('opacity-0');
-        });
-        item.setAttribute('data-active', '');
-        const arrow = item.querySelector('[data-mega-arrow]');
-        if (arrow) arrow.classList.remove('opacity-0');
+      item.addEventListener('mouseleave', () => {
+        clearTimeout(switchTimeout);
+      });
 
-        details.forEach((detail) => {
-          if (detail.getAttribute('data-mega-detail') === index) {
-            detail.classList.remove('hidden');
-            detail.classList.add('!flex');
-          } else {
-            detail.classList.add('hidden');
-            detail.classList.remove('!flex');
-          }
-        });
+      // Klawiatura / focus: switch od razu (delay tylko dla hover, nie blokuje a11y).
+      item.addEventListener('focusin', () => {
+        clearTimeout(switchTimeout);
+        switchTo(item);
       });
     });
   }
