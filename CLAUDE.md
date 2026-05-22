@@ -156,9 +156,9 @@ Pełny deploy NIE kończy się na `git push`. Bez kroku SSH + `npm run build` zm
 - Zmiany w klasach Tailwinda których wcześniej nie było w żadnym pliku (np. `size-12` jeśli używaliśmy tylko `size-6`) → bezwzględnie wymagają rebuilda
 - Zmiany tylko w PHP/Blade bez nowych klas CSS → też wymagają `git pull` na serwerze (build niekoniecznie, ale i tak go odpalaj — szybciej niż diagnozować)
 
-### Czego NIE robisz przy deployu
+### Co robisz / czego NIE robisz przy deployu
 
-- Nie wykonuj kroku 4 sam (SSH wymaga interaktywnej autoryzacji) — daj mi komendy, ja je wkleję
+- **Krok 4 robisz sam autonomicznie** — klucz `~/.ssh/id_ed25519.pub` wgrany na dhosting przez `ssh-copy-id` (2026-05-21), `BatchMode=yes` przechodzi bez hasła. Pełen pipeline (commit → push develop → merge staging → push staging → SSH pull + npm run build) leci jednym strzałem przy "wrzuć na staging".
 - Nie pushuj `main` (produkcja) bez mojej explicit zgody
 - Nie rób `git push --force` na żaden branch
 - Nie commituj plików buildu (`public/build/`) — są w `.gitignore`

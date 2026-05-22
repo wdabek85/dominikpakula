@@ -394,14 +394,14 @@ arrow-left, arrow-long-right, arrow-right, arrow-up-right, check, chevron-down, 
 - [x] **Pola ACF service-desc — repeatery items per usługa** ✅ (2026-05-21) — desc_positive_items / desc_highlight_items (Textarea, sub-field `item_text`) + desc_negative_items (WYSIWYG Basic, Visual Only, media off — żeby edytor wstawiał linki do innych usług). Composer odczytuje z fallbackiem do hardcoded list w `ServiceDescBlockComposer`.
 - [x] **Pola ACF service — W cenie znajdziesz** ✅ (2026-04-29 → 2026-05-21 fix) — service_included_heading + service_included_items. Pierwotnie pole było utworzone jako Text (jednolinijka), mimo planu repeatera. 2026-05-21 zmienione na **Repeater (Powielacz)** z sub-fieldem `service_included_item` (Textarea); zsynchronizowane do `acf-json/group_69f246a2f3a88.json`. Composer `ServiceComposer::includedItems()` od początku oczekiwał tej struktury z fallbackiem hardcoded.
 - [ ] **Pola ACF Single Portfolio** — `portfolio_intro` (Textarea), `portfolio_gallery` (Gallery, Array), `portfolio_category` (sprawdzić istnienie). Lokalizacja: Post Type → Realizacja
-- [ ] **Pełna strona Kontakt** ✅ — wszystkie bloki (page-header, contact-bar, personal-intro, contact-channels, next-steps, contact form, testimonials, subscribe) wstawione na stronie ID 270 (sezon 3, 2026-04-23/04-28)
-- [ ] **service-desc rebuild** ✅ — editorial layout 3 sekcje stackowane na szarym tle (sezon 3)
-- [ ] **Sidebar single-service wzbogacony** ✅ — W cenie znajdziesz + Opinia klienta + Sprawdź też inne usługi (sezon 3)
+- [x] **Pełna strona Kontakt** ✅ — wszystkie bloki (page-header, contact-bar, personal-intro, contact-channels, next-steps, contact form, testimonials, subscribe) wstawione na stronie ID 270 (sezon 3, 2026-04-23/04-28)
+- [x] **service-desc rebuild** ✅ — editorial layout 3 sekcje stackowane na szarym tle (sezon 3)
+- [x] **Sidebar single-service wzbogacony** ✅ — W cenie znajdziesz + Opinia klienta + Sprawdź też inne usługi (sezon 3)
 - [ ] **Refaktor hardcodów na ACF** — patrz sekcja "Hardcode w blokach (do przepisania na dynamiczne ACF)" niżej. Priorytet: Options Page → service_included_items → personal-intro (~~service-desc repeatery~~ ✅ 2026-05-21)
 - [ ] **Utworzyć WP menu i przypisać do "Footer Navigation"** (Wygląd → Menu) — bez tego kolumna "Nawigacja" w stopce się ukrywa
 - [ ] **Polityka prywatności** + **Regulamin** — strony prawne (footer linki obecnie w 404)
 - [ ] Podstrony "O mnie", "Kontakt"
-- [ ] Eksport pól ACF do JSON (po stworzeniu Options Page i `author_role`)
+- [x] **Eksport pól ACF do JSON** ✅ (2026-05-20) — zastąpione przez auto-sync `acf-json/` folder w temacie. Każda zmiana field group w panelu lokalnie auto-zapisuje JSON. Na stagingu ACF auto-wczytuje z `local=json`. Stara metoda ręcznego eksportu/importu jest niepotrzebna.
 - [ ] **Ujednolicić wizualnie blok "Opis Usługi / Dla Kogo"** (`blocks.service-desc`) z blokiem "Opis Usługi / Dlaczego Warto" (`blocks.service-why`) — pierwsza sekcja pod zdjęciem na stronie usługi ma używać tego samego wzorca karty co "Dlaczego Warto" na dole strony
 
 ## Pola ACF — pełna checklista do utworzenia w panelu WP
@@ -459,8 +459,8 @@ Po przebudowie sezon 3 — editorial layout, 3 sekcje stackowane (TAK / POLECAM 
 
 ### Grupa: **Usługa** (lokalizacja: `Post Type is equal to service`) — rozszerzona w sezonie 3
 Pola dodatkowe do tych co już istnieją (service_sidebar_title/description/price/tags):
-- [ ] `service_included_heading` (Text, fallback "W cenie znajdziesz")
-- [ ] `service_included_items` (Repeater) z polem `service_included_item` (Text) — checklista co klient dostaje za cenę. Per usługa może być inna lista. Obecnie 4 hardcoded fallback w `ServiceComposer::includedItems()`.
+- [x] `service_included_heading` (Text, fallback "W cenie znajdziesz") ✅ (2026-05-21) — field group "Usługa Obejmuje" w `acf-json/group_69f246a2f3a88.json`
+- [x] `service_included_items` (Repeater z sub-fieldem `service_included_item` Textarea) ✅ (2026-05-21) — pierwotnie pole było błędnie utworzone jako Text, naprawione na Repeater. Composer `ServiceComposer::includedItems()` ma fallback hardcoded (4 punkty) dla usług bez wpisanych pozycji — **wciąż do wypełnienia per usługa** w panelu (lokal + staging osobno).
 
 ### Sprawdzić czy istnieje (prawdopodobnie tak, bo używany na podstronach usług):
 **Grupa: Blok Opinie** (lokalizacja: `Block is equal to acf/testimonials`)
@@ -476,7 +476,7 @@ Pola dodatkowe do tych co już istnieją (service_sidebar_title/description/pric
 ### Po stronie staging (oprócz powyższych):
 - [ ] WP Menu "Stopka" przypisany do lokalizacji "Footer Navigation" (Wygląd → Menu)
 - [ ] Logo w Wygląd → Konfigurator → Tożsamość witryny → Logo
-- [ ] Eksport ACF JSON z lokalu → import na staging (po utworzeniu wszystkich field groups powyżej)
+- [x] **Eksport ACF JSON na staging** ✅ (2026-05-20) — niepotrzebny dzięki auto-sync `acf-json/`. ACF na stagingu wczytuje field groups bezpośrednio z plików JSON po `git pull`.
 
 ## Code review — naprawione 2026-04-21
 Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
@@ -538,7 +538,7 @@ Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
 ### W panelu (do zrobienia ręcznie po deployu)
 - Lokalnie: ✅ ACF user field `author_role`, kategorie (Moda), sezony (Lato), strona Blog, przypisania
 - Staging: ✅ przez wp-cli — termy Moda + Lato, strona Blog (ID 258), `author_role` na admin
-- Staging: ⏳ ACF field group "Profil autora" (eksport JSON z lokalu → import na staging)
+- Staging: ✅ ACF field groups auto-wczytywane z `acf-json/` (od 2026-05-20) — ręczny eksport/import zbędny
 - Staging: ⏳ WP Menu "Stopka" przypisany do "Footer Navigation"
 - Oba: ⏳ Logo w Wygląd → Konfigurator → Tożsamość witryny
 
@@ -700,6 +700,16 @@ Wszystkie 20 issues z `project_code_review` (2026-04-01) zostało naprawione.
 ### Deploy — w pełni autonomiczny end-to-end
 - Wszystkie commits powyżej zostały sprowadzone na staging tym samym pipelinem: commit develop → push → checkout staging → merge --no-ff → push → SSH pull + `npm run build` na serwerze.
 - Pierwsza próba (`puscmy` przy service-what halo+check) zakończyła się tym, że pominąłem krok SSH+build na serwerze i user zobaczył nic na stagingu. Zapisane do memory `feedback-deploy-ssh`: przy "puśćmy na staging" zawsze lecę pełnym pipelinem bez pytania o SSH (klucz skonfigurowany, BatchMode=yes przechodzi).
+
+### Booking flow pivot — "Zarezerwuj rozmowę" + ukrycie ceny w modalu (commit `6e8597d`)
+- **Tag `booking-v1-direct-reservation` na commit `a7baa03`** — snapshot przed pivotem. Stara wersja = bezpośrednia rezerwacja konkretnej usługi (`data-service` z kontekstu strony). Powrót: `git checkout booking-v1-direct-reservation`.
+- **12 stringów copy zmienionych w 4 plikach** — "rezerwacja/wizyta" → "rozmowa". Pivot interpretacyjny: usługa nie jest bezpośrednio kupowana, a omawiana podczas rozmowy konsultacyjnej.
+  - `partials/booking-modal.blade.php` (8 zmian): tytuł, aria-label modala, subtytuł kroku 1 ("Wybierz usługę, którą chcesz omówić"), subtytuł kroku 3 ("Potrzebujemy ich żeby potwierdzić termin rozmowy"), submit button ("Zarezerwuj rozmowę"), krok 4 heading ("Rozmowa zaplanowana!"), krok 4 message ("Do usłyszenia!"), floating CTA + aria-label
+  - `single-service.blade.php`: sticky bar CTA → "Zarezerwuj rozmowę"
+  - `sections/service/sidebar.blade.php`: primary CTA → "Zarezerwuj rozmowę" (telefoniczny CTA "Zarezerwuj Termin Telefonicznie" zostaje — inny kanał)
+  - `partials/blog/booking-cta.blade.php`: "Zarezerwuj konsultację" → "Zarezerwuj rozmowę"
+- **Ukrycie ceny w karcie usługi w kroku 1 modala** — `resources/js/components/booking.js`: usunięta linia `${s.price ? <span>${s.price}</span> : ''}` z template literal renderującego karty selektora. Pozostałe miejsca z ceną (sticky bar, sidebar box, service-cards na home/listingach) **zachowują cenę** — pivot dotyczy tylko booking flow, nie listingu.
+- Komentarz revertu w `booking.js` (poza template literal — JS comment, nie HTML) z opisem co dopisać żeby przywrócić.
 
 ### Pliki zmienione / dodane
 - `resources/views/blocks/service-what.blade.php` — halo+check, badge wyrwany z flex
