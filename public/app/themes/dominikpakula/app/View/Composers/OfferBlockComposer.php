@@ -34,7 +34,7 @@ class OfferBlockComposer extends Composer
             'cards' => $cards,
             'cardVariant' => $variant,
             'buttonText' => \get_field('offer_button_text') ?: '',
-            'buttonUrl' => \get_field('offer_button_url') ?: '#',
+            'buttonUrl' => \get_field('offer_button_url') ?: '',
         ];
     }
 }

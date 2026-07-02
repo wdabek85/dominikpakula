@@ -19,7 +19,7 @@ class VoucherBlockComposer extends Composer
             'title' => \get_field('voucher_title') ?: '',
             'description' => \get_field('voucher_description') ?: '',
             'buttonText' => \get_field('voucher_button_text') ?: '',
-            'buttonUrl' => \get_field('voucher_button_url') ?: '#',
+            'buttonUrl' => \get_field('voucher_button_url') ?: '',
             'imageLeft' => $leftImage ? $leftImage['url'] : '',
             'imageLeftAlt' => $leftImage ? ($leftImage['alt'] ?: 'Voucher') : '',
             'imageRight' => $rightImage ? $rightImage['url'] : '',

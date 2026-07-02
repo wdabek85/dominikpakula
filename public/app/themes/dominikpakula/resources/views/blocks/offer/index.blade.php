@@ -38,7 +38,7 @@
   @endif
 
   {{-- CTA --}}
-  @if ($buttonText)
+  @if ($buttonText && $buttonUrl)
     <div class="flex justify-center lg:justify-start">
       <x-button
         :label="$buttonText"

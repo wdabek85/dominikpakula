@@ -37,7 +37,7 @@ add_action('init', function () {
  * Bumpnij stałą przy kolejnych zmianach rewrite (nowe CPT/taksonomie/slugi), by wymusić ponowny flush.
  */
 add_action('init', function () {
-    $version = '2026070201';
+    $version = '2026070202';
 
     if (get_option('dp_rewrite_version') === $version) {
         return;
