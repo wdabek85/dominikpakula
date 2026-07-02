@@ -10,9 +10,9 @@
       @endif
 
       @if ($title)
-        <h1 class="font-poppins text-[32px] lg:text-[44px] leading-tight text-[#19121e]">
+        <h2 class="font-poppins text-[32px] lg:text-[44px] leading-tight text-[#19121e]">
           {{ $title }}
-        </h1>
+        </h2>
       @endif
     </div>
 
