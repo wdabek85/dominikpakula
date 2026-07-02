@@ -1,7 +1,7 @@
-@props(['href' => '#'])
+@props(['href' => ''])
 
 <a
-  href="{{ $href }}"
+  href="{{ $href ?: home_url('/voucher/') }}"
   {{ $attributes->merge(['class' => 'bg-primary flex items-center gap-2 rounded-lg border-l border-white pr-2 py-4 group no-underline']) }}
   aria-label="Kup voucher na prezent"
 >
