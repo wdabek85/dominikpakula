@@ -24,9 +24,9 @@
                   prose-blockquote:font-poppins prose-blockquote:not-italic prose-blockquote:text-black
                   prose-blockquote:border-l-4 prose-blockquote:border-primary
                   prose-img:rounded-sm prose-table:text-sm
-                  [&_.wp-block-table]:mx-auto [&_.wp-block-table]:max-w-[820px] [&_.wp-block-table]:w-full
+                  [&_.wp-block-table]:!mx-auto [&_.wp-block-table]:!max-w-[820px] [&_.wp-block-table]:!w-full
                   [&_.wp-block-table]:overflow-x-auto [&_.wp-block-table]:px-4 sm:[&_.wp-block-table]:px-6
-                  [&_table]:w-full [&_table]:my-6">
+                  [&_table]:!w-full [&_table]:my-6">
         <?php the_content(); ?>
       </div>
 
