@@ -5,7 +5,7 @@
 @extends('layouts.app')
 
 @section('content')
-  <section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 pt-4 pb-10 lg:pb-14">
+  <section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 pt-4 pb-16 lg:pb-24">
 
     {{-- Nagłówek --}}
     <header class="mb-8 lg:mb-12">
