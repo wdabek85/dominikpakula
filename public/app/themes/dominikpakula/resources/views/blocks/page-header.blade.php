@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-4">
+<section class="not-prose bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-4">
   <div class="flex flex-col gap-5">
 
     {{-- Breadcrumb --}}

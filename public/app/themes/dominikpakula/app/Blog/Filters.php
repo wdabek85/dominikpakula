@@ -10,11 +10,11 @@ add_filter('the_content', __NAMESPACE__ . '\\add_heading_ids', 20);
 
 /**
  * Add slug-based `id` to H2 and H3 that don't already have one.
- * Only runs on single post view (not archive, not other post types, not admin).
+ * Only runs on single post / guide view (not archive, not other post types, not admin).
  */
 function add_heading_ids(string $content): string
 {
-    if (! is_singular('post') || is_admin() || ! in_the_loop() || ! is_main_query()) {
+    if (! is_singular(['post', 'guide']) || is_admin() || ! in_the_loop() || ! is_main_query()) {
         return $content;
     }
 
