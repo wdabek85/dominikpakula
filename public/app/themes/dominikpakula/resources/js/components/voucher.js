@@ -182,6 +182,7 @@ export default function voucher() {
             buyer_email: buyerEmail,
             buyer_phone: buyerPhone,
             gdpr,
+            website: document.getElementById('voucher-website')?.value || '',
           }),
         });
 

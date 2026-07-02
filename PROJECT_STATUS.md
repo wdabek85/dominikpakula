@@ -996,6 +996,21 @@ Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak t
 - `sections/service/sidebar.blade.php` — link „Jak to działa?" `href="#"` → `home_url('/konsultacje/')`.
 - Backend rezerwacji nietknięty. SMS wg planu przez Make.com (obecnie tylko e-mail).
 
+### Audyt bezpieczeństwa + martwe linki (2026-07-02)
+**Bezpieczeństwo formularzy:**
+- `app/Booking/Api.php` — `get_client_ip()` przepisane: **REMOTE_ADDR jako źródło prawdy** (nie da się sfałszować). Nagłówki proxy (CF-Connecting-IP / X-Forwarded-For) honorowane TYLKO gdy zdefiniujesz `BOOKING_TRUST_PROXY` w wp-config (np. za Cloudflare). Naprawia potwierdzony bypass rate-limitu przez spoofing nagłówka IP + fałszowanie logu RODO.
+- Honeypot dodany do `/reserve` (Api.php) i `/voucher` (VoucherApi.php) — wcześniej miały go tylko contact/newsletter. Pola `website` w formularzach booking/voucher (booking-modal, voucher-modal) + wysyłka w booking.js/voucher.js.
+- **Znane, świadomie zostawione (NISKI):** brak weryfikacji nonce na publicznych endpointach (rate-limit + honeypot jako obrona), Reply-To z `$name` w contact (newline'y ucięte), race condition podwójnej rezerwacji.
+
+**Martwe linki — naprawione w kodzie:**
+- Social w `sections/header.blade.php` + `header/nav-mobile.blade.php` — `href="#"` → warunkowo z `$social` (FB/TikTok znikają gdy brak URL; IG z fallbacku). `target=_blank rel=noopener`.
+- `blocks/newsletter.blade.php` — „warunki korzystania z usługi" `#` → `/regulamin/`.
+
+**Martwe linki — wymagają strony (nie kod):**
+- `/polityka-prywatnosci/` i `/regulamin/` — strony w **draft** → 404. Do opublikowania (treść usera).
+- `/o-mnie/` (CTA w `service-video`) — strona nie istnieje. Do utworzenia.
+- `/realizacje/` (breadcrumb pojedynczej realizacji) — Portfolio CPT ma `has_archive=false`, brak archiwum. Do decyzji: włączyć archiwum + szablon / strona / zmiana linku.
+
 ### Pusty stan poradników w bloku knowledge-base (2026-07-02)
 - `blocks/knowledge-base.blade.php` — prawa kolumna „Poradniki" renderowała listę tylko `@if ($guides)`; przy braku poradników zostawała pusta. Dodany `@else` z kartą pustego stanu (ikona document + „Poradniki są już w drodze" + zachęta), spójny z pustym stanem `guides-archive`. „Zobacz Więcej →" ukrywane, gdy brak poradników.
 

@@ -326,6 +326,7 @@ export default function booking() {
             email,
             phone,
             gdpr,
+            website: document.getElementById('booking-website')?.value || '',
           }),
         });
 

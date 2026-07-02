@@ -21,15 +21,21 @@
     {{-- Desktop Right Side: Social + CTA --}}
     <div class="hidden lg:flex items-center gap-6">
       <div class="flex items-center gap-4">
-        <a href="#" aria-label="Facebook" class="text-black hover:text-primary transition-colors">
-          <x-icons.facebook />
-        </a>
-        <a href="https://www.instagram.com/dpakula_stylist/" aria-label="Instagram" class="text-black hover:text-primary transition-colors">
-          <x-icons.instagram />
-        </a>
-        {{-- <a href="#" aria-label="TikTok" class="text-black hover:text-primary transition-colors">
-          <x-icons.tiktok />
-        </a> --}}
+        @if ($social['facebook'])
+          <a href="{{ $social['facebook'] }}" target="_blank" rel="noopener" aria-label="Facebook" class="text-black hover:text-primary transition-colors">
+            <x-icons.facebook />
+          </a>
+        @endif
+        @if ($social['instagram'])
+          <a href="{{ $social['instagram'] }}" target="_blank" rel="noopener" aria-label="Instagram" class="text-black hover:text-primary transition-colors">
+            <x-icons.instagram />
+          </a>
+        @endif
+        @if ($social['tiktok'])
+          <a href="{{ $social['tiktok'] }}" target="_blank" rel="noopener" aria-label="TikTok" class="text-black hover:text-primary transition-colors">
+            <x-icons.tiktok />
+          </a>
+        @endif
       </div>
 
       <x-button
