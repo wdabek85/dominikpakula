@@ -83,16 +83,24 @@ function api_get_available(\WP_REST_Request $request): \WP_REST_Response
 
 function get_client_ip(): string
 {
-    foreach (['HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR'] as $key) {
-        if (! empty($_SERVER[$key])) {
-            $ip = explode(',', $_SERVER[$key])[0];
-            $ip = trim($ip);
-            if (filter_var($ip, FILTER_VALIDATE_IP)) {
-                return $ip;
+    // Bezpiecznie domyślnie: REMOTE_ADDR jest ustawiane przez serwer WWW i nie da się go
+    // sfałszować z poziomu klienta. Nagłówki proxy (X-Forwarded-For / CF-Connecting-IP) są
+    // sterowane przez klienta i honorujemy je TYLKO gdy jawnie zaufasz proxy (np. za Cloudflare)
+    // definiując stałą BOOKING_TRUST_PROXY w wp-config. Bez tego rate-limit i log RODO są odporne
+    // na spoofing nagłówka IP.
+    if (defined('BOOKING_TRUST_PROXY') && BOOKING_TRUST_PROXY) {
+        foreach (['HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR'] as $key) {
+            if (! empty($_SERVER[$key])) {
+                $ip = trim(explode(',', $_SERVER[$key])[0]);
+                if (filter_var($ip, FILTER_VALIDATE_IP)) {
+                    return $ip;
+                }
             }
         }
     }
-    return '0.0.0.0';
+
+    $remote = $_SERVER['REMOTE_ADDR'] ?? '';
+    return filter_var($remote, FILTER_VALIDATE_IP) ? $remote : '0.0.0.0';
 }
 
 function check_rate_limit(string $action, int $max, int $window): ?\WP_REST_Response
@@ -119,6 +127,14 @@ function api_reserve(\WP_REST_Request $request): \WP_REST_Response
     }
 
     $data = $request->get_json_params();
+
+    // Honeypot — jeśli wypełnione, udawaj sukces (bot), nie twórz rezerwacji
+    if (! empty($data['website'])) {
+        return new \WP_REST_Response([
+            'success' => true,
+            'message' => 'Rezerwacja została przyjęta! Sprawdź swoją skrzynkę e-mail — potwierdzimy ją wkrótce.',
+        ], 200);
+    }
 
     $date = sanitize_text_field($data['date'] ?? '');
     $service = sanitize_text_field($data['service'] ?? '');

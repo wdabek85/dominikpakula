@@ -51,7 +51,7 @@
 
         {{-- Disclaimer --}}
         <p class="font-poppins text-[10px] leading-3 lg:text-xs lg:leading-[14px] text-black text-center lg:text-left">
-          Zapisując się, akceptujesz nasze <a href="#" class="underline">warunki korzystania z usługi</a>.<br>
+          Zapisując się, akceptujesz nasze <a href="{{ home_url('/regulamin/') }}" class="underline">warunki korzystania z usługi</a>.<br>
           Możesz wypisać się w każdej chwili. Zero spamu, tylko konkret.
         </p>
       </div>

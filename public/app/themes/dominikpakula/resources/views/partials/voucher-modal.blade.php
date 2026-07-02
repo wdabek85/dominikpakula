@@ -124,6 +124,12 @@
         </div>
 
         <form id="voucher-form" class="flex flex-col gap-4">
+          {{-- Honeypot (anty-spam) — ukryte, człowiek nie wypełni --}}
+          <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1">
+            <label for="voucher-website">Nie wypełniaj tego pola</label>
+            <input type="text" id="voucher-website" name="website" autocomplete="off" tabindex="-1">
+          </div>
+
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="voucher-buyer-first" class="block font-poppins text-xs text-gray-500 mb-1">Imię *</label>
