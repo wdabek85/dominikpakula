@@ -996,6 +996,10 @@ Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak t
 - `sections/service/sidebar.blade.php` — link „Jak to działa?" `href="#"` → `home_url('/konsultacje/')`.
 - Backend rezerwacji nietknięty. SMS wg planu przez Make.com (obecnie tylko e-mail).
 
+### Fix linków w sidebarze usługi (2026-07-02)
+- `sections/service/sidebar.blade.php` — „Sprawdź Regulamin Oferty" `href="#"` → `home_url('/regulamin/')`.
+- `components/gift-banner.blade.php` — domyślny `href` „Pomysł na prezent (voucher)" `#` → `home_url('/voucher/')` (banner używany w bloku `service-desc` „Dla kogo" na każdej usłudze). Explicit href nadal nadpisuje.
+
 ### Deploy 2026-07-02
 - Commit `07d54d7` na `develop` → push. Merge do `staging` (`7b4f72f`) i **`main` (`b162aad`) — pierwszy pełny release produkcyjny** (wcześniej main = tylko „Initial commit"). Wszystkie 3 branche `0 0` z origin, zero konfliktów.
 - Serwer dhosting (`dominikpakula.wdb-creative.pl`, branch `staging`): `git pull` + `npm run build` OK.
