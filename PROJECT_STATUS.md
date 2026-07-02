@@ -996,6 +996,9 @@ Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak t
 - `sections/service/sidebar.blade.php` — link „Jak to działa?" `href="#"` → `home_url('/konsultacje/')`.
 - Backend rezerwacji nietknięty. SMS wg planu przez Make.com (obecnie tylko e-mail).
 
+### Pusty stan poradników w bloku knowledge-base (2026-07-02)
+- `blocks/knowledge-base.blade.php` — prawa kolumna „Poradniki" renderowała listę tylko `@if ($guides)`; przy braku poradników zostawała pusta. Dodany `@else` z kartą pustego stanu (ikona document + „Poradniki są już w drodze" + zachęta), spójny z pustym stanem `guides-archive`. „Zobacz Więcej →" ukrywane, gdy brak poradników.
+
 ### Fix linków w sidebarze usługi (2026-07-02)
 - `sections/service/sidebar.blade.php` — „Sprawdź Regulamin Oferty" `href="#"` → `home_url('/regulamin/')`.
 - `components/gift-banner.blade.php` — domyślny `href` „Pomysł na prezent (voucher)" `#` → `home_url('/voucher/')` (banner używany w bloku `service-desc` „Dla kogo" na każdej usłudze). Explicit href nadal nadpisuje.
