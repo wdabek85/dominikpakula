@@ -30,7 +30,7 @@
           {{-- Knowledge base mega-menu trigger --}}
           <div data-mega-trigger-kb>
             <button
-              class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
+              class="flex items-center gap-1 font-poppins text-base leading-5 text-black cursor-pointer transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
               aria-expanded="false"
               aria-haspopup="true"
             >
@@ -43,7 +43,7 @@
           {{-- Mega-menu trigger --}}
           <div data-mega-trigger>
             <button
-              class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
+              class="flex items-center gap-1 font-poppins text-base leading-5 text-black cursor-pointer transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
               aria-expanded="false"
               aria-haspopup="true"
             >
@@ -56,7 +56,7 @@
           {{-- Regular dropdown item --}}
           <div class="relative group">
             <button
-              class="flex items-center gap-1 font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
+              class="flex items-center gap-1 font-poppins text-base leading-5 text-black cursor-pointer transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
               aria-expanded="false"
               aria-haspopup="true"
             >
