@@ -997,7 +997,7 @@ Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak t
 - Backend rezerwacji nietknięty. SMS wg planu przez Make.com (obecnie tylko e-mail).
 
 ### Domknięcie martwych linków — 3 punkty (2026-07-02)
-1. **Strona „O mnie"** (`/o-mnie/`) — utworzona przez wp-cli (template-blocks: page-header + personal-intro + contact), opublikowana. CTA w bloku `service-video` przestaje dawać 404.
+1. **Strona „O mnie"** (`/o-mnie/`) — placeholder utworzony przez wp-cli, potem **USUNIĘTY na życzenie usera** (ma własną wersję z innego urządzenia). Link `/o-mnie/` w bloku `service-video` pozostaje — zadziała, gdy user opublikuje swoją stronę o slugu `o-mnie` (obecnie 404 do tego czasu).
 2. **Archiwum realizacji** (`/realizacje/`) — `PostTypes/Portfolio.php` `has_archive => true`; nowy szablon `archive-portfolio.blade.php` (grid 2/3/4 kol + paginacja + pusty stan) + `ArchivePortfolioComposer` (WP_Query portfolio, mapowanie na `portfolio-card`). `portfolio-card` dostał prop `grid` (w-full aspect-[3/4] zamiast fixed-width slidera). Auto-flush rewrite: `dp_rewrite_version` bump → `2026070202`.
 3. **CTA chowają się gdy URL pusty** (zamiast linku do `#`): composery `Hero/Offer/Video/Voucher` fallback `'#'`→`''`; warunki w Blade `@if (text && url)` w `hero`, `offer/index`, `voucher` (@elseif url), `components/video-section` (oba warianty + default `''`). Koniec z „przyciskiem donikąd".
 
