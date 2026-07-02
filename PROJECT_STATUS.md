@@ -992,6 +992,13 @@ Domyślny `page.blade.php` renderował goły `<h1>` + surowe `the_content()` bez
 - Serwer dhosting (`dominikpakula.wdb-creative.pl`, branch `staging`): `git pull` + `npm run build` OK.
 - **UWAGA:** udokumentowany jest tylko ten jeden serwer (ciągnie `staging`). Jeśli istnieje osobny host produkcyjny — brak jego danych w pamięci, do uzupełnienia.
 
+**Utworzone na serwerze przez wp-cli (2026-07-02):**
+- Strona **Poradniki** (ID 378, publish, `template-blocks`): page-header „Poradniki" → guides-archive → subscribe → contact. Zweryfikowana curl-em: HTTP 200, renderuje grid 4 poradników (są demo dane: stacje narciarskie/e-commerce/hak). Single guide `/poradniki/{slug}/` też 200 (bez kolizji ze slugiem strony).
+- Strona **Regulamin** (ID 379, **draft**): page-header + placeholder — do wklejenia treści i publikacji.
+- Kategorie `guide_category`: Stylizacje (7), Garderoba (8), Okazje specjalne (9) — jeszcze nieprzypisane do poradników (chipsy filtrów pojawią się po przypisaniu).
+- `wp rewrite flush` wykonany.
+- **Do zrobienia przez usera:** przypisać kategorie do poradników; opublikować Regulamin (po wklejeniu treści); **opublikować Politykę prywatności (ID 3 — nadal draft, link w stopce daje 404)**; podmienić demo-poradniki na realne treści.
+
 ### Do zrobienia ręcznie (user)
 - [ ] Utworzyć kategorie poradników (Poradniki → Kategorie) i przypisać je do poradników — dopiero wtedy pojawi się pasek filtrów (chipsy renderują się tylko dla `hide_empty=true`).
 - [ ] Utworzyć stronę WP „Poradniki" (slug `poradniki`), szablon „Strona z blokami", ułożyć bloki: `page-header` (tytuł/opis/breadcrumb) → **`guides-archive`** → `subscribe` → `contact`.
