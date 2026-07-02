@@ -987,6 +987,11 @@ Domyślny `page.blade.php` renderował goły `<h1>` + surowe `the_content()` bez
 - Działa automatycznie dla każdej strony na domyślnym szablonie. Strony z blokami (template-blocks/front-page) nietknięte.
 - **Uwaga:** rozwiązanie zakłada, że nagłówek usera to blok renderowany jako `<section>` (themowy `page-header`). Blok innego typu (core Cover/Group) trzeba by dodać do wyjątku selektora.
 
+### Deploy 2026-07-02
+- Commit `07d54d7` na `develop` → push. Merge do `staging` (`7b4f72f`) i **`main` (`b162aad`) — pierwszy pełny release produkcyjny** (wcześniej main = tylko „Initial commit"). Wszystkie 3 branche `0 0` z origin, zero konfliktów.
+- Serwer dhosting (`dominikpakula.wdb-creative.pl`, branch `staging`): `git pull` + `npm run build` OK.
+- **UWAGA:** udokumentowany jest tylko ten jeden serwer (ciągnie `staging`). Jeśli istnieje osobny host produkcyjny — brak jego danych w pamięci, do uzupełnienia.
+
 ### Do zrobienia ręcznie (user)
 - [ ] Utworzyć kategorie poradników (Poradniki → Kategorie) i przypisać je do poradników — dopiero wtedy pojawi się pasek filtrów (chipsy renderują się tylko dla `hide_empty=true`).
 - [ ] Utworzyć stronę WP „Poradniki" (slug `poradniki`), szablon „Strona z blokami", ułożyć bloki: `page-header` (tytuł/opis/breadcrumb) → **`guides-archive`** → `subscribe` → `contact`.
