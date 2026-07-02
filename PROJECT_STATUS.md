@@ -996,6 +996,11 @@ Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak t
 - `sections/service/sidebar.blade.php` — link „Jak to działa?" `href="#"` → `home_url('/konsultacje/')`.
 - Backend rezerwacji nietknięty. SMS wg planu przez Make.com (obecnie tylko e-mail).
 
+### Domknięcie martwych linków — 3 punkty (2026-07-02)
+1. **Strona „O mnie"** (`/o-mnie/`) — utworzona przez wp-cli (template-blocks: page-header + personal-intro + contact), opublikowana. CTA w bloku `service-video` przestaje dawać 404.
+2. **Archiwum realizacji** (`/realizacje/`) — `PostTypes/Portfolio.php` `has_archive => true`; nowy szablon `archive-portfolio.blade.php` (grid 2/3/4 kol + paginacja + pusty stan) + `ArchivePortfolioComposer` (WP_Query portfolio, mapowanie na `portfolio-card`). `portfolio-card` dostał prop `grid` (w-full aspect-[3/4] zamiast fixed-width slidera). Auto-flush rewrite: `dp_rewrite_version` bump → `2026070202`.
+3. **CTA chowają się gdy URL pusty** (zamiast linku do `#`): composery `Hero/Offer/Video/Voucher` fallback `'#'`→`''`; warunki w Blade `@if (text && url)` w `hero`, `offer/index`, `voucher` (@elseif url), `components/video-section` (oba warianty + default `''`). Koniec z „przyciskiem donikąd".
+
 ### Audyt bezpieczeństwa + martwe linki (2026-07-02)
 **Bezpieczeństwo formularzy:**
 - `app/Booking/Api.php` — `get_client_ip()` przepisane: **REMOTE_ADDR jako źródło prawdy** (nie da się sfałszować). Nagłówki proxy (CF-Connecting-IP / X-Forwarded-For) honorowane TYLKO gdy zdefiniujesz `BOOKING_TRUST_PROXY` w wp-config (np. za Cloudflare). Naprawia potwierdzony bypass rate-limitu przez spoofing nagłówka IP + fałszowanie logu RODO.

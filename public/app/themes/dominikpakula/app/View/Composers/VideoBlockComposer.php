@@ -20,7 +20,7 @@ class VideoBlockComposer extends Composer
             'videoHeading' => \get_field('video_heading') ?: '',
             'videoDescription' => \get_field('video_description') ?: '',
             'videoButtonText' => \get_field('video_button_text') ?: '',
-            'videoButtonUrl' => \get_field('video_button_url') ?: '#',
+            'videoButtonUrl' => \get_field('video_button_url') ?: '',
             'videoLabel' => \get_field('video_label') ?: 'Obejrzyj Wideo',
         ];
     }

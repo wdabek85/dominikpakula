@@ -27,7 +27,7 @@
           </p>
         @endif
 
-        @if ($heroButtonText)
+        @if ($heroButtonText && $heroButtonUrl)
           <div>
             <x-button
               :label="$heroButtonText"
@@ -58,7 +58,7 @@
               {{ $heroCardTitle }}
             </p>
 
-            @if ($heroCardLinkText)
+            @if ($heroCardLinkText && $heroCardLinkUrl)
               <a
                 href="{{ $heroCardLinkUrl }}"
                 class="inline-flex items-center gap-1.5 border border-white rounded px-2.5 py-0.5 font-poppins text-sm text-white leading-6 hover:bg-white/10 transition-colors w-fit"

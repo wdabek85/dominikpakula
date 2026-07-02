@@ -40,7 +40,7 @@
               {{ $buttonText }}
               <x-icons.arrow-right class="size-5" />
             </button>
-          @else
+          @elseif ($buttonUrl)
             <x-button
               :label="$buttonText"
               :href="$buttonUrl"

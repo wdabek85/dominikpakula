@@ -4,7 +4,7 @@
   'heading' => 'Zanim Zaczniemy Poznaj mnie',
   'description' => 'Nazywam się Dominik Pakuła. Pomagam mężczyznom wyglądać tak, jak chcieliby wyglądać — bez rewolucji, bez przebierania i bez gadania o trendach, które nikogo nie obchodzą',
   'buttonText' => 'Poznaj moją historię →',
-  'buttonUrl' => '#',
+  'buttonUrl' => '',
   'videoLabel' => 'Obejrzyj Wideo',
   'variant' => 'hero',
 ])
@@ -88,7 +88,7 @@
           <span aria-hidden="true"></span>
         @endif
 
-        @if ($buttonText)
+        @if ($buttonText && $buttonUrl)
           <a href="{{ $buttonUrl }}" class="{{ $buttonClasses }}">
             {{ $buttonText }}
           </a>
@@ -116,9 +116,11 @@
           </p>
         @endif
 
-        <a href="{{ $buttonUrl }}" class="{{ $buttonClasses }}">
-          {{ $buttonText }}
-        </a>
+        @if ($buttonText && $buttonUrl)
+          <a href="{{ $buttonUrl }}" class="{{ $buttonClasses }}">
+            {{ $buttonText }}
+          </a>
+        @endif
       </div>
 
       @if ($youtubeId)
