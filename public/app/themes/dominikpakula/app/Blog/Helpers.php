@@ -81,6 +81,59 @@ function related_posts(int $postId, int $limit = 3): array
 }
 
 /**
+ * Related guides — same guide_category first, fallback newest.
+ * Returns WP_Post[].
+ */
+function related_guides(int $postId, int $limit = 3): array
+{
+    $terms = wp_get_object_terms($postId, 'guide_category', ['fields' => 'ids']);
+    $terms = (! is_wp_error($terms) && ! empty($terms)) ? $terms : [];
+
+    $args = [
+        'post_type' => 'guide',
+        'posts_per_page' => $limit,
+        'post__not_in' => [$postId],
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'post_status' => 'publish',
+        'update_post_term_cache' => false,
+    ];
+
+    if (! empty($terms)) {
+        $args['tax_query'] = [[
+            'taxonomy' => 'guide_category',
+            'field' => 'term_id',
+            'terms' => $terms,
+        ]];
+    }
+
+    $posts = \get_posts($args);
+
+    // Fallback: newest guides overall if category search returned fewer than $limit
+    if (count($posts) < $limit && ! empty($terms)) {
+        $remaining = $limit - count($posts);
+        $excludeIds = array_merge([$postId], wp_list_pluck($posts, 'ID'));
+        $fallback = \get_posts([
+            'post_type' => 'guide',
+            'posts_per_page' => $remaining,
+            'post__not_in' => $excludeIds,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'post_status' => 'publish',
+            'update_post_term_cache' => false,
+        ]);
+        $posts = array_merge($posts, $fallback);
+    }
+
+    if ($posts) {
+        $ids = wp_list_pluck($posts, 'ID');
+        update_post_thumbnail_cache(new \WP_Query(['post__in' => $ids, 'post_type' => 'guide', 'posts_per_page' => -1]));
+    }
+
+    return $posts;
+}
+
+/**
  * Polish plural form picker.
  *
  * Rules: 1 → $one; 2-4 (except 12-14) → $few; else → $many.

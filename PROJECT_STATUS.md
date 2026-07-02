@@ -253,6 +253,7 @@ resources/images/
 | Voucher | blocks.voucher | VoucherBlockComposer | Gotowy |
 | Blog | blocks.blog | BlogBlockComposer | Gotowy (3 najnowsze) |
 | **Blog – Archiwum z filtrami** | blocks.blog-archive | **BlogArchiveBlockComposer** | **Gotowy (sezon 2)** |
+| **Poradniki – Archiwum** | blocks.guides-archive | **GuidesArchiveBlockComposer** | **Gotowy — grid guide + paginacja + pusty stan z CTA newsletter** |
 | Newsletter | blocks.newsletter | — | Gotowy (z SVG illustration) |
 | **Newsletter + Instagram** | blocks.subscribe | — | **Gotowy (sezon 2)** |
 | Kontakt | blocks.contact | — | Gotowy |
@@ -274,10 +275,11 @@ resources/images/
 | Usługi | service | PostTypes/Service.php | Usługi (public, /uslugi/, editor+thumbnail) |
 | Poradniki | guide | PostTypes/Guide.php | Poradniki (public, /poradniki/) |
 
-## Custom Taxonomies (1)
+## Custom Taxonomies (2)
 | Taxonomia | Slug | Powiązana z | Plik | Opis |
 |-----------|------|-------------|------|------|
 | Sezony | season | post (blog) | Taxonomies/Season.php | Hierarchiczna, /sezon/, dla filtra blog-archive |
+| Kategorie poradników | guide_category | guide (poradniki) | Taxonomies/GuideCategory.php | Hierarchiczna, /temat-poradnika/, dla filtra guides-archive |
 
 ## Szablony stron
 | Szablon | Plik | Opis |
@@ -286,6 +288,7 @@ resources/images/
 | Strona z blokami | template-blocks.blade.php | Podstrony bez tytułu (Usługi, Voucher, Baza Wiedzy, Blog) |
 | Single Service | single-service.blade.php | Pojedyncza usługa (grid 7fr/3fr + sticky sidebar) |
 | Single Post | single-post.blade.php | Pojedynczy wpis blogowy (z TOC, share, prev/next, autor, related) |
+| Single Guide | single-guide.blade.php | Pojedynczy poradnik (hero + TOC + share + chipsy guide_category + related guides + newsletter + powrót) |
 
 ## Szablon usługi (single-service)
 - **Layout:** grid `7fr_3fr` z `gap-10` na desktop, kolumna na mobile
@@ -947,3 +950,45 @@ Nowa kolejność (top-down):
 4. **`personal-intro` ACF** — żeby Dominik mógł wgrać własne zdjęcie i edytować tekst
 5. **Sidebar Trustpilot** → Options Page field `trust_rating` lub usunąć jeśli nie planujemy mieć Trustpilota
 6. **Footer linki prawne** — utworzenie stron "Polityka prywatności" + "Regulamin", potem URL'e w sidebar/footer się rozwiążą same
+
+## Sesja 2026-07-02 — strona zbiorcza Poradniki
+
+Odpowiednik strony zbiorczej bloga, ale dla CPT `guide` (Poradniki). Guide nie ma taksonomii → brak paska filtrów (prostszy niż blog-archive).
+
+### Nowe pliki
+- `app/Taxonomies/GuideCategory.php` — taksonomia `guide_category` („Kategorie poradników"), hierarchiczna, przypięta do `guide`, rewrite `/temat-poradnika/`. Wzorzec 1:1 z `Season.php`.
+- `app/View/Composers/GuidesArchiveBlockComposer.php` — `WP_Query` post_type `guide`, 9/stronę, filtr po `guide_category` (`?category=slug`), paginacja (kod 1:1 z BlogArchiveBlockComposer). Zwraca `guides` + `categories` + `currentCategory` + `paginationHtml` + `totalFound`. Excerpt fallback z `post_content` jak w KnowledgeBaseBlockComposer.
+- `resources/views/blocks/guides-archive.blade.php` — pasek chipsów kategorii (warunkowy, bez dropdownu sezonu) + grid `<x-blog-card>` + paginacja. **Trzy stany:** grid / „brak poradników w tej kategorii" (gdy filtr nic nie zwrócił) / **pusty stan** (zero poradników w ogóle) — karta `bg-[#f1f1f1]` z ikoną document, nagłówek „Poradniki są już w drodze", tekst + przycisk CTA „Zapisz się do newslettera" (`href="#newsletter-form"` → blok `subscribe`, bez duplikowania `id`).
+
+### Zmienione
+- `app/blocks.php` — rejestracja bloku `guides-archive` (ikona `book-alt`), wstawiony przed `subscribe`.
+- `functions.php` — dopisany `Taxonomies/GuideCategory` do listy ładowanych plików.
+
+### Auto-flush rewrite rules
+- `Taxonomies/GuideCategory.php` — jednorazowy `flush_rewrite_rules()` wersjonowany opcją `dp_rewrite_version` (`2026070201`), priorytet init 20 (po rejestracji CPT+taksonomii). Rozwiązuje 404 na pojedynczych poradnikach / URL-ach taksonomii bez ręcznego zapisu permalinków. **Przy kolejnych zmianach rewrite bumpnij stałą wersji**, żeby wymusić ponowny flush.
+
+### Single Guide — szablon pojedynczego poradnika (zakres „średni")
+WordPress łapie `single-{post_type}` → `single-guide.blade.php` działa automatycznie (jak single-service/portfolio). Reużywa `.post-content` + id `#blog-toc-*-wrapper` + `[data-share-copy]`, więc **`blog-toc.js` i `blog-share.js` działają bez zmian w JS** (odpalają się globalnie, gated selektorem).
+
+Nowe pliki:
+- `app/View/Composers/SingleGuideComposer.php` — bind `single-guide` + `partials.guide.*`. Zwraca title/lead/content/date/readingTime/heroImageTag + `guidesUrl` (WP page o slugu `poradniki`, fallback `/poradniki/`) + `categories` (guide_category z linkiem do przefiltrowanej strony zbiorczej `?category=slug`) + `relatedGuides` (3) + `shareLinks` + `authorName`.
+- `resources/views/single-guide.blade.php` — breadcrumbs → hero → body → pasek chipsów kategorii → related → subscribe (reużyty `partials.blog.subscribe`) → powrót do poradników.
+- `resources/views/partials/guide/{breadcrumbs,hero,body,sidebar,toc,share,related}.blade.php` — mirrory blogowych, te same klasy/id dla współdzielonego JS.
+
+Zmienione:
+- `app/Blog/Filters.php` — `add_heading_ids` dopuszcza `is_singular(['post', 'guide'])` (wstrzykiwanie id nagłówków dla TOC działa też na poradnikach).
+- `app/Blog/Helpers.php` — nowy helper `related_guides($postId, $limit)` (guide/guide_category, fallback newest — wzorzec `related_posts`).
+
+### Strony tekstowe (polityka prywatności / regulamin) — ostylowany szablon `page`
+Domyślny `page.blade.php` renderował goły `<h1>` + surowe `the_content()` bez kontenera/typografii → wklejony tekst prawny się rozjeżdżał. Przebudowany:
+- `resources/views/page.blade.php` — BEZ własnego nagłówka (user dodaje nagłówek blokiem `page-header` w treści). `the_content()` w wrapperze z `prose`, ale zawężanie do czytelnej szerokości (`max-w-[820px]`) dotyczy **tylko luźnego tekstu** — selektor `[&>*:not(section)]`. Bloki (renderowane jako `<section>`) zostają na pełnej szerokości i nietknięte.
+- `blocks/page-header.blade.php` — dodane `not-prose` na `<section>`, żeby typografia `prose` nie ingerowała w blok gdy jest w treści strony (na innych stronach bez efektu).
+- Surowe `<?php the_post(); the_content(); ?>` zamiast `@php(...)` inline (zgodnie z zasadą dla PHP 8.5).
+- Działa automatycznie dla każdej strony na domyślnym szablonie. Strony z blokami (template-blocks/front-page) nietknięte.
+- **Uwaga:** rozwiązanie zakłada, że nagłówek usera to blok renderowany jako `<section>` (themowy `page-header`). Blok innego typu (core Cover/Group) trzeba by dodać do wyjątku selektora.
+
+### Do zrobienia ręcznie (user)
+- [ ] Utworzyć kategorie poradników (Poradniki → Kategorie) i przypisać je do poradników — dopiero wtedy pojawi się pasek filtrów (chipsy renderują się tylko dla `hide_empty=true`).
+- [ ] Utworzyć stronę WP „Poradniki" (slug `poradniki`), szablon „Strona z blokami", ułożyć bloki: `page-header` (tytuł/opis/breadcrumb) → **`guides-archive`** → `subscribe` → `contact`.
+- [ ] Zweryfikować, że pojedynczy poradnik otwiera się pod `/poradniki/{slug}/` po utworzeniu strony `/poradniki/` (CPT ma `has_archive => false`, więc baza wolna — ale sprawdzić w praktyce).
+- [ ] Deploy: nowe klasy Tailwind (`size-16` itp.) → wymaga `npm run build` na stagingu.

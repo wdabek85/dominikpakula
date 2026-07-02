@@ -176,6 +176,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.blog-archive',
         ],
         [
+            'name' => 'guides-archive',
+            'title' => 'Poradniki – Archiwum',
+            'description' => 'Grid wszystkich poradników + paginacja (pusty stan z zachętą do newslettera)',
+            'icon' => 'book-alt',
+            'render_template' => 'blocks.guides-archive',
+        ],
+        [
             'name' => 'subscribe',
             'title' => 'Newsletter + Instagram',
             'description' => 'Dwie karty obok siebie: zapis na newsletter + zachęta do śledzenia Instagrama',

@@ -24,12 +24,12 @@
         <a href="#" aria-label="Facebook" class="text-black hover:text-primary transition-colors">
           <x-icons.facebook />
         </a>
-        <a href="#" aria-label="Instagram" class="text-black hover:text-primary transition-colors">
+        <a href="https://www.instagram.com/dpakula_stylist/" aria-label="Instagram" class="text-black hover:text-primary transition-colors">
           <x-icons.instagram />
         </a>
-        <a href="#" aria-label="TikTok" class="text-black hover:text-primary transition-colors">
+        {{-- <a href="#" aria-label="TikTok" class="text-black hover:text-primary transition-colors">
           <x-icons.tiktok />
-        </a>
+        </a> --}}
       </div>
 
       <x-button
