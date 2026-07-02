@@ -1,39 +1,46 @@
 @if (! post_password_required())
-  <section id="comments" class="comments">
-    @if ($responses())
-      <h2>
-        {!! $title !!}
-      </h2>
+  <section id="comments" class="mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16">
 
-      <ol class="comment-list">
+    {{-- Section header --}}
+    <div class="flex flex-col gap-2 mb-8">
+      <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">Dyskusja</span>
+      <h2 class="font-serif text-3xl lg:text-4xl text-black">{{ $title }}</h2>
+    </div>
+
+    {{-- Comments list --}}
+    @if ($responses())
+      <ol class="comment-list flex flex-col mb-10">
         {!! $responses !!}
       </ol>
 
       @if ($paginated())
-        <nav aria-label="Comment">
-          <ul class="pager">
+        <nav class="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-black/10" aria-label="Nawigacja po komentarzach">
+          <div>
             @if ($previous())
-              <li class="previous">
-                {!! $previous !!}
-              </li>
+              {!! $previous !!}
             @endif
-
+          </div>
+          <div>
             @if ($next())
-              <li class="next">
-                {!! $next !!}
-              </li>
+              {!! $next !!}
             @endif
-          </ul>
+          </div>
         </nav>
       @endif
     @endif
 
     @if ($closed())
-      <x-alert type="warning">
-        {!! __('Comments are closed.', 'sage') !!}
-      </x-alert>
+      <p class="font-poppins italic text-black/60 bg-[#f1f1f1] rounded-sm p-4">
+        Komentarze do tego wpisu zostały zamknięte.
+      </p>
     @endif
 
-    @php(comment_form())
+    {{-- Comment form --}}
+    @if (comments_open())
+      <div class="mt-10">
+        <?php comment_form(is_array($formArgs) ? $formArgs : $formArgs()); ?>
+      </div>
+    @endif
+
   </section>
 @endif

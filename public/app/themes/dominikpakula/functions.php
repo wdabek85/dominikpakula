@@ -50,7 +50,7 @@ Application::configure()
 |
 */
 
-collect(['setup', 'filters', 'blocks'])
+collect(['setup', 'filters', 'blocks', 'site-settings', 'booking', 'blog', 'PostTypes/Testimonial', 'PostTypes/Portfolio', 'PostTypes/Service', 'PostTypes/Guide', 'Taxonomies/Season', 'Taxonomies/GuideCategory'])
     ->each(function ($file) {
         if (! locate_template($file = "app/{$file}.php", true, true)) {
             wp_die(

@@ -19,7 +19,7 @@
 
       @include('sections.header')
 
-      <main id="main" class="main">
+      <main id="main" class="main overflow-x-clip">
         @yield('content')
       </main>
 
@@ -31,6 +31,10 @@
 
       @include('sections.footer')
     </div>
+
+    @include('partials.booking-modal')
+    @include('partials.voucher-modal')
+    @include('partials.lightbox')
 
     @php(do_action('get_footer'))
     @php(wp_footer())

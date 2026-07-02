@@ -1,0 +1,46 @@
+{{-- Zdjęcie główne --}}
+@if ($image)
+  <div class="relative w-full h-[400px] rounded-sm overflow-hidden">
+    <img
+      src="{{ $image }}"
+      alt="{{ $imageAlt ?: get_the_title() }}"
+      class="absolute inset-0 size-full object-cover"
+      width="868"
+      height="400"
+    >
+
+    {{-- Dark overlay całego zdjęcia z silniejszym fade na dole (moody look jak w referencji) --}}
+    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20 pointer-events-none"></div>
+
+    {{-- Overlay: ikona (sama, bez kółka) + krótki tekst; ACF: service_hero_icon + service_hero_caption --}}
+    <div class="absolute inset-0 flex flex-col items-center justify-end pb-12 lg:pb-16 gap-6 px-4 text-center">
+      @if ($heroIcon)
+        <img
+          src="{{ $heroIcon }}"
+          alt="{{ $heroIconAlt }}"
+          class="size-32 object-contain brightness-0 invert drop-shadow-lg"
+          width="128"
+          height="128"
+        >
+      @else
+        <x-icons.hanger class="size-32 text-white drop-shadow-lg" />
+      @endif
+      @if ($heroCaption)
+        <p class="font-poppins text-base lg:text-lg font-semibold text-white max-w-md leading-snug">
+          {!! nl2br(e($heroCaption)) !!}
+        </p>
+      @endif
+    </div>
+  </div>
+@endif
+
+{{-- Social proof bar (hardcode) — pod zdjęciem, wycentrowany --}}
+<div class="flex items-center justify-center gap-2 mt-4">
+  <svg class="size-4 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+  </svg>
+  <p class="font-sans text-xs">
+    <span class="font-semibold">511</span>
+    Zadowolonych klientów, którzy skorzystali z Tej Oferty
+  </p>
+</div>

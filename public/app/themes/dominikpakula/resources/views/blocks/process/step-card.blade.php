@@ -4,7 +4,7 @@
   'description' => '',
 ])
 
-<div class="bg-[#f9f9f9] flex flex-col gap-2.5 items-end px-4 py-8 rounded">
+<div class="bg-[#f1f1f1] flex flex-col gap-2.5 items-end px-4 py-8 rounded">
   <div class="flex flex-col gap-2 w-full">
     @if ($number || $title)
       <p class="font-oswald font-bold text-2xl tracking-[-0.24px] uppercase leading-[1.1]">

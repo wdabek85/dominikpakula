@@ -18,6 +18,7 @@ export default defineConfig({
         'resources/js/app.js',
         'resources/css/editor.css',
         'resources/js/editor.js',
+        'resources/js/admin/booking-calendar.js',
       ],
       refresh: true,
     }),
