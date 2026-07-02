@@ -218,6 +218,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.next-steps',
         ],
         [
+            'name' => 'consultation-process',
+            'title' => 'Konsultacja / Jak to działa',
+            'description' => 'Schodkowe 4 kroki procesu konsultacji + CTA otwierające modal rezerwacji. Dedykowana podstrona /konsultacje/.',
+            'icon' => 'editor-ol',
+            'render_template' => 'blocks.consultation-process',
+        ],
+        [
             'name' => 'lookbook-section',
             'title' => 'Lookbook — sekcja produktowa',
             'description' => 'Heading + opis + galeria zdjęć z brandami i linkami do sklepu. 3 layouty (grid-3 / grid-4 / split z modelem).',

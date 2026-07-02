@@ -254,6 +254,7 @@ resources/images/
 | Blog | blocks.blog | BlogBlockComposer | Gotowy (3 najnowsze) |
 | **Blog – Archiwum z filtrami** | blocks.blog-archive | **BlogArchiveBlockComposer** | **Gotowy (sezon 2)** |
 | **Poradniki – Archiwum** | blocks.guides-archive | **GuidesArchiveBlockComposer** | **Gotowy — grid guide + paginacja + pusty stan z CTA newsletter** |
+| **Konsultacja / Jak to działa** | blocks.consultation-process | **ConsultationProcessBlockComposer** | **Gotowy — schodkowe 4 kroki + CTA .booking-trigger (podstrona /konsultacje/)** |
 | Newsletter | blocks.newsletter | — | Gotowy (z SVG illustration) |
 | **Newsletter + Instagram** | blocks.subscribe | — | **Gotowy (sezon 2)** |
 | Kontakt | blocks.contact | — | Gotowy |
@@ -986,6 +987,14 @@ Domyślny `page.blade.php` renderował goły `<h1>` + surowe `the_content()` bez
 - Surowe `<?php the_post(); the_content(); ?>` zamiast `@php(...)` inline (zgodnie z zasadą dla PHP 8.5).
 - Działa automatycznie dla każdej strony na domyślnym szablonie. Strony z blokami (template-blocks/front-page) nietknięte.
 - **Uwaga:** rozwiązanie zakłada, że nagłówek usera to blok renderowany jako `<section>` (themowy `page-header`). Blok innego typu (core Cover/Group) trzeba by dodać do wyjątku selektora.
+
+### Podstrona Konsultacje (2026-07-02)
+Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak to działa?" z sidebara usługi. Reużywa schodkowy design 4 kroków ze strony głównej (`blocks.process.step-card`) i modal rezerwacji.
+- `app/View/Composers/ConsultationProcessBlockComposer.php` — ACF z fallbackami: label/title/lead + repeater `consultation_steps` (4 hardcoded fallback kroki: Wybierasz termin → Potwierdzamy SMS/mail → Rozmawiamy → Umawiamy usługę) + CTA label/service + footer.
+- `resources/views/blocks/consultation-process.blade.php` — intro + schodki (reuse step-card) + CTA `<x-button class="booking-trigger" data-service="Konsultacja">` (otwiera modal, pomija wybór usługi).
+- `app/blocks.php` — rejestracja bloku `consultation-process`.
+- `sections/service/sidebar.blade.php` — link „Jak to działa?" `href="#"` → `home_url('/konsultacje/')`.
+- Backend rezerwacji nietknięty. SMS wg planu przez Make.com (obecnie tylko e-mail).
 
 ### Deploy 2026-07-02
 - Commit `07d54d7` na `develop` → push. Merge do `staging` (`7b4f72f`) i **`main` (`b162aad`) — pierwszy pełny release produkcyjny** (wcześniej main = tylko „Initial commit"). Wszystkie 3 branche `0 0` z origin, zero konfliktów.

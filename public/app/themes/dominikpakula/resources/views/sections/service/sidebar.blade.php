@@ -28,7 +28,7 @@
       <p class="font-poppins text-[10px] text-black">
         Umów się na konsultacje
         <span class="text-[#655098]"> - </span>
-        <a href="#" class="text-[#655098] underline">Jak to działa?</a>
+        <a href="{{ home_url('/konsultacje/') }}" class="text-[#655098] underline">Jak to działa?</a>
       </p>
     </div>
 
