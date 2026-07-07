@@ -12,16 +12,16 @@ class ManifestBlockComposer extends Composer
 
     public function with(): array
     {
+        $avatar = \get_field('manifest_avatar');
         $image = \get_field('manifest_image');
 
         return [
-            'eyebrow' => \get_field('manifest_eyebrow') ?: '',
             'text' => \get_field('manifest_text') ?: '',
-            'attribution' => \get_field('manifest_attribution') ?: '',
-            'role' => \get_field('manifest_role') ?: '',
+            'label' => \get_field('manifest_label') ?: '',
+            'avatar' => is_array($avatar) ? ($avatar['url'] ?? '') : '',
+            'avatarAlt' => is_array($avatar) ? ($avatar['alt'] ?? '') : '',
             'image' => is_array($image) ? ($image['url'] ?? '') : '',
             'imageAlt' => is_array($image) ? ($image['alt'] ?? '') : '',
-            'body' => \wpautop(\get_field('manifest_body') ?: ''),
         ];
     }
 }
