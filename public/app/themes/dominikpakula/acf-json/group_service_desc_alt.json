@@ -78,17 +78,21 @@
             "instructions": "",
             "required": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
-            "layout": "table",
+            "layout": "block",
             "button_label": "Dodaj punkt",
             "sub_fields": [
                 {
                     "key": "field_descb_neg_item",
-                    "label": "Tekst",
+                    "label": "Tekst (możesz wstawić link do innej usługi)",
                     "name": "item_text",
-                    "type": "text",
+                    "type": "wysiwyg",
                     "required": 0,
                     "wrapper": { "width": "", "class": "", "id": "" },
                     "default_value": "",
+                    "tabs": "visual",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0,
                     "allow_in_bindings": 0,
                     "parent_repeater": "field_descb_negative_items"
                 }
