@@ -46,11 +46,11 @@
         },
         {
             "key": "field_local_items",
-            "label": "Miasta / linki",
+            "label": "Karty / linki",
             "name": "local_items",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "Każda karta: zdjęcie + tytuł + link do podstrony lokalnej.",
+            "instructions": "Każda karta: zdjęcie + tytuł + link do podstrony (miasto, okazja itp.).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -63,7 +63,7 @@
             "min": 0,
             "max": 0,
             "collapsed": "field_local_item_title",
-            "button_label": "Dodaj miasto",
+            "button_label": "Dodaj kartę",
             "rows_per_page": 20,
             "sub_fields": [
                 {
