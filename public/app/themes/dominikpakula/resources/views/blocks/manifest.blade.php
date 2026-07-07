@@ -43,7 +43,7 @@
 
       {{-- PRAWA: wpasowany tekst --}}
       @if ($body)
-        <div class="font-poppins text-base lg:text-lg leading-relaxed text-[#19121e]/80 [&>p]:mb-4 [&>p:last-child]:mb-0">
+        <div class="font-poppins text-base lg:text-lg leading-relaxed text-[#19121e]/80 space-y-4">
           {!! $body !!}
         </div>
       @endif

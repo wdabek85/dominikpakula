@@ -11,7 +11,7 @@
 
       {{-- Prawa: treść --}}
       @if ($body)
-        <div class="font-poppins text-base leading-5 text-black [&>p]:mb-5 [&>p:last-child]:mb-0">
+        <div class="font-poppins text-base leading-5 text-black space-y-5">
           {!! $body !!}
         </div>
       @endif
