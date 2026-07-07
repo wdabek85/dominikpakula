@@ -76,13 +76,13 @@
 
         {{-- Imię --}}
         <div class="flex flex-col gap-2">
-          <label for="contact-name" class="font-poppins font-semibold text-sm leading-4 text-[#8b8b8b]">Imie</label>
+          <label for="contact-name" class="font-poppins font-semibold text-sm leading-4 text-[#595959]">Imie</label>
           <input
             type="text"
             id="contact-name"
             name="name"
             placeholder="Twoje Imie"
-            class="w-full border border-[#e2e2e2] px-4 py-3 font-poppins font-medium text-base leading-[26px] text-[#8b8b8b] placeholder:text-[#8b8b8b] outline-none focus:border-primary transition-colors"
+            class="w-full border border-[#e2e2e2] px-4 py-3 font-poppins font-medium text-base leading-[26px] text-[#595959] placeholder:text-[#595959] outline-none focus:border-primary transition-colors"
             required
             autocomplete="given-name"
           >
@@ -90,9 +90,9 @@
 
         {{-- Email --}}
         <div class="flex flex-col gap-2">
-          <label for="contact-email" class="font-poppins font-semibold text-sm leading-4 text-[#8b8b8b]">E-mail</label>
+          <label for="contact-email" class="font-poppins font-semibold text-sm leading-4 text-[#595959]">E-mail</label>
           <div class="flex items-center gap-2 border border-[#e2e2e2] px-4 py-3 focus-within:border-primary transition-colors">
-            <svg class="size-6 shrink-0 text-[#8b8b8b]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+            <svg class="size-6 shrink-0 text-[#595959]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
             </svg>
             <input
@@ -100,7 +100,7 @@
               id="contact-email"
               name="email"
               placeholder="Twój adres e-mail"
-              class="w-full font-poppins font-medium text-base leading-[26px] text-[#8b8b8b] placeholder:text-[#8b8b8b] bg-transparent outline-none"
+              class="w-full font-poppins font-medium text-base leading-[26px] text-[#595959] placeholder:text-[#595959] bg-transparent outline-none"
               required
               autocomplete="email"
             >
@@ -109,13 +109,13 @@
 
         {{-- Wiadomość --}}
         <div class="flex flex-col gap-2">
-          <label for="contact-message" class="font-poppins font-semibold text-sm leading-4 text-[#8b8b8b]">Wiadomość</label>
+          <label for="contact-message" class="font-poppins font-semibold text-sm leading-4 text-[#595959]">Wiadomość</label>
           <textarea
             id="contact-message"
             name="message"
             placeholder="Wprowadź tekst swojej wiadomości.."
             rows="3"
-            class="w-full border border-[#e2e2e2] px-4 py-3 font-poppins text-sm leading-4 text-[#8b8b8b] placeholder:text-[#8b8b8b] outline-none resize-none focus:border-primary transition-colors"
+            class="w-full border border-[#e2e2e2] px-4 py-3 font-poppins text-sm leading-4 text-[#595959] placeholder:text-[#595959] outline-none resize-none focus:border-primary transition-colors"
             required
           ></textarea>
         </div>

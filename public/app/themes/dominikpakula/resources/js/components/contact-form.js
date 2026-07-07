@@ -1,6 +1,8 @@
 /**
  * Contact Form — submits to /booking/v1/contact with GDPR + honeypot.
  */
+import { fetchWithTimeout } from '../lib/fetch-timeout.js';
+
 export default function contactForm() {
   const form = document.getElementById('contact-form');
   if (!form || !window.bookingData) return;
@@ -51,7 +53,7 @@ export default function contactForm() {
     }
 
     try {
-      const res = await fetch(`${restUrl}contact`, {
+      const res = await fetchWithTimeout(`${restUrl}contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
