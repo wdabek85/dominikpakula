@@ -4,7 +4,7 @@
   $phoneLink = $contact['phone_link'] ?? '';
   $phoneLinkFallback = '+48884826068';
   $email = $contact['email'] ?? '';
-  $emailFallback = 'kontakt@dominikpakula.pl';
+  $emailFallback = 'kontakt@meskistylista.pl';
   $instagram = $social['instagram'] ?? '';
   $instagramHandle = $social['instagram_handle'] ?? 'dpakula_stylist';
   $whatsapp = $social['whatsapp'] ?? '';
