@@ -3,7 +3,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
     {{-- Card A: Newsletter --}}
-    <div class="flex flex-col gap-5 bg-[#f1f1f1] p-6 lg:p-10 rounded-sm">
+    <div class="flex flex-col gap-5 bg-[#f1f1f1] p-6 lg:p-10 rounded-sm" data-newsletter>
       <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">Newsletter</span>
       <h2 class="font-poppins text-[30px] lg:text-4xl leading-tight text-black">
         Nie przegap kolejnego wpisu
@@ -39,11 +39,11 @@
         </button>
       </form>
 
-      <p id="newsletter-disclaimer" class="font-poppins text-xs text-black/60 leading-relaxed">
+      <p id="newsletter-disclaimer" data-newsletter-disclaimer class="font-poppins text-xs text-black/60 leading-relaxed">
         Zapisując się, akceptujesz <a href="{{ home_url('/polityka-prywatnosci/') }}" class="underline hover:text-primary transition-colors">politykę prywatności</a>. Wypisujesz się jednym kliknięciem.
       </p>
-      <p id="newsletter-error" class="hidden font-poppins text-sm text-red-600 leading-relaxed" role="alert"></p>
-      <p id="newsletter-success" class="hidden font-poppins text-sm text-green-700 leading-relaxed" role="status"></p>
+      <p id="newsletter-error" data-newsletter-error class="hidden font-poppins text-sm text-red-600 leading-relaxed" role="alert"></p>
+      <p id="newsletter-success" data-newsletter-success class="hidden font-poppins text-sm text-green-700 leading-relaxed" role="status"></p>
     </div>
 
     {{-- Card B: Instagram (dark + gradient blob) --}}
