@@ -34,7 +34,7 @@
 
       {{-- Lewe zdjęcie --}}
       @if ($imageLeft)
-        <div class="relative w-full lg:w-[238px] h-[478px] shrink-0 rounded-l-sm overflow-hidden">
+        <div class="relative w-full lg:w-[238px] h-[478px] shrink-0 rounded-sm lg:rounded-r-none overflow-hidden">
           <img
             src="{{ $imageLeft }}"
             alt="{{ $imageLeftAlt }}"
@@ -61,7 +61,7 @@
 
       {{-- Prawe zdjęcie --}}
       @if ($imageRight)
-        <div class="relative w-full lg:flex-1 h-[478px] rounded-r-sm overflow-hidden">
+        <div class="relative hidden lg:block w-full lg:flex-1 h-[478px] rounded-r-sm overflow-hidden">
           <img
             src="{{ $imageRight }}"
             alt="{{ $imageRightAlt }}"
