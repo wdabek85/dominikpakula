@@ -24,6 +24,9 @@ public/app/uploads/
 # Acorn cache
 public/app/cache/
 
+# WP writable-check leftovers (Site Health / auto-update test files)
+temp-write-test-*
+
 # WP languages (auto-downloaded)
 public/app/languages/
 
