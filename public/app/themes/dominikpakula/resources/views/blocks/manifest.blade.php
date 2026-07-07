@@ -3,7 +3,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-8 lg:gap-x-20 items-center">
 
       {{-- Cytat z cudzysłowem w tle (nachodzi od góry) --}}
-      <div class="relative pt-10 lg:pt-14">
+      <div class="relative pt-10 lg:pt-30">
         <img
           src="{{ Vite::asset('resources/images/quote-mark.png') }}"
           alt=""
