@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20">
+<section class="not-prose bg-white mx-auto max-w-[1440px] px-4 lg:px-20">
   <div class="flex flex-col lg:flex-row lg:items-center lg:gap-20 pt-12 lg:pt-0">
 
     {{-- Lewa: tekst --}}
