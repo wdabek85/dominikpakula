@@ -1,0 +1,76 @@
+{
+    "key": "group_manifest_block",
+    "title": "Blok: Manifest / Cytat",
+    "fields": [
+        {
+            "key": "field_manifest_eyebrow",
+            "label": "Etykieta (eyebrow)",
+            "name": "manifest_eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Mała etykieta nad cytatem.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Moja filozofia",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_manifest_text",
+            "label": "Treść (cytat / manifest)",
+            "name": "manifest_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Krótkie, mocne zdanie.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Less is more — jakość jest ważniejsza od ilości.",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_manifest_attribution",
+            "label": "Podpis",
+            "name": "manifest_attribution",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Opcjonalny podpis pod cytatem.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Dominik Pakuła",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/manifest"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1780000002
+}

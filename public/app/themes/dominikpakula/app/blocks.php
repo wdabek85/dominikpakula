@@ -183,6 +183,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.brand-logos',
         ],
         [
+            'name' => 'manifest',
+            'title' => 'Manifest / Cytat',
+            'description' => 'Pełnoszerokościowy, duży cytat/manifest (eyebrow + mocne zdanie + podpis) na jasnym tle.',
+            'icon' => 'format-quote',
+            'render_template' => 'blocks.manifest',
+        ],
+        [
             'name' => 'blog-archive',
             'title' => 'Blog – Archiwum z filtrami',
             'description' => 'Pasek filtrów (kategorie + sezon) + grid wszystkich wpisów + paginacja',
