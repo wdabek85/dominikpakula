@@ -1,19 +1,19 @@
 @if ($text || $eyebrow)
-  <section class="not-prose mx-auto max-w-[1440px] px-4 lg:px-20 py-12 lg:py-20">
-    <div class="bg-[#f1f1f1] rounded-lg px-6 py-14 lg:px-16 lg:py-20 flex flex-col items-center gap-5 lg:gap-6 text-center">
+  <section class="not-prose mx-auto max-w-[1440px] px-4 lg:px-20 py-12 lg:py-16">
+    <div class="max-w-[860px] border-l-2 border-primary pl-6 lg:pl-10">
 
       @if ($eyebrow)
-        <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">{{ $eyebrow }}</span>
+        <span class="block font-metro text-xs uppercase tracking-[3px] text-black/60 mb-4 lg:mb-5">{{ $eyebrow }}</span>
       @endif
 
       @if ($text)
-        <p class="font-poppins font-medium text-3xl lg:text-[46px] leading-[1.15] tracking-tight text-[#19121e] max-w-[900px]">
+        <p class="font-poppins font-medium text-[26px] lg:text-[38px] leading-[1.2] tracking-tight text-[#19121e]">
           {{ $text }}
         </p>
       @endif
 
       @if ($attribution)
-        <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">— {{ $attribution }}</span>
+        <span class="block mt-5 font-poppins text-sm text-black/50">— {{ $attribution }}</span>
       @endif
 
     </div>
