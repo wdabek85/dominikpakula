@@ -169,6 +169,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-video',
         ],
         [
+            'name' => 'local-seo',
+            'title' => 'Linki lokalne (SEO)',
+            'description' => 'Siatka kart z linkami do podstron lokalnych (zdjęcie + tytuł + „Dowiedz się więcej”). Pod SEO, na dole wybranych usług.',
+            'icon' => 'location-alt',
+            'render_template' => 'blocks.local-seo',
+        ],
+        [
             'name' => 'blog-archive',
             'title' => 'Blog – Archiwum z filtrami',
             'description' => 'Pasek filtrów (kategorie + sezon) + grid wszystkich wpisów + paginacja',
