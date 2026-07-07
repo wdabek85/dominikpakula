@@ -1040,3 +1040,60 @@ Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak t
 - [ ] Utworzyć stronę WP „Poradniki" (slug `poradniki`), szablon „Strona z blokami", ułożyć bloki: `page-header` (tytuł/opis/breadcrumb) → **`guides-archive`** → `subscribe` → `contact`.
 - [ ] Zweryfikować, że pojedynczy poradnik otwiera się pod `/poradniki/{slug}/` po utworzeniu strony `/poradniki/` (CPT ma `has_archive => false`, więc baza wolna — ale sprawdzić w praktyce).
 - [ ] Deploy: nowe klasy Tailwind (`size-16` itp.) → wymaga `npm run build` na stagingu.
+
+---
+
+## 🚀 URUCHOMIENIE PRODUKCJI — meskistylista.pl (2026-07-07)
+
+Pełny deploy staging → produkcja od zera. Produkcja to osobna instancja na tym samym serwerze dhosting (user `wiktor1249`), NIE współdzieli bazy ani plików ze stagingiem.
+
+### Środowisko produkcyjne
+- **Domena:** https://meskistylista.pl (live, publiczny DNS działa, PHP 8.x ustawiony w panelu dhosting)
+- **Bedrock root:** `~/meskistylista.pl/app/`
+- **public_html:** symlink → `app/public` (jak staging)
+- **Branch:** `main` (staging zmergowany do main, commit `37fa0ca`; potem fix portretu `52ce5a9`)
+- **Baza:** `aew7oo_meskisty` (user `wiktor1249`, hasło = SSH, host `wiktor1249.mysql.dhosting.pl`, prefix `wp_`)
+- **`.env`:** `WP_ENV=production`, **świeże salty** (nie te ze stagingu), DB_USER/PASS/HOST te same co staging
+- **Staging** (`dominikpakula.wdb-creative.pl`, baza `etey9y_dominikp`) — **nietknięty**, dalej osobne środowisko testowe
+
+### Przebieg deployu (kroki)
+1. Merge `staging` → `main` + push (168 commitów, czysty merge)
+2. Klon repo do `~/meskistylista.pl/app` (branch main) + kopia `auth.json`
+3. `.env` produkcyjny — skrypt czytał staging `.env` (hasło zostało w pliku, nie w komendzie) + podmiana WP_ENV/WP_HOME/DB_NAME + regeneracja 8 saltów
+4. **Composer padł na ACF Pro** (`402 activation_limit` — staging zajął seat licencji). Obejście: skopiowane gotowe artefakty ze stagingu (patrz niżej)
+5. Build assetów: `npm ci && npm run build`
+6. Baza: `wp db export` staging → `wp db import` prod (18 tabel) → `search-replace dominikpakula.wdb-creative.pl → meskistylista.pl` (**101 zamian, 0 pozostałych**)
+7. Uploady: kopia 25 MB (wszystkie zdjęcia)
+8. `admin_email=kontakt@meskistylista.pl`, `blog_public=1`, flush permalinków, symlink public_html
+9. Weryfikacja: home + /o-mnie/ + /uslugi/ + /blog/ + /kontakt/ + podstrona miasta = **HTTP 200, 0 błędów PHP**, CSS/JS/zdjęcia OK, wp-login + sitemap OK
+
+### ⚠️ Skopiowane ze stagingu (bo composer nie pobrał ACF Pro)
+- `vendor/` (Bedrock 1.2M) + **theme `vendor/` (43M z Acornem)** — UWAGA: w Sage 11 Acorn siedzi w vendor MOTYWU, nie Bedrocka; oba gitignorowane, więc przy świeżym klonie trzeba je dostarczyć (bez theme vendor → „Error locating autoloader")
+- `public/wp` (WP core), `public/app/plugins` (ACF Pro + Rank Math), `mu-plugins`, `languages`, `uploads`
+- `composer dump-autoload --optimize` (offline) na prod po skopiowaniu vendor
+
+### ⚠️ ACF Pro — limit aktywacji licencji (do zrobienia przez usera)
+Licencja ACF Pro osiągnęła limit aktywacji (staging zajmuje seat). Strona i edytor **działają w 100%** (pliki skopiowane), ale wp-admin pokazuje nag „activation limit reached" i ACF nie auto-aktualizuje. **User musi** wejść na advancedcustomfields.com → licencje i dokupić seat / zwolnić starą aktywację, żeby aktywować meskistylista.pl.
+
+### Fix: portret w bloku personal-intro na /kontakt/ (2026-07-07)
+- `PersonalIntroBlockComposer.php` — usunięty nieaktualny guard `if (production) return null` z `fallbackImage()`. Powód: po imporcie bazy załącznik ID 42 („portret dominik") jest identyczny na staging i prod, więc guard tylko chował zdjęcie. Fallback po ID 42 działa teraz na obu środowiskach. Deploy: develop → staging + main → `git pull` na obu serwerach (bez builda, sama zmiana PHP).
+- Nadal to fallback po sztywnym ID. Docelowo: dorobić ręcznie pole ACF `intro_image` (typ Image) dla bloku „Personal Intro" — kod już je obsługuje priorytetowo (`get_field('intro_image') ?: fallback`).
+
+### Audyt indeksowania / SEO (2026-07-07) — nic nie blokuje widoczności ✅
+- `blog_public=1`, `WP_ENV=production` (mu-plugin `bedrock-disallow-indexing` NIE blokuje na prod)
+- Meta robots na wszystkich kluczowych stronach = `index, follow, max-image-preview:large`
+- Brak nagłówka `X-Robots-Tag`; `robots.txt` czysty (blokuje tylko `/wp/wp-admin/`, wskazuje sitemapę)
+- Rank Math trzyma rozsądne domyślne noindexy (puste taksonomie, wyniki wyszukiwania) — celowe, nie dotyczy treści
+- **Poprawka:** `service`/`portfolio`/`guide` NIE były w sitemapie (Rank Math `pt_*_sitemap` nieustawione = pomijane). Włączone przez `wp eval` na opcji `rank-math-options-sitemap` + wyczyszczony cache. Teraz `service-sitemap.xml` = 6 URL (w tym podstrona miasta). `guide-sitemap` pojawi się po opublikowaniu pierwszego poradnika.
+- **UWAGA:** ta poprawka sitemapy jest w BAZIE produkcji (konfiguracja WP-admin, nie kod). Przy ewentualnym nadpisaniu bazy prod importem ze stagingu — włączyć ponownie.
+
+### Do zrobienia po stronie usera (produkcja)
+- [ ] **ACF Pro:** aktywować licencję dla meskistylista.pl (dokupić seat / zwolnić aktywację) — patrz wyżej
+- [ ] **Search Console:** dodać właściwość `meskistylista.pl`, zweryfikować, wysłać `https://meskistylista.pl/sitemap_index.xml`
+- [ ] (opcjonalnie) Bing Webmaster Tools — to samo
+- [ ] (opcjonalnie) pole ACF `intro_image` dla bloku personal-intro, żeby portret był edytowalny z panelu
+
+### Jak deployować na prod w przyszłości
+1. `git checkout main && git merge staging --no-ff && git push origin main`
+2. SSH: `cd ~/meskistylista.pl/app && git pull && cd public/app/themes/dominikpakula && export NVM_DIR=$HOME/.nvm && . $NVM_DIR/nvm.sh && npm run build`
+3. Treść tworzy się bezpośrednio na produkcji (prod jest źródłem treści — NIE nadpisywać bazy prod importem ze stagingu bez potrzeby)
