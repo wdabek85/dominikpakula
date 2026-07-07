@@ -177,8 +177,8 @@ add_action('acf/init', function () {
         ],
         [
             'name' => 'local-seo',
-            'title' => 'Linki lokalne (SEO)',
-            'description' => 'Siatka kart z linkami do podstron lokalnych (zdjęcie + tytuł + „Dowiedz się więcej”). Pod SEO, na dole wybranych usług.',
+            'title' => 'Karty linkowe (SEO) — miasta / okazje',
+            'description' => 'Siatka kart z linkami (zdjęcie + tytuł + „Dowiedz się więcej”). Do podstron miast, okazji itp. Pod SEO.',
             'icon' => 'location-alt',
             'render_template' => 'blocks.local-seo',
         ],
