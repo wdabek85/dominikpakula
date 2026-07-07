@@ -23,7 +23,7 @@ class AboutModalComposer extends Composer
 
         return [
             'aboutHeading' => $settings['heading'] ?? 'Kilka słów o mnie',
-            'aboutBody' => $settings['body'] ?? '',
+            'aboutBody' => \wpautop($settings['body'] ?? ''),
             'aboutLinkLabel' => $settings['link_label'] ?? 'Poznaj całą moją historię',
             'aboutLinkUrl' => $linkUrl ?: \home_url('/o-mnie/'),
         ];
