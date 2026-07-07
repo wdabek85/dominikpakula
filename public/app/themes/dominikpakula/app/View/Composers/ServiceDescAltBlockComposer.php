@@ -13,8 +13,8 @@ class ServiceDescAltBlockComposer extends Composer
     public function with(): array
     {
         return [
-            'label' => \get_field('descb_label') ?: '',
-            'heading' => \get_field('descb_heading') ?: '',
+            'label' => \get_field('descb_label') ?: 'Dla kogo',
+            'heading' => \get_field('descb_heading') ?: 'Czy ta usługa jest dla Ciebie?',
             'positive' => [
                 'title' => \get_field('descb_positive_title') ?: 'Ta usługa jest dla Ciebie, jeśli:',
                 'items' => $this->items('descb_positive_items') ?: [
