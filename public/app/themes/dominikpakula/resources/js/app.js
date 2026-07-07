@@ -19,6 +19,7 @@ import blogToc from './components/blog-toc.js';
 import blogShare from './components/blog-share.js';
 import newsletterForm from './components/newsletter-form.js';
 import lightbox from './components/lightbox.js';
+import aboutModal from './components/about-modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -36,4 +37,5 @@ document.addEventListener('DOMContentLoaded', () => {
   blogShare();
   newsletterForm();
   lightbox();
+  aboutModal();
 });

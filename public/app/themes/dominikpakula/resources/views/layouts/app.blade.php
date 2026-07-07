@@ -34,6 +34,7 @@
 
     @include('partials.booking-modal')
     @include('partials.voucher-modal')
+    @include('partials.about-modal')
     @include('partials.lightbox')
 
     @php(do_action('get_footer'))
