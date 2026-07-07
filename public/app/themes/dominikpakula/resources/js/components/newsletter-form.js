@@ -11,6 +11,8 @@
  *   - optional honeypot: <input name="website">
  *   - optional [data-newsletter-error], [data-newsletter-success], [data-newsletter-disclaimer]
  */
+import { fetchWithTimeout } from '../lib/fetch-timeout.js';
+
 export default function newsletterForm() {
   if (!window.bookingData) return;
 
@@ -70,7 +72,7 @@ export default function newsletterForm() {
       }
 
       try {
-        const res = await fetch(`${restUrl}newsletter`, {
+        const res = await fetchWithTimeout(`${restUrl}newsletter`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
