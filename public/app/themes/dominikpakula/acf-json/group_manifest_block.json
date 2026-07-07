@@ -8,7 +8,7 @@
             "name": "manifest_text",
             "aria-label": "",
             "type": "textarea",
-            "instructions": "Duży cytat po lewej. Enter = łamanie linii.",
+            "instructions": "Cytat po lewej. Enter = łamanie linii.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
@@ -20,40 +20,8 @@
             "new_lines": ""
         },
         {
-            "key": "field_manifest_avatar",
-            "label": "Avatar (mały kwadrat)",
-            "name": "manifest_avatar",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "Małe kwadratowe zdjęcie pod cytatem.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
-            "return_format": "array",
-            "library": "all",
-            "preview_size": "medium",
-            "allow_in_bindings": 0
-        },
-        {
-            "key": "field_manifest_label",
-            "label": "Podpis pod avatarem",
-            "name": "manifest_label",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
-            "default_value": "Moja Filozofia",
-            "maxlength": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_manifest_image",
-            "label": "Duże zdjęcie (prawa strona)",
+            "label": "Zdjęcie (prawa strona)",
             "name": "manifest_image",
             "aria-label": "",
             "type": "image",
@@ -85,5 +53,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1780000005
+    "modified": 1780000006
 }
