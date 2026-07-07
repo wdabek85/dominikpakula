@@ -37,7 +37,7 @@ class SiteSettings extends Composer
         $whatsapp = \get_field('social_whatsapp_url', 'option') ?: '';
         if (! $whatsapp) {
             // Derive from phone link if WhatsApp not explicitly set
-            $phoneLink = \get_field('contact_phone_link', 'option') ?: '+48884826068';
+            $phoneLink = \get_field('contact_phone_link', 'option') ?: '+48577190949';
             $digits = preg_replace('/\D+/', '', $phoneLink);
             $whatsapp = $digits ? 'https://wa.me/' . $digits : '';
         }

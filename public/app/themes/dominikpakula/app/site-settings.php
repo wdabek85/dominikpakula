@@ -7,8 +7,8 @@
  *
  *   Contact:
  *     - contact_email           (Email)
- *     - contact_phone           (Text, display format, e.g. "+48 884 826 068")
- *     - contact_phone_link      (Text, tel: format, e.g. "+48884826068")
+ *     - contact_phone           (Text, display format, e.g. "+48 577 190 949")
+ *     - contact_phone_link      (Text, tel: format, e.g. "+48577190949")
  *     - contact_address_line1   (Text)
  *     - contact_address_line2   (Text)
  *     - contact_sidebar_phone        (Text, display format)

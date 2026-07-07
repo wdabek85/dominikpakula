@@ -2,9 +2,9 @@
   $email = $contact['email'] ?? '';
   $emailFallback = 'kontakt@meskistylista.pl';
   $phone = $contact['phone'] ?? '';
-  $phoneFallback = '+48 884 826 068';
+  $phoneFallback = '+48 577 190 949';
   $phoneLink = $contact['phone_link'] ?? '';
-  $phoneLinkFallback = '+48884826068';
+  $phoneLinkFallback = '+48577190949';
   $addressLine1 = $contact['address_line1'] ?? '';
   $addressLine2 = $contact['address_line2'] ?? '';
 @endphp
