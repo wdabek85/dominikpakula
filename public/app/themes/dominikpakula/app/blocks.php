@@ -169,6 +169,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-video',
         ],
         [
+            'name' => 'service-desc-alt',
+            'title' => 'Dla kogo — wariant B (check-lista)',
+            'description' => 'Alternatywa „Dla kogo”: dwie karty obok siebie — Tak (ptaszki) vs To nie to (iksy).',
+            'icon' => 'yes-alt',
+            'render_template' => 'blocks.service-desc-alt',
+        ],
+        [
             'name' => 'local-seo',
             'title' => 'Linki lokalne (SEO)',
             'description' => 'Siatka kart z linkami do podstron lokalnych (zdjęcie + tytuł + „Dowiedz się więcej”). Pod SEO, na dole wybranych usług.',

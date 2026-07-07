@@ -1,0 +1,117 @@
+{
+    "key": "group_service_desc_alt",
+    "title": "Blok: Dla kogo — wariant B",
+    "fields": [
+        {
+            "key": "field_descb_label",
+            "label": "Badge",
+            "name": "descb_label",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Dla kogo",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_descb_heading",
+            "label": "Nagłówek",
+            "name": "descb_heading",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Czy ta usługa jest dla Ciebie?",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_descb_positive_title",
+            "label": "Tytuł kolumny TAK",
+            "name": "descb_positive_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "Ta usługa jest dla Ciebie, jeśli:",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_descb_negative_title",
+            "label": "Tytuł kolumny NIE",
+            "name": "descb_negative_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "To nie ta usługa, jeśli:",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_descb_positive_items",
+            "label": "Punkty TAK",
+            "name": "descb_positive_items",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "table",
+            "button_label": "Dodaj punkt",
+            "sub_fields": [
+                {
+                    "key": "field_descb_pos_item",
+                    "label": "Tekst",
+                    "name": "item_text",
+                    "type": "text",
+                    "required": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_descb_positive_items"
+                }
+            ]
+        },
+        {
+            "key": "field_descb_negative_items",
+            "label": "Punkty NIE",
+            "name": "descb_negative_items",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "table",
+            "button_label": "Dodaj punkt",
+            "sub_fields": [
+                {
+                    "key": "field_descb_neg_item",
+                    "label": "Tekst",
+                    "name": "item_text",
+                    "type": "text",
+                    "required": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_descb_negative_items"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/service-desc-alt"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1780000008
+}
