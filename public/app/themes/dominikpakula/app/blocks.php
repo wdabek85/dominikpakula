@@ -176,6 +176,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.local-seo',
         ],
         [
+            'name' => 'brand-logos',
+            'title' => 'Logotypy marek',
+            'description' => 'Nagłówek + siatka logotypów marek (grayscale, kolor na hover). Repeater: logo + nazwa + link.',
+            'icon' => 'awards',
+            'render_template' => 'blocks.brand-logos',
+        ],
+        [
             'name' => 'blog-archive',
             'title' => 'Blog – Archiwum z filtrami',
             'description' => 'Pasek filtrów (kategorie + sezon) + grid wszystkich wpisów + paginacja',
