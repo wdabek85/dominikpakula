@@ -97,6 +97,39 @@
                     "parent_repeater": "field_descb_negative_items"
                 }
             ]
+        },
+        {
+            "key": "field_descb_highlight_title",
+            "label": "Tytuł kafelka POLECAM",
+            "name": "descb_highlight_title",
+            "type": "text",
+            "required": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Sprawdza się szczególnie, jeśli:",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_descb_highlight_items",
+            "label": "Punkty POLECAM",
+            "name": "descb_highlight_items",
+            "type": "repeater",
+            "required": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "table",
+            "button_label": "Dodaj punkt",
+            "sub_fields": [
+                {
+                    "key": "field_descb_hl_item",
+                    "label": "Tekst",
+                    "name": "item_text",
+                    "type": "text",
+                    "required": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_descb_highlight_items"
+                }
+            ]
         }
     ],
     "location": [
