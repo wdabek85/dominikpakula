@@ -25,6 +25,14 @@ class ServiceDescAltBlockComposer extends Composer
                 ],
                 'allowHtml' => false,
             ],
+            'highlight' => [
+                'title' => \get_field('descb_highlight_title') ?: 'Sprawdza się szczególnie, jeśli:',
+                'items' => $this->items('descb_highlight_items') ?: [
+                    'zmieniła Ci się sylwetka albo styl życia i obecne ubrania przestały pasować',
+                    'zaczynasz nową pracę / masz więcej spotkań i chcesz wyglądać profesjonalnie',
+                    'chcesz uporządkować szafę i od razu uzupełnić braki',
+                ],
+            ],
             'negative' => [
                 'title' => \get_field('descb_negative_title') ?: 'To nie ta usługa, jeśli:',
                 'items' => $this->items('descb_negative_items', true) ?: [
