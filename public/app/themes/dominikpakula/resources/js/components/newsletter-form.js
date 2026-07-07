@@ -1,80 +1,100 @@
 /**
- * Newsletter form — email validation + POST to /booking/v1/newsletter with feedback.
+ * Newsletter forms — email validation + POST to /booking/v1/newsletter with feedback.
+ *
+ * Binds EVERY newsletter widget on the page. A widget is any element with the
+ * `data-newsletter` attribute wrapping a <form>. Fields and message elements are
+ * queried relative to that wrapper, so multiple forms (homepage block, blog
+ * subscribe section, …) work independently and without ID collisions.
+ *
+ * Expected inside each [data-newsletter] wrapper:
+ *   - a <form> with an email input and a submit button
+ *   - optional honeypot: <input name="website">
+ *   - optional [data-newsletter-error], [data-newsletter-success], [data-newsletter-disclaimer]
  */
+import { fetchWithTimeout } from '../lib/fetch-timeout.js';
+
 export default function newsletterForm() {
-  const form = document.getElementById('newsletter-form');
-  if (!form || !window.bookingData) return;
+  if (!window.bookingData) return;
 
   const { restUrl, nonce } = window.bookingData;
-
-  const submitBtn = document.getElementById('newsletter-submit');
-  const emailInput = document.getElementById('newsletter-email');
-  const errorEl = document.getElementById('newsletter-error');
-  const successEl = document.getElementById('newsletter-success');
-  const disclaimer = document.getElementById('newsletter-disclaimer');
-  const originalBtnText = submitBtn ? submitBtn.textContent : 'Zapisz się';
-
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  function showError(msg) {
-    if (!errorEl) return;
-    errorEl.textContent = msg;
-    errorEl.classList.remove('hidden');
-    successEl?.classList.add('hidden');
-  }
+  document.querySelectorAll('[data-newsletter]').forEach((root) => {
+    const form = root.querySelector('form');
+    const emailInput = root.querySelector('input[type="email"]');
+    if (!form || !emailInput) return;
 
-  function showSuccess(msg) {
-    if (!successEl) return;
-    successEl.textContent = msg;
-    successEl.classList.remove('hidden');
-    errorEl?.classList.add('hidden');
-    disclaimer?.classList.add('hidden');
-  }
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const honeypot = root.querySelector('input[name="website"]');
+    const errorEl = root.querySelector('[data-newsletter-error]');
+    const successEl = root.querySelector('[data-newsletter-success]');
+    const disclaimer = root.querySelector('[data-newsletter-disclaimer]');
+    const originalBtnText = submitBtn ? submitBtn.textContent : 'Zapisz się';
 
-  function resetButton() {
-    if (!submitBtn) return;
-    submitBtn.disabled = false;
-    submitBtn.textContent = originalBtnText;
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const email = emailInput.value.trim();
-    const website = document.getElementById('newsletter-website')?.value || '';
-
-    if (!EMAIL_RE.test(email)) {
-      showError('Nieprawidłowy adres e-mail.');
-      return;
+    function showError(msg) {
+      if (errorEl) {
+        errorEl.textContent = msg;
+        errorEl.classList.remove('hidden');
+      }
+      successEl?.classList.add('hidden');
     }
 
-    errorEl?.classList.add('hidden');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Zapisuję...';
+    function showSuccess(msg) {
+      if (successEl) {
+        successEl.textContent = msg;
+        successEl.classList.remove('hidden');
+      }
+      errorEl?.classList.add('hidden');
+      disclaimer?.classList.add('hidden');
+    }
 
-    try {
-      const res = await fetch(`${restUrl}newsletter`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': nonce,
-        },
-        body: JSON.stringify({ email, website }),
-      });
+    function resetButton() {
+      if (!submitBtn) return;
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalBtnText;
+    }
 
-      const result = await res.json();
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-      if (res.ok && result.success) {
-        submitBtn.textContent = 'Zapisano ✓';
-        showSuccess(result.message || 'Dzięki! Sprawdź skrzynkę i potwierdź zapis.');
-        emailInput.value = '';
-      } else {
-        showError(result.error || 'Wystąpił błąd. Spróbuj ponownie.');
+      const email = emailInput.value.trim();
+      const website = honeypot?.value || '';
+
+      if (!EMAIL_RE.test(email)) {
+        showError('Nieprawidłowy adres e-mail.');
+        return;
+      }
+
+      errorEl?.classList.add('hidden');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Zapisuję...';
+      }
+
+      try {
+        const res = await fetchWithTimeout(`${restUrl}newsletter`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': nonce,
+          },
+          body: JSON.stringify({ email, website }),
+        });
+
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          if (submitBtn) submitBtn.textContent = 'Zapisano ✓';
+          showSuccess(result.message || 'Dzięki! Jesteś zapisany na newsletter.');
+          emailInput.value = '';
+        } else {
+          showError(result.error || 'Wystąpił błąd. Spróbuj ponownie.');
+          resetButton();
+        }
+      } catch {
+        showError('Błąd połączenia. Sprawdź internet i spróbuj ponownie.');
         resetButton();
       }
-    } catch {
-      showError('Błąd połączenia. Sprawdź internet i spróbuj ponownie.');
-      resetButton();
-    }
+    });
   });
 }

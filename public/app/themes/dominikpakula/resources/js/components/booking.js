@@ -6,6 +6,8 @@
  * data-service="Name" on trigger skips step 1
  */
 import createModalA11y from '../lib/modal-a11y.js';
+import { fetchWithTimeout } from '../lib/fetch-timeout.js';
+import { safeHref } from '../lib/safe-url.js';
 
 export default function booking() {
   const modal = document.getElementById('booking-modal');
@@ -131,19 +133,40 @@ export default function booking() {
 
     services.forEach((s) => {
       const card = document.createElement('button');
+      card.type = 'button';
       card.className = 'w-full text-left border border-gray-200 rounded-sm p-4 hover:border-primary hover:bg-gray-50 transition-colors flex items-center justify-between gap-4';
-      // Cena ukryta w selektorze booking modal (flow "Zarezerwuj rozmowę").
-      // Aby przywrócić, dodaj z powrotem `${s.price ? <span ...>${s.price}</span> : ''}`
-      // do prawego kontenera (przed <a>Dowiedz się więcej</a>).
-      card.innerHTML = `
-        <div class="flex flex-col gap-1 min-w-0">
-          <span class="font-poppins font-semibold text-sm text-black">${s.title}</span>
-          ${s.excerpt ? `<span class="font-poppins text-xs text-gray-500 leading-relaxed">${s.excerpt}</span>` : ''}
-        </div>
-        <div class="flex flex-col items-end gap-1 shrink-0">
-          <a href="${s.url}" class="font-poppins text-[10px] text-primary underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
-        </div>
-      `;
+
+      // Dane usług pochodzą z panelu — budujemy przez textContent (anty-XSS),
+      // a href waliduje safeHref (blokuje javascript:). Cena ukryta w tym flow.
+      const info = document.createElement('div');
+      info.className = 'flex flex-col gap-1 min-w-0';
+
+      const title = document.createElement('span');
+      title.className = 'font-poppins font-semibold text-sm text-black';
+      title.textContent = s.title || '';
+      info.appendChild(title);
+
+      if (s.excerpt) {
+        const excerpt = document.createElement('span');
+        excerpt.className = 'font-poppins text-xs text-gray-500 leading-relaxed';
+        excerpt.textContent = s.excerpt;
+        info.appendChild(excerpt);
+      }
+
+      const right = document.createElement('div');
+      right.className = 'flex flex-col items-end gap-1 shrink-0';
+
+      const url = safeHref(s.url);
+      if (url) {
+        const link = document.createElement('a');
+        link.className = 'font-poppins text-[10px] text-primary underline';
+        link.href = url;
+        link.textContent = 'Dowiedz się więcej';
+        link.addEventListener('click', (e) => e.stopPropagation());
+        right.appendChild(link);
+      }
+
+      card.append(info, right);
 
       card.addEventListener('click', () => {
         selectedService = s.title;
@@ -168,12 +191,22 @@ export default function booking() {
       calendar.innerHTML = '<p class="font-poppins text-sm text-gray-400 text-center py-8">Ładowanie...</p>';
 
       try {
-        const res = await fetch(`${restUrl}available?month=${month}&year=${year}`, {
+        const res = await fetchWithTimeout(`${restUrl}available?month=${month}&year=${year}`, {
           headers: { 'X-WP-Nonce': nonce },
         });
-        availabilityCache[cacheKey] = await res.json();
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const payload = await res.json();
+
+        // Waliduj kształt odpowiedzi — przy błędzie WP zwraca {code, message} bez blocked/booked
+        if (!Array.isArray(payload?.blocked) || !Array.isArray(payload?.booked)) {
+          throw new Error('Nieprawidłowa odpowiedź serwera');
+        }
+
+        availabilityCache[cacheKey] = payload; // cache dopiero po walidacji
       } catch {
-        calendar.innerHTML = '<p class="font-poppins text-sm text-red-500 text-center py-8">Błąd ładowania kalendarza</p>';
+        calendar.innerHTML = '<p class="font-poppins text-sm text-red-500 text-center py-8">Nie udało się załadować kalendarza. Odśwież stronę i spróbuj ponownie.</p>';
         return;
       }
     }
@@ -312,7 +345,7 @@ export default function booking() {
       submitBtn.textContent = 'Rezerwuję...';
 
       try {
-        const res = await fetch(`${restUrl}reserve`, {
+        const res = await fetchWithTimeout(`${restUrl}reserve`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -326,6 +359,7 @@ export default function booking() {
             email,
             phone,
             gdpr,
+            website: document.getElementById('booking-website')?.value || '',
           }),
         });
 

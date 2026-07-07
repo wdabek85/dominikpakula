@@ -1,10 +1,10 @@
 @php
   $phone = $contact['phone'] ?? '';
-  $phoneFallback = '+48 884 826 068';
+  $phoneFallback = '+48 577 190 949';
   $phoneLink = $contact['phone_link'] ?? '';
-  $phoneLinkFallback = '+48884826068';
+  $phoneLinkFallback = '+48577190949';
   $email = $contact['email'] ?? '';
-  $emailFallback = 'kontakt@dominikpakula.pl';
+  $emailFallback = 'kontakt@meskistylista.pl';
   $instagram = $social['instagram'] ?? '';
   $instagramHandle = $social['instagram_handle'] ?? 'dpakula_stylist';
   $whatsapp = $social['whatsapp'] ?? '';

@@ -1,4 +1,4 @@
-<section class="mx-auto max-w-[1440px] relative h-[800px] lg:h-[672px]">
+<section class="mx-auto max-w-[1440px] relative h-[520px] lg:h-[672px]">
   {{-- Background Image + Overlay --}}
   @if ($heroImage)
     <img
@@ -14,20 +14,20 @@
     <div class="flex flex-col lg:flex-row lg:items-end w-full gap-8">
 
       {{-- Left: Text + CTA --}}
-      <div class="flex flex-col gap-5 flex-1">
+      <div class="flex flex-col gap-6 lg:gap-5 flex-1">
         @if ($heroTitle)
-          <h1 class="font-poppins text-[30px] lg:text-[36px] text-white leading-normal">
+          <h1 class="font-poppins text-[30px] lg:text-[36px] text-white leading-tight lg:leading-normal">
             {{ $heroTitle }}
           </h1>
         @endif
 
         @if ($heroDescription)
-          <p class="font-poppins text-base text-white leading-normal">
+          <p class="hidden lg:block font-poppins text-base text-white leading-normal">
             {{ $heroDescription }}
           </p>
         @endif
 
-        @if ($heroButtonText)
+        @if ($heroButtonText && $heroButtonUrl)
           <div>
             <x-button
               :label="$heroButtonText"
@@ -58,7 +58,7 @@
               {{ $heroCardTitle }}
             </p>
 
-            @if ($heroCardLinkText)
+            @if ($heroCardLinkText && $heroCardLinkUrl)
               <a
                 href="{{ $heroCardLinkUrl }}"
                 class="inline-flex items-center gap-1.5 border border-white rounded px-2.5 py-0.5 font-poppins text-sm text-white leading-6 hover:bg-white/10 transition-colors w-fit"

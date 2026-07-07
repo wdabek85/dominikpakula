@@ -5,6 +5,8 @@
  * Trigger: any element with .voucher-trigger class
  */
 import createModalA11y from '../lib/modal-a11y.js';
+import { fetchWithTimeout } from '../lib/fetch-timeout.js';
+import { safeHref } from '../lib/safe-url.js';
 
 export default function voucher() {
   const modal = document.getElementById('voucher-modal');
@@ -98,17 +100,46 @@ export default function voucher() {
 
     services.forEach((s) => {
       const card = document.createElement('button');
+      card.type = 'button';
       card.className = 'w-full text-left border border-gray-200 rounded-sm p-4 hover:border-primary hover:bg-primary/5 transition-colors flex items-center justify-between gap-4 cursor-pointer';
-      card.innerHTML = `
-        <div class="flex flex-col gap-1 min-w-0">
-          <span class="font-poppins font-semibold text-sm text-black">${s.title}</span>
-          ${s.excerpt ? `<span class="font-poppins text-xs text-gray-500 leading-relaxed">${s.excerpt}</span>` : ''}
-        </div>
-        <div class="flex flex-col items-end gap-1 shrink-0">
-          ${s.price ? `<span class="font-poppins font-semibold text-base text-primary">${s.price}</span>` : ''}
-          <a href="${s.url}" class="font-poppins text-[10px] text-primary underline" onclick="event.stopPropagation()">Dowiedz się więcej</a>
-        </div>
-      `;
+
+      // Dane usług z panelu — textContent (anty-XSS) + safeHref (blokuje javascript:).
+      const info = document.createElement('div');
+      info.className = 'flex flex-col gap-1 min-w-0';
+
+      const title = document.createElement('span');
+      title.className = 'font-poppins font-semibold text-sm text-black';
+      title.textContent = s.title || '';
+      info.appendChild(title);
+
+      if (s.excerpt) {
+        const excerpt = document.createElement('span');
+        excerpt.className = 'font-poppins text-xs text-gray-500 leading-relaxed';
+        excerpt.textContent = s.excerpt;
+        info.appendChild(excerpt);
+      }
+
+      const right = document.createElement('div');
+      right.className = 'flex flex-col items-end gap-1 shrink-0';
+
+      if (s.price) {
+        const price = document.createElement('span');
+        price.className = 'font-poppins font-semibold text-base text-primary';
+        price.textContent = s.price;
+        right.appendChild(price);
+      }
+
+      const url = safeHref(s.url);
+      if (url) {
+        const link = document.createElement('a');
+        link.className = 'font-poppins text-[10px] text-primary underline';
+        link.href = url;
+        link.textContent = 'Dowiedz się więcej';
+        link.addEventListener('click', (e) => e.stopPropagation());
+        right.appendChild(link);
+      }
+
+      card.append(info, right);
 
       card.addEventListener('click', () => {
         selectedService = s.title;
@@ -166,7 +197,7 @@ export default function voucher() {
       submitBtn.textContent = 'Wysyłam...';
 
       try {
-        const res = await fetch(`${restUrl}voucher`, {
+        const res = await fetchWithTimeout(`${restUrl}voucher`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -182,6 +213,7 @@ export default function voucher() {
             buyer_email: buyerEmail,
             buyer_phone: buyerPhone,
             gdpr,
+            website: document.getElementById('voucher-website')?.value || '',
           }),
         });
 

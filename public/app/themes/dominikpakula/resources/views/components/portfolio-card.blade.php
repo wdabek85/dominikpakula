@@ -3,9 +3,10 @@
   'category' => '',
   'image' => '',
   'link' => '',
+  'grid' => false,
 ])
 
-<article class="relative shrink-0 w-[240px] h-[380px] lg:w-auto lg:h-[460px] lg:aspect-[3/4] rounded overflow-hidden group">
+<article class="relative overflow-hidden group rounded {{ $grid ? 'w-full aspect-[3/4]' : 'shrink-0 w-[240px] h-[380px] lg:w-auto lg:h-[460px] lg:aspect-[3/4]' }}">
 
   {{-- Zdjęcie --}}
   @if ($image)

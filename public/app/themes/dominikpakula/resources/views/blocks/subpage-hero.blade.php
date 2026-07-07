@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20">
+<section class="not-prose bg-white mx-auto max-w-[1440px] px-4 lg:px-20">
   <div class="flex flex-col lg:flex-row lg:items-center lg:gap-20 pt-12 lg:pt-0">
 
     {{-- Lewa: tekst --}}
@@ -34,7 +34,7 @@
 
       {{-- Lewe zdjęcie --}}
       @if ($imageLeft)
-        <div class="relative w-full lg:w-[238px] h-[478px] shrink-0 rounded-l-sm overflow-hidden">
+        <div class="relative w-full lg:w-[238px] h-[478px] shrink-0 rounded-sm lg:rounded-r-none overflow-hidden">
           <img
             src="{{ $imageLeft }}"
             alt="{{ $imageLeftAlt }}"
@@ -61,7 +61,7 @@
 
       {{-- Prawe zdjęcie --}}
       @if ($imageRight)
-        <div class="relative w-full lg:flex-1 h-[478px] rounded-r-sm overflow-hidden">
+        <div class="relative hidden lg:block w-full lg:flex-1 h-[478px] rounded-r-sm overflow-hidden">
           <img
             src="{{ $imageRight }}"
             alt="{{ $imageRightAlt }}"

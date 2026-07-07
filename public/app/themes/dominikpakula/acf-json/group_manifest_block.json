@@ -1,0 +1,57 @@
+{
+    "key": "group_manifest_block",
+    "title": "Blok: Filozofia / Cytat",
+    "fields": [
+        {
+            "key": "field_manifest_text",
+            "label": "Cytat",
+            "name": "manifest_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Cytat po lewej. Enter = łamanie linii.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Less is more.\nJakość jest ważniejsza od ilości — w garderobie, w pracy, w życiu.",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_manifest_image",
+            "label": "Zdjęcie (prawa strona)",
+            "name": "manifest_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Szerokie zdjęcie po prawej.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array",
+            "library": "all",
+            "preview_size": "medium",
+            "allow_in_bindings": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/manifest"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1780000006
+}

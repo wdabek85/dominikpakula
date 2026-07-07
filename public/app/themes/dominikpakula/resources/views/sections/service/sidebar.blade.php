@@ -1,12 +1,10 @@
 <div class="flex flex-col gap-4">
 
-  {{-- Trustpilot (hardcode) --}}
-  <div class="flex items-center gap-3 text-xs text-black">
-    <span class="font-bold">Excellent</span>
-    <span>
-      <span class="font-bold">4.8</span> out of 5
-    </span>
-    <span class="font-bold">Trustpilot</span>
+  {{-- Doświadczenie --}}
+  <div class="flex items-center gap-2 text-xs text-black">
+    <span class="font-bold">Stylista męski</span>
+    <span class="text-black/40" aria-hidden="true">·</span>
+    <span>od 2020 roku</span>
   </div>
 
   {{-- Tytuł + opis (ACF) --}}
@@ -28,7 +26,7 @@
       <p class="font-poppins text-[10px] text-black">
         Umów się na konsultacje
         <span class="text-[#655098]"> - </span>
-        <a href="#" class="text-[#655098] underline">Jak to działa?</a>
+        <a href="{{ home_url('/konsultacje/') }}" class="text-[#655098] underline">Jak to działa?</a>
       </p>
     </div>
 
@@ -117,7 +115,7 @@
       Kup dla kogoś
     </a>
 
-    <a href="#" class="flex items-center gap-0.5 text-[#655098] text-[10px] underline font-sans">
+    <a href="{{ home_url('/regulamin/') }}" class="flex items-center gap-0.5 text-[#655098] text-[10px] underline font-sans">
       <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
       </svg>

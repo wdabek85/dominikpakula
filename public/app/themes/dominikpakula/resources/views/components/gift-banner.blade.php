@@ -1,7 +1,7 @@
-@props(['href' => '#'])
+@props(['href' => '', 'serviceName' => null])
 
 <a
-  href="{{ $href }}"
+  href="{{ $href ?: home_url('/voucher/') }}"
   {{ $attributes->merge(['class' => 'bg-primary flex items-center gap-2 rounded-lg border-l border-white pr-2 py-4 group no-underline']) }}
   aria-label="Kup voucher na prezent"
 >
@@ -23,7 +23,7 @@
       To bardzo dobry prezent "z efektem", bo realnie zmienia codzienność: mniej chaosu, więcej pewności, szybsze poranki.
     </p>
     <p class="font-poppins font-medium text-sm lg:text-base leading-tight text-white">
-      <span class="underline">Jest osobna strona do zakupu vouchera na przegląd szafy + zakupy</span>.
+      <span class="underline">Jest osobna strona do zakupu vouchera na {{ $serviceName ?: (get_the_title() ?: 'tę usługę') }}</span>.
     </p>
   </div>
 

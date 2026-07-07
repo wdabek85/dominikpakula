@@ -38,9 +38,11 @@
         <h3 class="font-sans font-medium text-[30px] leading-[38px] text-[#1d1d1d]">
           Poradniki
         </h3>
-        <a href="{{ home_url('/poradniki/') }}" class="font-sans font-bold text-base leading-[18px] text-accent hover:underline">
-          Zobacz Więcej &rarr;
-        </a>
+        @if ($guides)
+          <a href="{{ home_url('/poradniki/') }}" class="font-sans font-bold text-base leading-[18px] text-accent hover:underline">
+            Zobacz Więcej &rarr;
+          </a>
+        @endif
       </div>
 
       {{-- Lista poradników --}}
@@ -78,6 +80,19 @@
               </div>
             </a>
           @endforeach
+        </div>
+      @else
+        {{-- Pusty stan — jeszcze brak poradników, ale w drodze --}}
+        <div class="flex flex-col items-center gap-2 text-center bg-[#f1f1f1] rounded-sm px-5 py-8">
+          <span class="flex items-center justify-center size-12 rounded-full bg-white text-primary mb-1 shrink-0">
+            <x-icons.document class="size-6" />
+          </span>
+          <p class="font-sans font-medium text-base leading-tight text-black">
+            Poradniki są już w drodze
+          </p>
+          <p class="font-sans text-sm leading-relaxed text-black/60">
+            Jeszcze nic tu nie ma, ale wkrótce pojawią się pierwsze praktyczne poradniki o stylu.
+          </p>
         </div>
       @endif
 

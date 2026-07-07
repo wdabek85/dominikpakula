@@ -29,7 +29,7 @@ add_action('init', function () {
         'menu_icon' => 'dashicons-portfolio',
         'menu_position' => 26,
         'supports' => ['title', 'thumbnail'],
-        'has_archive' => false,
+        'has_archive' => true,
         'rewrite' => ['slug' => 'realizacje', 'with_front' => false],
         'exclude_from_search' => false,
         'publicly_queryable' => true,

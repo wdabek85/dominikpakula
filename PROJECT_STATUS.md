@@ -254,6 +254,7 @@ resources/images/
 | Blog | blocks.blog | BlogBlockComposer | Gotowy (3 najnowsze) |
 | **Blog – Archiwum z filtrami** | blocks.blog-archive | **BlogArchiveBlockComposer** | **Gotowy (sezon 2)** |
 | **Poradniki – Archiwum** | blocks.guides-archive | **GuidesArchiveBlockComposer** | **Gotowy — grid guide + paginacja + pusty stan z CTA newsletter** |
+| **Konsultacja / Jak to działa** | blocks.consultation-process | **ConsultationProcessBlockComposer** | **Gotowy — schodkowe 4 kroki + CTA .booking-trigger (podstrona /konsultacje/)** |
 | Newsletter | blocks.newsletter | — | Gotowy (z SVG illustration) |
 | **Newsletter + Instagram** | blocks.subscribe | — | **Gotowy (sezon 2)** |
 | Kontakt | blocks.contact | — | Gotowy |
@@ -986,6 +987,53 @@ Domyślny `page.blade.php` renderował goły `<h1>` + surowe `the_content()` bez
 - Surowe `<?php the_post(); the_content(); ?>` zamiast `@php(...)` inline (zgodnie z zasadą dla PHP 8.5).
 - Działa automatycznie dla każdej strony na domyślnym szablonie. Strony z blokami (template-blocks/front-page) nietknięte.
 - **Uwaga:** rozwiązanie zakłada, że nagłówek usera to blok renderowany jako `<section>` (themowy `page-header`). Blok innego typu (core Cover/Group) trzeba by dodać do wyjątku selektora.
+
+### Podstrona Konsultacje (2026-07-02)
+Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak to działa?" z sidebara usługi. Reużywa schodkowy design 4 kroków ze strony głównej (`blocks.process.step-card`) i modal rezerwacji.
+- `app/View/Composers/ConsultationProcessBlockComposer.php` — ACF z fallbackami: label/title/lead + repeater `consultation_steps` (4 hardcoded fallback kroki: Wybierasz termin → Potwierdzamy SMS/mail → Rozmawiamy → Umawiamy usługę) + CTA label/service + footer.
+- `resources/views/blocks/consultation-process.blade.php` — intro + schodki (reuse step-card) + CTA `<x-button class="booking-trigger" data-service="Konsultacja">` (otwiera modal, pomija wybór usługi).
+- `app/blocks.php` — rejestracja bloku `consultation-process`.
+- `sections/service/sidebar.blade.php` — link „Jak to działa?" `href="#"` → `home_url('/konsultacje/')`.
+- Backend rezerwacji nietknięty. SMS wg planu przez Make.com (obecnie tylko e-mail).
+
+### Domknięcie martwych linków — 3 punkty (2026-07-02)
+1. **Strona „O mnie"** (`/o-mnie/`) — placeholder utworzony przez wp-cli, potem **USUNIĘTY na życzenie usera** (ma własną wersję z innego urządzenia). Link `/o-mnie/` w bloku `service-video` pozostaje — zadziała, gdy user opublikuje swoją stronę o slugu `o-mnie` (obecnie 404 do tego czasu).
+2. **Archiwum realizacji** (`/realizacje/`) — `PostTypes/Portfolio.php` `has_archive => true`; nowy szablon `archive-portfolio.blade.php` (grid 2/3/4 kol + paginacja + pusty stan) + `ArchivePortfolioComposer` (WP_Query portfolio, mapowanie na `portfolio-card`). `portfolio-card` dostał prop `grid` (w-full aspect-[3/4] zamiast fixed-width slidera). Auto-flush rewrite: `dp_rewrite_version` bump → `2026070202`.
+3. **CTA chowają się gdy URL pusty** (zamiast linku do `#`): composery `Hero/Offer/Video/Voucher` fallback `'#'`→`''`; warunki w Blade `@if (text && url)` w `hero`, `offer/index`, `voucher` (@elseif url), `components/video-section` (oba warianty + default `''`). Koniec z „przyciskiem donikąd".
+
+### Audyt bezpieczeństwa + martwe linki (2026-07-02)
+**Bezpieczeństwo formularzy:**
+- `app/Booking/Api.php` — `get_client_ip()` przepisane: **REMOTE_ADDR jako źródło prawdy** (nie da się sfałszować). Nagłówki proxy (CF-Connecting-IP / X-Forwarded-For) honorowane TYLKO gdy zdefiniujesz `BOOKING_TRUST_PROXY` w wp-config (np. za Cloudflare). Naprawia potwierdzony bypass rate-limitu przez spoofing nagłówka IP + fałszowanie logu RODO.
+- Honeypot dodany do `/reserve` (Api.php) i `/voucher` (VoucherApi.php) — wcześniej miały go tylko contact/newsletter. Pola `website` w formularzach booking/voucher (booking-modal, voucher-modal) + wysyłka w booking.js/voucher.js.
+- **Znane, świadomie zostawione (NISKI):** brak weryfikacji nonce na publicznych endpointach (rate-limit + honeypot jako obrona), Reply-To z `$name` w contact (newline'y ucięte), race condition podwójnej rezerwacji.
+
+**Martwe linki — naprawione w kodzie:**
+- Social w `sections/header.blade.php` + `header/nav-mobile.blade.php` — `href="#"` → warunkowo z `$social` (FB/TikTok znikają gdy brak URL; IG z fallbacku). `target=_blank rel=noopener`.
+- `blocks/newsletter.blade.php` — „warunki korzystania z usługi" `#` → `/regulamin/`.
+
+**Martwe linki — wymagają strony (nie kod):**
+- `/polityka-prywatnosci/` i `/regulamin/` — strony w **draft** → 404. Do opublikowania (treść usera).
+- `/o-mnie/` (CTA w `service-video`) — strona nie istnieje. Do utworzenia.
+- `/realizacje/` (breadcrumb pojedynczej realizacji) — Portfolio CPT ma `has_archive=false`, brak archiwum. Do decyzji: włączyć archiwum + szablon / strona / zmiana linku.
+
+### Pusty stan poradników w bloku knowledge-base (2026-07-02)
+- `blocks/knowledge-base.blade.php` — prawa kolumna „Poradniki" renderowała listę tylko `@if ($guides)`; przy braku poradników zostawała pusta. Dodany `@else` z kartą pustego stanu (ikona document + „Poradniki są już w drodze" + zachęta), spójny z pustym stanem `guides-archive`. „Zobacz Więcej →" ukrywane, gdy brak poradników.
+
+### Fix linków w sidebarze usługi (2026-07-02)
+- `sections/service/sidebar.blade.php` — „Sprawdź Regulamin Oferty" `href="#"` → `home_url('/regulamin/')`.
+- `components/gift-banner.blade.php` — domyślny `href` „Pomysł na prezent (voucher)" `#` → `home_url('/voucher/')` (banner używany w bloku `service-desc` „Dla kogo" na każdej usłudze). Explicit href nadal nadpisuje.
+
+### Deploy 2026-07-02
+- Commit `07d54d7` na `develop` → push. Merge do `staging` (`7b4f72f`) i **`main` (`b162aad`) — pierwszy pełny release produkcyjny** (wcześniej main = tylko „Initial commit"). Wszystkie 3 branche `0 0` z origin, zero konfliktów.
+- Serwer dhosting (`dominikpakula.wdb-creative.pl`, branch `staging`): `git pull` + `npm run build` OK.
+- **UWAGA:** udokumentowany jest tylko ten jeden serwer (ciągnie `staging`). Jeśli istnieje osobny host produkcyjny — brak jego danych w pamięci, do uzupełnienia.
+
+**Utworzone na serwerze przez wp-cli (2026-07-02):**
+- Strona **Poradniki** (ID 378, publish, `template-blocks`): page-header „Poradniki" → guides-archive → subscribe → contact. Zweryfikowana curl-em: HTTP 200, renderuje grid 4 poradników (są demo dane: stacje narciarskie/e-commerce/hak). Single guide `/poradniki/{slug}/` też 200 (bez kolizji ze slugiem strony).
+- Strona **Regulamin** (ID 379, **draft**): page-header + placeholder — do wklejenia treści i publikacji.
+- Kategorie `guide_category`: Stylizacje (7), Garderoba (8), Okazje specjalne (9) — jeszcze nieprzypisane do poradników (chipsy filtrów pojawią się po przypisaniu).
+- `wp rewrite flush` wykonany.
+- **Do zrobienia przez usera:** przypisać kategorie do poradników; opublikować Regulamin (po wklejeniu treści); **opublikować Politykę prywatności (ID 3 — nadal draft, link w stopce daje 404)**; podmienić demo-poradniki na realne treści.
 
 ### Do zrobienia ręcznie (user)
 - [ ] Utworzyć kategorie poradników (Poradniki → Kategorie) i przypisać je do poradników — dopiero wtedy pojawi się pasek filtrów (chipsy renderują się tylko dla `hide_empty=true`).

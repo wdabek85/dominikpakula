@@ -41,6 +41,24 @@ class ServiceComposer extends Composer
             'includedItems' => $this->includedItems(),
             'sidebarTestimonial' => $this->sidebarTestimonial(),
             'relatedServices' => $this->relatedServices(),
+            'breadcrumbParent' => $this->breadcrumbParent(),
+        ];
+    }
+
+    /**
+     * Rodzic w breadcrumbs — gdy usługa jest podstroną innej usługi.
+     */
+    protected function breadcrumbParent(): ?array
+    {
+        $parentId = \wp_get_post_parent_id(get_the_ID());
+
+        if (! $parentId) {
+            return null;
+        }
+
+        return [
+            'title' => get_the_title($parentId),
+            'url' => get_permalink($parentId),
         ];
     }
 
@@ -76,6 +94,7 @@ class ServiceComposer extends Composer
         $posts = get_posts([
             'post_type' => 'service',
             'posts_per_page' => 3,
+            'post_parent' => 0, // tylko usługi główne — podstrony ukryte z panelu
             'post__not_in' => $currentId ? [$currentId] : [],
             'orderby' => 'menu_order',
             'order' => 'ASC',

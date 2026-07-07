@@ -1,0 +1,158 @@
+{
+    "key": "group_local_seo_block",
+    "title": "Blok: Linki lokalne (SEO)",
+    "fields": [
+        {
+            "key": "field_local_eyebrow",
+            "label": "Etykieta (eyebrow)",
+            "name": "local_eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Mała etykieta nad nagłówkiem.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Okolica",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_local_heading",
+            "label": "Nagłówek sekcji",
+            "name": "local_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Zakupy ze stylistą w Twoim mieście",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_local_items",
+            "label": "Karty / linki",
+            "name": "local_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Każda karta: zdjęcie + tytuł + link do podstrony (miasto, okazja itp.).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_local_item_title",
+            "button_label": "Dodaj kartę",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_local_item_image",
+                    "label": "Zdjęcie",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "allow_in_bindings": 0,
+                    "preview_size": "medium",
+                    "parent_repeater": "field_local_items"
+                },
+                {
+                    "key": "field_local_item_title",
+                    "label": "Tytuł",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "np. Zakupy ze stylistą Kraków",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_local_items"
+                },
+                {
+                    "key": "field_local_item_url",
+                    "label": "Link (URL)",
+                    "name": "url",
+                    "aria-label": "",
+                    "type": "url",
+                    "instructions": "Adres podstrony lokalnej, np. /zakupy-ze-stylista-krakow/",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_local_items"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/local-seo"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1780000000
+}

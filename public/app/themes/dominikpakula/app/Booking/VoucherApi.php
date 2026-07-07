@@ -23,6 +23,14 @@ function api_voucher_order(\WP_REST_Request $request): \WP_REST_Response
 
     $data = $request->get_json_params();
 
+    // Honeypot — jeśli wypełnione, udawaj sukces (bot), nie wysyłaj maili
+    if (! empty($data['website'])) {
+        return new \WP_REST_Response([
+            'success' => true,
+            'message' => 'Zamówienie przyjęte! Sprawdź swoją skrzynkę e-mail — wyślemy instrukcję zakupu.',
+        ], 200);
+    }
+
     $service = sanitize_text_field($data['service'] ?? '');
     $recipientFirst = sanitize_text_field($data['recipient_first_name'] ?? '');
     $recipientLast = sanitize_text_field($data['recipient_last_name'] ?? '');
