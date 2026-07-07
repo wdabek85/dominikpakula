@@ -14,7 +14,7 @@
     </h2>
   @endif
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 lg:items-start">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
 
     {{-- TAK (lewa kolumna) --}}
     @if (! empty($positive['items']))
@@ -36,7 +36,7 @@
     @endif
 
     {{-- Prawa kolumna: POLECAM (ciemna) + NIE (szara) --}}
-    <div class="flex flex-col gap-5 lg:gap-6">
+    <div class="flex flex-col gap-5 lg:gap-6 lg:h-full">
 
       {{-- POLECAM — ciemna karta z gradientem (styl kafelka Instagram) --}}
       @if (! empty($highlight['items']))
@@ -65,7 +65,7 @@
 
       {{-- NIE --}}
       @if (! empty($negative['items']))
-        <div class="bg-[#f1f1f1] border border-black/10 rounded-lg p-6 lg:p-7">
+        <div class="bg-[#f1f1f1] border border-black/10 rounded-lg p-6 lg:p-7 lg:flex-1">
           <p class="font-poppins font-semibold text-base text-black mb-5">
             {{ $negative['title'] }}
           </p>
