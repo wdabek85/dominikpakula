@@ -40,6 +40,25 @@
         <x-icons.chevron-right class="size-[11px] text-black" />
       </li>
 
+      @if (! empty($breadcrumbParent))
+        <li
+          class="flex items-center gap-[3px] shrink-0"
+          itemprop="itemListElement"
+          itemscope
+          itemtype="https://schema.org/ListItem"
+        >
+          <a
+            href="{{ $breadcrumbParent['url'] }}"
+            class="font-poppins text-[10px] text-black"
+            itemprop="item"
+          >
+            <span itemprop="name">{{ $breadcrumbParent['title'] }}</span>
+          </a>
+          <meta itemprop="position" content="3">
+          <x-icons.chevron-right class="size-[11px] text-black" />
+        </li>
+      @endif
+
       <li
         class="flex items-center shrink-0"
         itemprop="itemListElement"
@@ -49,7 +68,7 @@
         <span class="font-poppins text-[10px] text-black" itemprop="name">
           {{ get_the_title() }}
         </span>
-        <meta itemprop="position" content="3">
+        <meta itemprop="position" content="{{ ! empty($breadcrumbParent) ? 4 : 3 }}">
       </li>
     </ol>
   </nav>
