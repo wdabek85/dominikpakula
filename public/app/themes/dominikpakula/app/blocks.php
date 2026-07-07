@@ -184,8 +184,8 @@ add_action('acf/init', function () {
         ],
         [
             'name' => 'manifest',
-            'title' => 'Manifest / Cytat',
-            'description' => 'Pełnoszerokościowy, duży cytat/manifest (eyebrow + mocne zdanie + podpis) na jasnym tle.',
+            'title' => 'Filozofia / Cytat',
+            'description' => 'Duży cudzysłów + cytat + avatar/podpis po lewej, szerokie zdjęcie po prawej. Wg Figmy.',
             'icon' => 'format-quote',
             'render_template' => 'blocks.manifest',
         ],
