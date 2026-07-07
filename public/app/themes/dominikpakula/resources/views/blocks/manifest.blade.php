@@ -8,13 +8,13 @@
           <span class="block font-metro text-xs uppercase tracking-[3px] text-black/60 mb-4">{{ $eyebrow }}</span>
         @endif
 
-        {{-- Duży cudzysłów --}}
-        <span aria-hidden="true" class="block font-serif text-[130px] lg:text-[180px] leading-[0.55] text-primary select-none">&bdquo;</span>
-
-        {{-- Cytat --}}
-        <p class="font-poppins font-light text-[26px] lg:text-[34px] leading-[1.2] tracking-tight text-[#19121e] mt-3 max-w-[460px]">
-          {{ $text }}
-        </p>
+        {{-- Cudzysłów (lewa) + cytat (obok) — bez nachodzenia --}}
+        <div class="flex items-start gap-5 lg:gap-8">
+          <span aria-hidden="true" class="shrink-0 font-serif font-bold text-[100px] lg:text-[150px] leading-[0.7] text-primary select-none">&bdquo;</span>
+          <p class="font-poppins font-light text-[24px] lg:text-[32px] leading-[1.3] tracking-tight text-[#19121e] pt-4 lg:pt-8">
+            {{ $text }}
+          </p>
+        </div>
 
         {{-- Autor --}}
         @if ($image || $attribution)
