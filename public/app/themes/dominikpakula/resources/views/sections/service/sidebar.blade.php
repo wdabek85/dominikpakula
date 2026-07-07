@@ -1,12 +1,10 @@
 <div class="flex flex-col gap-4">
 
-  {{-- Trustpilot (hardcode) --}}
-  <div class="flex items-center gap-3 text-xs text-black">
-    <span class="font-bold">Excellent</span>
-    <span>
-      <span class="font-bold">4.8</span> out of 5
-    </span>
-    <span class="font-bold">Trustpilot</span>
+  {{-- Doświadczenie --}}
+  <div class="flex items-center gap-2 text-xs text-black">
+    <span class="font-bold">Stylista męski</span>
+    <span class="text-black/40" aria-hidden="true">·</span>
+    <span>od 2020 roku</span>
   </div>
 
   {{-- Tytuł + opis (ACF) --}}
