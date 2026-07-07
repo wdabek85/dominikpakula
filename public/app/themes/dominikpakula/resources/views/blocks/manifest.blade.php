@@ -1,46 +1,40 @@
 @if ($text || $image)
-  <section class="not-prose bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-12 lg:py-20">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+  <section class="not-prose bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-12 lg:py-16 overflow-hidden">
+    <div class="flex flex-col gap-6 lg:block lg:relative lg:h-[620px]">
 
-      {{-- LEWA: cytat --}}
-      <div>
-        <span aria-hidden="true" class="block font-serif text-[110px] lg:text-[150px] leading-[0.5] text-primary select-none">&bdquo;</span>
+      {{-- Cudzysłów (grafika) --}}
+      <img
+        src="{{ Vite::asset('resources/images/quote-mark.png') }}"
+        alt=""
+        aria-hidden="true"
+        class="w-24 lg:w-[420px] select-none pointer-events-none lg:absolute lg:left-0 lg:top-[14%]"
+      >
 
-        @if ($text)
-          <p class="font-poppins text-[28px] lg:text-[40px] leading-tight lg:leading-[56px] tracking-[-0.8px] text-black mt-3 max-w-[466px]">
-            {!! nl2br(e($text)) !!}
-          </p>
-        @endif
+      {{-- Cytat --}}
+      @if ($text)
+        <p class="font-poppins text-[26px] lg:text-[40px] leading-tight lg:leading-[56px] tracking-[-0.8px] text-black max-w-[466px] lg:absolute lg:left-[15%] lg:top-[5%] lg:w-[466px]">
+          {!! nl2br(e($text)) !!}
+        </p>
+      @endif
 
-        @if ($avatar || $label)
-          <div class="flex flex-col gap-3 mt-8 lg:mt-10">
-            @if ($avatar)
-              <img
-                src="{{ $avatar }}"
-                alt="{{ $avatarAlt ?: $label }}"
-                class="size-[84px] lg:size-[96px] rounded-md object-cover"
-                width="96"
-                height="96"
-                loading="lazy"
-              >
-            @endif
-            @if ($label)
-              <span class="font-poppins text-base text-black/70">{{ $label }}</span>
-            @endif
-          </div>
-        @endif
-      </div>
-
-      {{-- PRAWA: duże zdjęcie --}}
+      {{-- Duże zdjęcie (prawa) --}}
       @if ($image)
-        <div class="rounded-lg overflow-hidden">
-          <img
-            src="{{ $image }}"
-            alt="{{ $imageAlt }}"
-            class="w-full aspect-[772/377] object-cover"
-            loading="lazy"
-          >
-        </div>
+        <img
+          src="{{ $image }}"
+          alt="{{ $imageAlt }}"
+          class="w-full rounded-lg object-cover aspect-[664/377] lg:absolute lg:right-0 lg:top-0 lg:w-[46%]"
+          loading="lazy"
+        >
+      @endif
+
+      {{-- Mały portret (środek) --}}
+      @if ($avatar)
+        <img
+          src="{{ $avatar }}"
+          alt="{{ $avatarAlt }}"
+          class="size-40 lg:size-[215px] rounded-lg object-cover lg:absolute lg:left-[34%] lg:top-[44%]"
+          loading="lazy"
+        >
       @endif
 
     </div>
