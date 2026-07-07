@@ -3,23 +3,6 @@
     "title": "Blok: Prywatnie / Poza pracą",
     "fields": [
         {
-            "key": "field_pl_eyebrow",
-            "label": "Etykieta (eyebrow)",
-            "name": "pl_eyebrow",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
-            "default_value": "Poza pracą",
-            "maxlength": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_pl_heading",
             "label": "Nagłówek",
             "name": "pl_heading",
