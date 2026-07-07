@@ -157,6 +157,15 @@ Config::define('WP_POST_REVISIONS', env('WP_POST_REVISIONS') ?? true);
 Config::define('CONCATENATE_SCRIPTS', false);
 
 /**
+ * Third-party integrations
+ */
+// Brevo newsletter (see app/Booking/NewsletterBrevo.php)
+Config::define('BREVO_API_KEY', env('BREVO_API_KEY') ?: '');
+Config::define('BREVO_LIST_ID', env('BREVO_LIST_ID') ?: '');
+Config::define('BREVO_DOI_TEMPLATE_ID', env('BREVO_DOI_TEMPLATE_ID') ?: '');
+Config::define('BREVO_DOI_REDIRECT_URL', env('BREVO_DOI_REDIRECT_URL') ?: '');
+
+/**
  * Debugging Settings
  */
 Config::define('WP_DEBUG_DISPLAY', false);
