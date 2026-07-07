@@ -92,4 +92,9 @@
 
   </div>
 
+  {{-- Banner voucherowy (nazwa usługi dynamicznie) --}}
+  <div class="mt-5 lg:mt-6">
+    <x-gift-banner />
+  </div>
+
 </div>
