@@ -52,6 +52,6 @@ function api_newsletter_subscribe(\WP_REST_Request $request): \WP_REST_Response
 
     return new \WP_REST_Response([
         'success' => true,
-        'message' => 'Dzięki! Sprawdź skrzynkę i potwierdź zapis.',
+        'message' => 'Dzięki! Jesteś zapisany na newsletter.',
     ], 200);
 }

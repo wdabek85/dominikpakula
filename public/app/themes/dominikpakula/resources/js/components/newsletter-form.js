@@ -66,7 +66,7 @@ export default function newsletterForm() {
 
       if (res.ok && result.success) {
         submitBtn.textContent = 'Zapisano ✓';
-        showSuccess(result.message || 'Dzięki! Sprawdź skrzynkę i potwierdź zapis.');
+        showSuccess(result.message || 'Dzięki! Jesteś zapisany na newsletter.');
         emailInput.value = '';
       } else {
         showError(result.error || 'Wystąpił błąd. Spróbuj ponownie.');
