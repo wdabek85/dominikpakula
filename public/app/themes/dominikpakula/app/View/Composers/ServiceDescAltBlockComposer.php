@@ -23,26 +23,41 @@ class ServiceDescAltBlockComposer extends Composer
                     'masz chaos w ubraniach (różne style, rozmiary, przypadkowe zakupy)',
                     'chcesz mieć prostą garderobę, która działa: praca / codziennie / wyjście',
                 ],
+                'allowHtml' => false,
             ],
             'negative' => [
                 'title' => \get_field('descb_negative_title') ?: 'To nie ta usługa, jeśli:',
-                'items' => $this->items('descb_negative_items') ?: [
+                'items' => $this->items('descb_negative_items', true) ?: [
                     'potrzebujesz tylko jednej stylizacji na konkretną okazję',
-                    'szukasz gotowej listy zakupów bez konsultacji',
                 ],
+                'allowHtml' => true,
             ],
         ];
     }
 
-    protected function items(string $field): array
+    /**
+     * Punkty z repeatera. Gdy $allowHtml — dopuszcza linki (wp_kses_post),
+     * ściąga <p> od WYSIWYG i dokleja „ →" wewnątrz <a> (klikalna strzałka).
+     */
+    protected function items(string $field, bool $allowHtml = false): array
     {
         $rows = \get_field($field) ?: [];
         $items = [];
 
         foreach ($rows as $row) {
-            $val = trim((string) ($row['item_text'] ?? ''));
-            if ($val !== '') {
-                $items[] = $val;
+            $raw = (string) ($row['item_text'] ?? '');
+
+            if ($allowHtml) {
+                $clean = \wp_kses_post($raw);
+                $clean = preg_replace('#</?p[^>]*>#i', '', $clean);
+                $clean = preg_replace('/(<a[^>]*>)(.*?)(<\/a>)/iu', '$1$2 →$3', (string) $clean);
+                $clean = trim((string) $clean);
+            } else {
+                $clean = trim($raw);
+            }
+
+            if ($clean !== '') {
+                $items[] = $clean;
             }
         }
 

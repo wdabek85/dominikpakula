@@ -47,7 +47,13 @@
               <span class="size-6 shrink-0 mt-0.5 rounded-full bg-black/10 flex items-center justify-center" aria-hidden="true">
                 <x-icons.x-mark class="size-4 text-black/50" />
               </span>
-              <span class="font-poppins text-sm leading-relaxed text-black/70">{{ $item }}</span>
+              <span class="font-poppins text-sm leading-relaxed text-black/70 [&_a]:font-semibold [&_a]:text-black [&_a]:underline [&_a]:underline-offset-2 [&_a]:whitespace-nowrap [&_a]:hover:text-primary [&_a]:transition-colors">
+                @if (! empty($negative['allowHtml']))
+                  {!! $item !!}
+                @else
+                  {{ $item }}
+                @endif
+              </span>
             </li>
           @endforeach
         </ul>
