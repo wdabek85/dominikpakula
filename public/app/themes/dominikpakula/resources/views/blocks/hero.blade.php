@@ -1,4 +1,4 @@
-<section class="mx-auto max-w-[1440px] relative h-[800px] lg:h-[672px]">
+<section class="mx-auto max-w-[1440px] relative h-[520px] lg:h-[672px]">
   {{-- Background Image + Overlay --}}
   @if ($heroImage)
     <img
@@ -22,7 +22,7 @@
         @endif
 
         @if ($heroDescription)
-          <p class="font-poppins text-base text-white leading-normal">
+          <p class="hidden lg:block font-poppins text-base text-white leading-normal">
             {{ $heroDescription }}
           </p>
         @endif
