@@ -15,7 +15,6 @@ class PersonalLifeBlockComposer extends Composer
         $image = \get_field('pl_image');
 
         return [
-            'eyebrow' => \get_field('pl_eyebrow') ?: '',
             'heading' => \get_field('pl_heading') ?: '',
             'body' => \wpautop(\get_field('pl_body') ?: ''),
             'image' => is_array($image) ? ($image['url'] ?? '') : '',
