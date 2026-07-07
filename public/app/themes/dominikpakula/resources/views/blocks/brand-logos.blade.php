@@ -22,7 +22,7 @@
 
     {{-- Logotypy --}}
     @if (! empty($logos))
-      <ul class="list-none p-0 m-0 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-10 items-center">
+      <ul class="list-none p-0 m-0 grid grid-cols-2 md:grid-cols-4 gap-x-12 lg:gap-x-16 gap-y-12 items-center max-w-[900px] mx-auto">
         @foreach ($logos as $logo)
           <li class="group flex items-center justify-center">
             @if ($logo['link'])
