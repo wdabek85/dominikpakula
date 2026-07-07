@@ -14,9 +14,9 @@
     <div class="flex flex-col lg:flex-row lg:items-end w-full gap-8">
 
       {{-- Left: Text + CTA --}}
-      <div class="flex flex-col gap-5 flex-1">
+      <div class="flex flex-col gap-6 lg:gap-5 flex-1">
         @if ($heroTitle)
-          <h1 class="font-poppins text-[30px] lg:text-[36px] text-white leading-normal">
+          <h1 class="font-poppins text-[30px] lg:text-[36px] text-white leading-tight lg:leading-normal">
             {{ $heroTitle }}
           </h1>
         @endif
