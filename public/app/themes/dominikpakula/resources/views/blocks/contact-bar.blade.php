@@ -1,6 +1,6 @@
 @php
   $email = $contact['email'] ?? '';
-  $emailFallback = 'kontakt@dominikpakula.pl';
+  $emailFallback = 'kontakt@meskistylista.pl';
   $phone = $contact['phone'] ?? '';
   $phoneFallback = '+48 884 826 068';
   $phoneLink = $contact['phone_link'] ?? '';
