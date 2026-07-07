@@ -197,13 +197,6 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.text-columns',
         ],
         [
-            'name' => 'personal-life',
-            'title' => 'Prywatnie / Poza pracą',
-            'description' => 'Szara karta: zdjęcie + eyebrow/nagłówek/tekst. Humanizacja (pasje, poza pracą).',
-            'icon' => 'admin-users',
-            'render_template' => 'blocks.personal-life',
-        ],
-        [
             'name' => 'blog-archive',
             'title' => 'Blog – Archiwum z filtrami',
             'description' => 'Pasek filtrów (kategorie + sezon) + grid wszystkich wpisów + paginacja',
