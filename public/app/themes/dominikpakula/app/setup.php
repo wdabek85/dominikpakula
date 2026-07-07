@@ -9,6 +9,16 @@ namespace App;
 use Illuminate\Support\Facades\Vite;
 
 /**
+ * Wyłącz cache LiteSpeed poza produkcją — staging/dev iterują za często,
+ * a serwerowy cache LiteSpeed (bez wtyczki) serwuje stary render wszystkim.
+ */
+add_action('send_headers', function () {
+    if (! defined('WP_ENV') || WP_ENV !== 'production') {
+        \header('X-LiteSpeed-Cache-Control: no-cache');
+    }
+});
+
+/**
  * Inject styles into the block editor.
  *
  * @return array
