@@ -12,24 +12,15 @@
 <section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-6 lg:py-8">
   <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-12 text-[#19121e]">
 
-    {{-- Lewa: adres + dane formalne (NIP/REGON) --}}
+    {{-- Lewa: adres --}}
     <div class="flex flex-col gap-6">
       <div class="flex items-start gap-2">
         <x-icons.location class="size-4 shrink-0 mt-0.5" />
         <div class="flex flex-col font-poppins text-sm leading-tight">
-          <span>{{ $addressLine1 ?: 'ul. Marszałkowska 1' }}</span>
-          <span>{{ $addressLine2 ?: '00-001 Warszawa' }}</span>
-        </div>
-      </div>
-
-      <div class="flex flex-col gap-2 font-poppins text-sm">
-        <div class="flex items-center gap-2">
-          <x-icons.document class="size-4 shrink-0" />
-          <span>NIP: <span class="text-[#19121e]/60 italic">000-000-00-00</span></span>
-        </div>
-        <div class="flex items-center gap-2">
-          <x-icons.document class="size-4 shrink-0" />
-          <span>REGON: <span class="text-[#19121e]/60 italic">000000000</span></span>
+          <span>{{ $addressLine1 ?: 'Kraków' }}</span>
+          @if ($addressLine2)
+            <span>{{ $addressLine2 }}</span>
+          @endif
         </div>
       </div>
     </div>

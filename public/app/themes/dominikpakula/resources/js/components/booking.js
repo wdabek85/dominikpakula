@@ -171,9 +171,19 @@ export default function booking() {
         const res = await fetch(`${restUrl}available?month=${month}&year=${year}`, {
           headers: { 'X-WP-Nonce': nonce },
         });
-        availabilityCache[cacheKey] = await res.json();
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const payload = await res.json();
+
+        // Waliduj kształt odpowiedzi — przy błędzie WP zwraca {code, message} bez blocked/booked
+        if (!Array.isArray(payload?.blocked) || !Array.isArray(payload?.booked)) {
+          throw new Error('Nieprawidłowa odpowiedź serwera');
+        }
+
+        availabilityCache[cacheKey] = payload; // cache dopiero po walidacji
       } catch {
-        calendar.innerHTML = '<p class="font-poppins text-sm text-red-500 text-center py-8">Błąd ładowania kalendarza</p>';
+        calendar.innerHTML = '<p class="font-poppins text-sm text-red-500 text-center py-8">Nie udało się załadować kalendarza. Odśwież stronę i spróbuj ponownie.</p>';
         return;
       }
     }

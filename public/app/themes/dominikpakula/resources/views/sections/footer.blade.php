@@ -46,36 +46,18 @@
       {{-- Kolumna 2: dane formalne --}}
       <div class="flex flex-col gap-6">
         <p class="font-poppins font-semibold text-base text-[#19121e]">
-          Dane formalne
+          Adres
         </p>
 
         <div class="flex flex-col gap-3 text-sm font-poppins">
-          @if ($addressLine1 || $addressLine2)
-            <div class="flex items-start gap-2">
-              <x-icons.location class="size-4 shrink-0 mt-0.5" />
-              <div class="flex flex-col">
-                <span>{{ $addressLine1 ?: 'ul. Marszałkowska 1' }}</span>
-                <span>{{ $addressLine2 ?: '00-001 Warszawa' }}</span>
-              </div>
+          <div class="flex items-start gap-2">
+            <x-icons.location class="size-4 shrink-0 mt-0.5" />
+            <div class="flex flex-col">
+              <span>{{ $addressLine1 ?: 'Kraków' }}</span>
+              @if ($addressLine2)
+                <span>{{ $addressLine2 }}</span>
+              @endif
             </div>
-          @else
-            <div class="flex items-start gap-2">
-              <x-icons.location class="size-4 shrink-0 mt-0.5" />
-              <div class="flex flex-col text-[#19121e]/60 italic">
-                <span>ul. Przykładowa 1</span>
-                <span>00-000 Warszawa</span>
-              </div>
-            </div>
-          @endif
-
-          <div class="flex items-center gap-2">
-            <x-icons.document class="size-4 shrink-0" />
-            <span>NIP: <span class="text-[#19121e]/60 italic">000-000-00-00</span></span>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <x-icons.document class="size-4 shrink-0" />
-            <span>REGON: <span class="text-[#19121e]/60 italic">000000000</span></span>
           </div>
         </div>
       </div>
