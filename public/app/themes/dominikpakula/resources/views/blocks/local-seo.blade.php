@@ -1,5 +1,5 @@
 @if (! empty($items))
-  <section class="mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+  <section class="py-10 lg:py-14">
 
     {{-- Nagłówek --}}
     @if ($eyebrow || $heading)
