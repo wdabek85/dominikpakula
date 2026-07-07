@@ -190,6 +190,13 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.manifest',
         ],
         [
+            'name' => 'text-columns',
+            'title' => 'Tekst 2 kolumny (nagłówek + treść)',
+            'description' => 'Nagłówek po lewej + akapity po prawej. Editorial, reużywalny.',
+            'icon' => 'columns',
+            'render_template' => 'blocks.text-columns',
+        ],
+        [
             'name' => 'blog-archive',
             'title' => 'Blog – Archiwum z filtrami',
             'description' => 'Pasek filtrów (kategorie + sezon) + grid wszystkich wpisów + paginacja',
