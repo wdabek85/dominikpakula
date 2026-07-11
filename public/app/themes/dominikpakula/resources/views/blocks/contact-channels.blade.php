@@ -26,7 +26,7 @@
     $channels[] = [
       'icon' => 'whatsapp',
       'label' => 'WhatsApp',
-      'value' => 'Napisz na messengerze',
+      'value' => 'Napisz na WhatsAppie',
       'href' => $whatsapp,
       'external' => true,
     ];
