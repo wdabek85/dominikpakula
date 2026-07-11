@@ -1097,3 +1097,28 @@ Licencja ACF Pro osiągnęła limit aktywacji (staging zajmuje seat). Strona i e
 1. `git checkout main && git merge staging --no-ff && git push origin main`
 2. SSH: `cd ~/meskistylista.pl/app && git pull && cd public/app/themes/dominikpakula && export NVM_DIR=$HOME/.nvm && . $NVM_DIR/nvm.sh && npm run build`
 3. Treść tworzy się bezpośrednio na produkcji (prod jest źródłem treści — NIE nadpisywać bazy prod importem ze stagingu bez potrzeby)
+4. **WP-CLI na serwerze:** domyślny `wp` pada (stary PHP). Używaj: `/usr/bin/php85 /usr/local/bin/wp-cli.phar <cmd>` z katalogu `~/meskistylista.pl/app` (czyta `wp-cli.yml`).
+
+## Audyt bezpieczeństwa produkcji (2026-07-11)
+
+Pełny audyt meskistylista.pl (crawl 23 stron, formularze, black-box + review kodu endpointów). Raport: `~/.claude/plans/cryptic-drifting-kitten.md`.
+
+### Naprawione w KODZIE (branch `develop` — NIEZDEPLOYOWANE, czeka na build)
+- **H1 race condition rezerwacji** — `app/Booking/Api.php`: atomowa blokada `GET_LOCK`/`RELEASE_LOCK` wokół check+insert (+ maile poza blokadą).
+- **M3 nonce** — nowy helper `verify_booking_nonce()` + guard `X-WP-Nonce` (`wp_rest`) na reserve/contact/newsletter/voucher (JS już wysyłał nonce; front-page cache nieaktywny → bezpieczne).
+- **M4 /available** — dodany `check_rate_limit('available',60,10min)` + `meta_query` BETWEEN na miesiąc zamiast `posts_per_page => -1`.
+- **L1 limity długości** — reserve/voucher (`mb_strlen` na imię/nazwisko/telefon/email/usługa).
+- **L5** — ujednolicone komunikaty „termin niedostępny" (blocked == booked, brak enumeracji).
+- **H3 newsletter RODO** — `NewsletterApi.php` wymaga `gdpr` + loguje zgodę (mail admina); checkbox zgody w 2 formularzach (`blocks/newsletter.blade.php`, `partials/blog/subscribe.blade.php`); `newsletter-form.js` waliduje/wysyła `gdpr`; `NewsletterBrevo.php` przyjmuje kontekst zgody.
+- **H2+M1+M2+M5 — nowy `app/security.php`** (zarejestrowany w `functions.php`): nagłówki bezpieczeństwa (HSTS/nosniff/X-Frame-Options/Referrer/Permissions-Policy) + `header_remove('X-Powered-By')`; ukrycie wersji WP (generator, `?ver=`, RSD/WLW); blokada enumeracji userów (REST `/users` dla anon + redirect archiwów autora); wyłączenie komentarzy globalnie.
+
+### Zrobione na PRODUKCJI przez WP-CLI (2026-07-11)
+- Komentarze: 4 śmieciowe do kosza (1 domyślny WP + 3 testy właściciela), `default_comment_status`/`default_ping_status=closed`, zamknięte na wszystkich 13 wpisach/stronach. Licznik = 0.
+
+### Wymaga decyzji/działania USERA
+- **Post ID 1 `witaj-swiecie`** — realna treść (13 KB, bloki lookbook), ale ex-„Hello world" w „Bez kategorii"; niemal duplikat posta 254 (Moda). User sam oceni w panelu (edit: `post=1` vs `post=254`). Po decyzji: ew. draft/rekategoryzacja + kategoria „bez-kategorii".
+- **Deploy kodu** — zmiany są na `develop`, niezbudowane. Wymagają pipeline develop→staging→(weryfikacja formularzy)→main + `npm run build` na serwerze.
+- **Serwer LiteSpeed / hardening** (nie do zrobienia kodem):
+  - Login: limit prób / 2FA (wtyczka przez Composer) — REST users + author już zablokowane kodem.
+  - TRACE `→200` (L2) i `.git/` w docroot 403 (L3) — reguły serwera/`.htaccess`.
+  - Po deployu zweryfikować `X-Powered-By` (jeśli `header_remove` nie zadziała — Acorn/serwer) i obecność HSTS.

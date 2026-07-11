@@ -21,6 +21,11 @@ function api_voucher_order(\WP_REST_Request $request): \WP_REST_Response
         return $limited;
     }
 
+    // Nonce — odrzuca żądania spoza strony (CSRF / boty bez świeżego nonce).
+    if (! verify_booking_nonce($request)) {
+        return new \WP_REST_Response(['error' => 'Sesja wygasła. Odśwież stronę i spróbuj ponownie.'], 403);
+    }
+
     $data = $request->get_json_params();
 
     // Honeypot — jeśli wypełnione, udawaj sukces (bot), nie wysyłaj maili
@@ -57,6 +62,14 @@ function api_voucher_order(\WP_REST_Request $request): \WP_REST_Response
 
     if ($recipientEmailRaw !== '' && ! is_email($recipientEmail)) {
         return new \WP_REST_Response(['error' => 'Nieprawidłowy adres e-mail obdarowanego.'], 400);
+    }
+
+    // Limity długości — chronią przed nadużyciem (bardzo długie ciągi w treści maila).
+    if (mb_strlen($service) > 200
+        || mb_strlen($recipientFirst) > 100 || mb_strlen($recipientLast) > 100
+        || mb_strlen($buyerFirst) > 100 || mb_strlen($buyerLast) > 100
+        || mb_strlen($buyerEmail) > 200 || mb_strlen($buyerPhone) > 30) {
+        return new \WP_REST_Response(['error' => 'Wprowadzone dane są zbyt długie.'], 400);
     }
 
     // Send admin notification

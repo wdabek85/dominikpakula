@@ -26,6 +26,7 @@ export default function newsletterForm() {
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const honeypot = root.querySelector('input[name="website"]');
+    const gdprInput = root.querySelector('input[name="gdpr"]');
     const errorEl = root.querySelector('[data-newsletter-error]');
     const successEl = root.querySelector('[data-newsletter-success]');
     const disclaimer = root.querySelector('[data-newsletter-disclaimer]');
@@ -59,9 +60,15 @@ export default function newsletterForm() {
 
       const email = emailInput.value.trim();
       const website = honeypot?.value || '';
+      const gdpr = gdprInput ? gdprInput.checked : true;
 
       if (!EMAIL_RE.test(email)) {
         showError('Nieprawidłowy adres e-mail.');
+        return;
+      }
+
+      if (!gdpr) {
+        showError('Zaznacz zgodę, aby zapisać się do newslettera.');
         return;
       }
 
@@ -78,7 +85,7 @@ export default function newsletterForm() {
             'Content-Type': 'application/json',
             'X-WP-Nonce': nonce,
           },
-          body: JSON.stringify({ email, website }),
+          body: JSON.stringify({ email, website, gdpr: gdpr ? 1 : 0 }),
         });
 
         const result = await res.json();
