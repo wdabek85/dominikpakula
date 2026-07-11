@@ -12,7 +12,7 @@
         Raz w miesiącu wysyłam maila z nowymi poradami o stylu i odpowiedziami na najczęstsze pytania. Bez spamu, bez kiczu.
       </p>
 
-      <form id="newsletter-form" class="flex flex-col sm:flex-row gap-2 mt-2" novalidate>
+      <form id="newsletter-form" class="flex flex-col gap-3 mt-2" novalidate>
 
         {{-- Honeypot --}}
         <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1">
@@ -20,28 +20,39 @@
           <input type="text" id="newsletter-website" name="website" autocomplete="off" tabindex="-1">
         </div>
 
-        <label for="newsletter-email" class="sr-only">Twój adres e-mail</label>
-        <input
-          type="email"
-          id="newsletter-email"
-          name="email"
-          placeholder="Twój adres e-mail"
-          class="flex-1 border border-black/20 bg-white px-4 py-3 font-poppins text-base text-black placeholder:text-black/40 outline-none focus:border-primary transition-colors"
-          required
-          autocomplete="email"
-        >
-        <button
-          type="submit"
-          id="newsletter-submit"
-          class="bg-primary text-white font-poppins font-medium text-base px-6 py-3 rounded-sm hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-        >
-          Zapisz się
-        </button>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <label for="newsletter-email" class="sr-only">Twój adres e-mail</label>
+          <input
+            type="email"
+            id="newsletter-email"
+            name="email"
+            placeholder="Twój adres e-mail"
+            class="flex-1 border border-black/20 bg-white px-4 py-3 font-poppins text-base text-black placeholder:text-black/40 outline-none focus:border-primary transition-colors"
+            required
+            autocomplete="email"
+          >
+          <button
+            type="submit"
+            id="newsletter-submit"
+            class="bg-primary text-white font-poppins font-medium text-base px-6 py-3 rounded-sm hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          >
+            Zapisz się
+          </button>
+        </div>
+
+        {{-- Zgoda RODO — wymagana (marketing) --}}
+        <label class="flex items-start gap-2 font-poppins text-xs text-black/70 leading-relaxed cursor-pointer">
+          <input
+            type="checkbox"
+            name="gdpr"
+            required
+            class="mt-0.5 size-4 shrink-0 accent-primary focus-visible:ring-2 focus-visible:ring-primary"
+          >
+          <span>Wyrażam zgodę na otrzymywanie newslettera i akceptuję <a href="{{ home_url('/polityka-prywatnosci/') }}" class="underline hover:text-primary transition-colors">politykę prywatności</a>. Wypisujesz się jednym kliknięciem.</span>
+        </label>
       </form>
 
-      <p id="newsletter-disclaimer" data-newsletter-disclaimer class="font-poppins text-xs text-black/60 leading-relaxed">
-        Zapisując się, akceptujesz <a href="{{ home_url('/polityka-prywatnosci/') }}" class="underline hover:text-primary transition-colors">politykę prywatności</a>. Wypisujesz się jednym kliknięciem.
-      </p>
+      <p id="newsletter-disclaimer" data-newsletter-disclaimer class="sr-only" aria-hidden="true"></p>
       <p id="newsletter-error" data-newsletter-error class="hidden font-poppins text-sm text-red-600 leading-relaxed" role="alert"></p>
       <p id="newsletter-success" data-newsletter-success class="hidden font-poppins text-sm text-green-700 leading-relaxed" role="status"></p>
     </div>

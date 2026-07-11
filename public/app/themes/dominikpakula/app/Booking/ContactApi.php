@@ -21,6 +21,11 @@ function api_contact_submit(\WP_REST_Request $request): \WP_REST_Response
         return $limited;
     }
 
+    // Nonce — odrzuca żądania spoza strony (CSRF / boty bez świeżego nonce).
+    if (! verify_booking_nonce($request)) {
+        return new \WP_REST_Response(['error' => 'Sesja wygasła. Odśwież stronę i spróbuj ponownie.'], 403);
+    }
+
     $data = $request->get_json_params();
 
     // Honeypot — if filled, pretend success silently

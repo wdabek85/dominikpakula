@@ -20,7 +20,7 @@
 
 namespace App\Booking;
 
-add_action('booking_newsletter_subscribed', __NAMESPACE__ . '\\brevo_add_subscriber', 10, 1);
+add_action('booking_newsletter_subscribed', __NAMESPACE__ . '\\brevo_add_subscriber', 10, 2);
 
 /**
  * Read a Brevo config constant, treating empty string as "not set".
@@ -32,8 +32,16 @@ function brevo_config(string $key, $default = null)
 
 /**
  * Push a newly-subscribed e-mail to Brevo.
+ *
+ * @param string               $email   Adres subskrybenta.
+ * @param array<string,string> $consent Kontekst zgody RODO: ['at' => timestamp, 'ip' => ip].
+ *                                       Trwały rejestr zgody prowadzi też mail do admina
+ *                                       (NewsletterApi). Aby zapisać zgodę jako atrybuty
+ *                                       kontaktu w Brevo (np. OPTIN_DATE/OPTIN_IP), najpierw
+ *                                       utwórz te atrybuty w panelu Brevo, a potem dodaj je
+ *                                       do $payload['attributes'] — inaczej API zwróci 400.
  */
-function brevo_add_subscriber(string $email): void
+function brevo_add_subscriber(string $email, array $consent = []): void
 {
     $apiKey = brevo_config('BREVO_API_KEY');
     $listId = brevo_config('BREVO_LIST_ID');
