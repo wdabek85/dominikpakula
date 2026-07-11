@@ -17,49 +17,59 @@
 
       {{-- Formularz --}}
       <div class="flex flex-col gap-2 lg:max-w-[735px] items-center lg:items-start" data-newsletter>
-        <form class="flex flex-col lg:flex-row gap-4 w-full" novalidate>
+        <form class="flex flex-col gap-3 w-full" novalidate>
           {{-- Honeypot — ukryte dla ludzi, widoczne dla botów --}}
           <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1">
             <label for="newsletter-website-home">Nie wypełniaj tego pola</label>
             <input type="text" id="newsletter-website-home" name="website" autocomplete="off" tabindex="-1">
           </div>
 
-          {{-- Input --}}
-          <div class="flex flex-col gap-2 lg:w-[328px] w-full">
-            <label for="newsletter-email-home" class="font-poppins font-semibold text-sm leading-4 text-[#8b8b8b]">
-              E-mail
-            </label>
-            <div class="flex items-center gap-2 bg-white border border-white lg:border-white rounded px-4 py-3">
-              <svg class="size-[18px] shrink-0 text-[#8b8b8b]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-              </svg>
-              <input
-                type="email"
-                id="newsletter-email-home"
-                name="email"
-                placeholder="Twój e-mail"
-                class="font-poppins text-sm text-[#8b8b8b] bg-transparent outline-none w-full"
-                required
+          <div class="flex flex-col lg:flex-row gap-4 w-full">
+            {{-- Input --}}
+            <div class="flex flex-col gap-2 lg:w-[328px] w-full">
+              <label for="newsletter-email-home" class="font-poppins font-semibold text-sm leading-4 text-[#595959]">
+                E-mail
+              </label>
+              <div class="flex items-center gap-2 bg-white border border-white lg:border-white rounded px-4 py-3">
+                <svg class="size-[18px] shrink-0 text-[#595959]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+                <input
+                  type="email"
+                  id="newsletter-email-home"
+                  name="email"
+                  placeholder="Twój e-mail"
+                  class="font-poppins text-sm text-black placeholder:text-[#595959] bg-transparent outline-none w-full"
+                  required
+                >
+              </div>
+            </div>
+
+            {{-- Przycisk --}}
+            <div class="lg:self-end w-full lg:w-auto">
+              <button
+                type="submit"
+                class="w-full lg:w-auto bg-primary border border-white px-6 py-3 rounded-sm font-poppins font-medium text-base leading-[26px] text-white whitespace-nowrap transition-colors hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
+                Zapisz mnie do Newslettera
+              </button>
             </div>
           </div>
 
-          {{-- Przycisk --}}
-          <div class="lg:self-end w-full lg:w-auto">
-            <button
-              type="submit"
-              class="w-full lg:w-auto bg-primary border border-white px-6 py-3 rounded-sm font-poppins font-medium text-base leading-[26px] text-white whitespace-nowrap transition-colors hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          {{-- Zgoda RODO — wymagana (marketing) --}}
+          <label class="flex items-start gap-2 font-poppins text-[11px] leading-4 lg:text-xs text-black text-left cursor-pointer">
+            <input
+              type="checkbox"
+              name="gdpr"
+              required
+              class="mt-0.5 size-4 shrink-0 accent-primary focus-visible:ring-2 focus-visible:ring-primary"
             >
-              Zapisz mnie do Newslettera
-            </button>
-          </div>
+            <span>Wyrażam zgodę na otrzymywanie newslettera i akceptuję <a href="{{ home_url('/polityka-prywatnosci/') }}" class="underline">politykę prywatności</a>. Możesz wypisać się w każdej chwili.</span>
+          </label>
         </form>
 
-        {{-- Disclaimer --}}
-        <p data-newsletter-disclaimer class="font-poppins text-[10px] leading-3 lg:text-xs lg:leading-[14px] text-black text-center lg:text-left">
-          Zapisując się, akceptujesz nasze <a href="{{ home_url('/regulamin/') }}" class="underline">warunki korzystania z usługi</a>.<br>
-          Możesz wypisać się w każdej chwili. Zero spamu, tylko konkret.
-        </p>
+        {{-- Placeholder dla komunikatów JS (disclaimer chowany po sukcesie) --}}
+        <p data-newsletter-disclaimer class="sr-only" aria-hidden="true"></p>
 
         {{-- Komunikaty --}}
         <p data-newsletter-error class="hidden font-poppins text-sm text-red-600 leading-relaxed text-center lg:text-left" role="alert"></p>

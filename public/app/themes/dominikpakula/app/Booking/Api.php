@@ -37,38 +37,59 @@ function api_get_services(): \WP_REST_Response
 
 function api_get_available(\WP_REST_Request $request): \WP_REST_Response
 {
+    // Rate limit: kalendarz jest odpytywany przy każdej zmianie miesiąca, więc limit
+    // jest hojny, ale blokuje odpytywanie w pętli (scraping / wyczerpanie zasobów).
+    if ($limited = check_rate_limit('available', 60, 10 * MINUTE_IN_SECONDS)) {
+        return $limited;
+    }
+
     $month = (int) $request->get_param('month');
     $year = (int) $request->get_param('year');
 
-    // Blocked dates from options
+    // Walidacja zakresu — chroni budowanie granic miesiąca i zapytania meta.
+    if ($month < 1 || $month > 12 || $year < 2000 || $year > 2100) {
+        return new \WP_REST_Response(['error' => 'Nieprawidłowy miesiąc lub rok.'], 400);
+    }
+
+    $monthStart = sprintf('%04d-%02d-01', $year, $month);
+    $monthEnd = date('Y-m-t', strtotime($monthStart));
+
+    // Blocked dates from options — filtrowane do bieżącego miesiąca.
     $blockedRaw = get_option('booking_blocked_dates', []);
     $blocked = array_map(function ($d) {
         return date('Y-m-d', strtotime(str_replace(['/', '.'], '-', $d)));
     }, is_array($blockedRaw) ? $blockedRaw : []);
 
-    // Booked dates from CPT
-    $bookings = \get_posts([
+    // Booked dates from CPT — zapytanie ograniczone do miesiąca (bez posts_per_page => -1,
+    // które ładowało WSZYSTKIE rezerwacje do pamięci przy każdym wywołaniu).
+    $bookingIds = \get_posts([
         'post_type' => 'booking',
-        'posts_per_page' => -1,
+        'posts_per_page' => 100,
         'post_status' => 'publish',
+        'fields' => 'ids',
+        'no_found_rows' => true,
+        'meta_query' => [
+            [
+                'key' => '_booking_date',
+                'value' => [$monthStart, $monthEnd],
+                'compare' => 'BETWEEN',
+                'type' => 'DATE',
+            ],
+        ],
     ]);
 
     $booked = [];
-    foreach ($bookings as $booking) {
-        $status = get_post_meta($booking->ID, '_booking_status', true);
-        if ($status === 'cancelled') {
+    foreach ($bookingIds as $bookingId) {
+        if (get_post_meta($bookingId, '_booking_status', true) === 'cancelled') {
             continue;
         }
 
-        $date = get_post_meta($booking->ID, '_booking_date', true);
+        $date = get_post_meta($bookingId, '_booking_date', true);
         if (! $date) {
             continue;
         }
 
-        $d = date('Y-m-d', strtotime($date));
-        if ((int) date('n', strtotime($d)) === $month && (int) date('Y', strtotime($d)) === $year) {
-            $booked[] = $d;
-        }
+        $booked[] = date('Y-m-d', strtotime($date));
     }
 
     return new \WP_REST_Response([
@@ -119,11 +140,30 @@ function check_rate_limit(string $action, int $max, int $window): ?\WP_REST_Resp
     return null;
 }
 
+/**
+ * Weryfikuje nonce wp_rest wysyłany przez frontend w nagłówku X-WP-Nonce.
+ * Wszystkie formularze motywu (booking/voucher/contact/newsletter) dołączają ten
+ * nonce (window.bookingData.nonce), więc realni użytkownicy przechodzą, a proste
+ * boty uderzające bezpośrednio w REST — bez świeżego nonce ze strony — dostają 403.
+ * To lekka ochrona anty-CSRF/anty-spam niezależna od honeypota.
+ */
+function verify_booking_nonce(\WP_REST_Request $request): bool
+{
+    $nonce = $request->get_header('X-WP-Nonce');
+
+    return $nonce && wp_verify_nonce($nonce, 'wp_rest');
+}
+
 function api_reserve(\WP_REST_Request $request): \WP_REST_Response
 {
     // Rate limit: max 5 attempts per 10 min per IP
     if ($limited = check_rate_limit('reserve', 5, 10 * MINUTE_IN_SECONDS)) {
         return $limited;
+    }
+
+    // Nonce — odrzuca żądania spoza strony (CSRF / boty bez świeżego nonce).
+    if (! verify_booking_nonce($request)) {
+        return new \WP_REST_Response(['error' => 'Sesja wygasła. Odśwież stronę i spróbuj ponownie.'], 403);
     }
 
     $data = $request->get_json_params();
@@ -149,6 +189,12 @@ function api_reserve(\WP_REST_Request $request): \WP_REST_Response
         return new \WP_REST_Response(['error' => 'Wszystkie pola są wymagane.'], 400);
     }
 
+    // Limity długości — chronią przed przepełnieniem post_title/meta bardzo długimi ciągami.
+    if (mb_strlen($firstName) > 100 || mb_strlen($lastName) > 100
+        || mb_strlen($email) > 200 || mb_strlen($phone) > 30 || mb_strlen($service) > 200) {
+        return new \WP_REST_Response(['error' => 'Wprowadzone dane są zbyt długie.'], 400);
+    }
+
     if (! $gdpr) {
         return new \WP_REST_Response(['error' => 'Musisz zaakceptować politykę prywatności.'], 400);
     }
@@ -172,56 +218,77 @@ function api_reserve(\WP_REST_Request $request): \WP_REST_Response
         return date('Y-m-d', strtotime(str_replace(['/', '.'], '-', $d)));
     }, is_array($blocked) ? $blocked : []);
 
+    // Ten sam generyczny komunikat co przy dniu już zarezerwowanym — nie zdradza,
+    // czy termin jest zajęty przez rezerwację, czy zablokowany ręcznie (enumeracja).
     if (in_array($dateFormatted, $blocked, true)) {
-        return new \WP_REST_Response(['error' => 'Ten dzień jest niedostępny.'], 400);
+        return new \WP_REST_Response(['error' => 'Ten termin jest niedostępny. Wybierz inny.'], 400);
     }
 
-    // Check already booked
-    $existing = \get_posts([
-        'post_type' => 'booking',
-        'posts_per_page' => 1,
-        'post_status' => 'publish',
-        'meta_query' => [
-            'relation' => 'AND',
-            [
-                'key' => '_booking_date',
-                'value' => $dateFormatted,
-                'compare' => '=',
+    // Atomowa blokada na dany dzień — eliminuje race condition (TOCTOU) między
+    // sprawdzeniem wolnego terminu a insertem. GET_LOCK jest współdzielony pomiędzy
+    // połączeniami MySQL, więc dwa równoległe żądania na ten sam dzień szeregują się;
+    // drugie zobaczy już utworzoną rezerwację i zostanie odrzucone.
+    global $wpdb;
+    $lockName = substr('mst_booking_' . $dateFormatted, 0, 64);
+    $gotLock = (int) $wpdb->get_var($wpdb->prepare('SELECT GET_LOCK(%s, %d)', $lockName, 5));
+
+    if ($gotLock !== 1) {
+        return new \WP_REST_Response(['error' => 'Chwilowo nie udało się przetworzyć rezerwacji. Spróbuj ponownie za moment.'], 503);
+    }
+
+    try {
+        // Check already booked (wewnątrz blokady)
+        $existing = \get_posts([
+            'post_type' => 'booking',
+            'posts_per_page' => 1,
+            'post_status' => 'publish',
+            'fields' => 'ids',
+            'no_found_rows' => true,
+            'meta_query' => [
+                'relation' => 'AND',
+                [
+                    'key' => '_booking_date',
+                    'value' => $dateFormatted,
+                    'compare' => '=',
+                ],
+                [
+                    'key' => '_booking_status',
+                    'value' => 'cancelled',
+                    'compare' => '!=',
+                ],
             ],
-            [
-                'key' => '_booking_status',
-                'value' => 'cancelled',
-                'compare' => '!=',
-            ],
-        ],
-    ]);
+        ]);
 
-    if (! empty($existing)) {
-        return new \WP_REST_Response(['error' => 'Ten dzień jest już zarezerwowany.'], 400);
+        if (! empty($existing)) {
+            return new \WP_REST_Response(['error' => 'Ten termin jest niedostępny. Wybierz inny.'], 400);
+        }
+
+        // Create booking
+        $bookingId = wp_insert_post([
+            'post_type' => 'booking',
+            'post_title' => $firstName . ' ' . $lastName . ' — ' . $dateFormatted,
+            'post_status' => 'publish',
+        ]);
+
+        if (is_wp_error($bookingId)) {
+            return new \WP_REST_Response(['error' => 'Nie udało się utworzyć rezerwacji.'], 500);
+        }
+
+        update_post_meta($bookingId, '_booking_date', $dateFormatted);
+        update_post_meta($bookingId, '_booking_service', $service);
+        update_post_meta($bookingId, '_booking_first_name', $firstName);
+        update_post_meta($bookingId, '_booking_last_name', $lastName);
+        update_post_meta($bookingId, '_booking_email', $email);
+        update_post_meta($bookingId, '_booking_phone', $phone);
+        update_post_meta($bookingId, '_booking_status', 'pending');
+        update_post_meta($bookingId, '_booking_gdpr_accepted_at', current_time('mysql'));
+        update_post_meta($bookingId, '_booking_gdpr_ip', get_client_ip());
+    } finally {
+        // Zwolnij blokadę niezależnie od wyniku (sukces, walidacja, wyjątek).
+        $wpdb->query($wpdb->prepare('SELECT RELEASE_LOCK(%s)', $lockName));
     }
 
-    // Create booking
-    $bookingId = wp_insert_post([
-        'post_type' => 'booking',
-        'post_title' => $firstName . ' ' . $lastName . ' — ' . $dateFormatted,
-        'post_status' => 'publish',
-    ]);
-
-    if (is_wp_error($bookingId)) {
-        return new \WP_REST_Response(['error' => 'Nie udało się utworzyć rezerwacji.'], 500);
-    }
-
-    update_post_meta($bookingId, '_booking_date', $dateFormatted);
-    update_post_meta($bookingId, '_booking_service', $service);
-    update_post_meta($bookingId, '_booking_first_name', $firstName);
-    update_post_meta($bookingId, '_booking_last_name', $lastName);
-    update_post_meta($bookingId, '_booking_email', $email);
-    update_post_meta($bookingId, '_booking_phone', $phone);
-    update_post_meta($bookingId, '_booking_status', 'pending');
-    update_post_meta($bookingId, '_booking_gdpr_accepted_at', current_time('mysql'));
-    update_post_meta($bookingId, '_booking_gdpr_ip', get_client_ip());
-
-    // Send emails
+    // Maile wysyłamy PO zwolnieniu blokady — nie trzymamy locka na czas SMTP.
     send_booking_confirmation($bookingId);
     send_booking_admin_notification($bookingId);
 
