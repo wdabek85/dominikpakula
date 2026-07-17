@@ -8,6 +8,16 @@
 
 <article class="relative overflow-hidden group rounded {{ $grid ? 'w-full aspect-[3/4]' : 'shrink-0 w-[240px] h-[380px] lg:w-auto lg:h-[460px] lg:aspect-[3/4]' }}">
 
+  {{-- Link na całą kartę (stretched link) --}}
+  @if ($link)
+    <a
+      href="{{ $link }}"
+      class="absolute inset-0 z-20 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      aria-label="Zobacz realizację: {{ $title }}"
+      data-card-link
+    ></a>
+  @endif
+
   {{-- Zdjęcie --}}
   @if ($image)
     <img
@@ -42,15 +52,14 @@
         @endif
       </div>
 
-      {{-- Strzałka --}}
+      {{-- Strzałka (wizualna — cała karta jest linkiem powyżej) --}}
       @if ($link)
-        <a
-          href="{{ $link }}"
-          class="flex items-center justify-center size-9 rounded-full bg-white text-[#19121e] shrink-0 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-          aria-label="Zobacz realizację: {{ $title }}"
+        <span
+          class="flex items-center justify-center size-9 rounded-full bg-white text-[#19121e] shrink-0 transition-transform group-hover:scale-110"
+          aria-hidden="true"
         >
           <x-icons.arrow-up-right class="size-5" />
-        </a>
+        </span>
       @endif
 
     </div>
