@@ -78,7 +78,7 @@
               <circle cx="12" cy="12" r="10" />
               <path d="M12 8h.01M11 12h1v4h1" />
             </svg>
-            <span class="font-sans text-[10px] text-black leading-normal">Umów się na bezpłatną konsultację przed rezerwacją</span>
+            <span class="font-sans text-[10px] text-black leading-normal">Każdą usługę zaczynamy od bezpłatnej konsultacji</span>
           </div>
         </div>
       </div>
