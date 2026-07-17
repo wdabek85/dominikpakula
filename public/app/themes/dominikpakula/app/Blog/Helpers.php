@@ -167,13 +167,27 @@ function polish_plural_count(int $count, string $one, string $few, string $many)
 
 /**
  * Blog index URL.
- * Priority: Reading → Posts page → post archive → home.
+ * Priorytet: Reading „Posts page" → statyczna strona „Blog" (slug `blog`,
+ * zawiera blok acf/blog-archive) → archiwum typu post → home.
+ *
+ * Uwaga: front jest statyczny (show_on_front=page), a lista wpisów to zwykła
+ * strona z blokiem blog-archive — dlatego page_for_posts bywa pusty i trzeba
+ * odszukać stronę bloga po slugu, zanim spadniemy do fallbacku (który dla
+ * typu `post` zwraca URL strony głównej).
  */
 function blog_url(): string
 {
     $pageId = (int) get_option('page_for_posts');
     if ($pageId) {
         $link = get_permalink($pageId);
+        if ($link) {
+            return $link;
+        }
+    }
+
+    $blogPage = get_page_by_path('blog');
+    if ($blogPage && $blogPage->post_status === 'publish') {
+        $link = get_permalink($blogPage);
         if ($link) {
             return $link;
         }
