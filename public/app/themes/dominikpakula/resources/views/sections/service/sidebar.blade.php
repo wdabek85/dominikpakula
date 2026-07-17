@@ -60,9 +60,12 @@
 
       {{-- Cena (ACF) + CTA (hardcode) --}}
       <div class="flex gap-6 items-start">
-        <span class="font-poppins text-[32px] leading-none text-primary shrink-0">
-          {{ $price }}
-        </span>
+        <div class="flex flex-col gap-1 shrink-0">
+          <span class="font-sans text-[10px] text-black leading-normal">cena usługi</span>
+          <span class="font-poppins text-[32px] leading-none text-primary">
+            {{ $price }}
+          </span>
+        </div>
 
         <div class="flex flex-col gap-2 flex-1">
           <button
@@ -78,7 +81,7 @@
               <circle cx="12" cy="12" r="10" />
               <path d="M12 8h.01M11 12h1v4h1" />
             </svg>
-            <span class="font-sans text-[10px] text-black leading-normal">Każdą usługę zaczynamy od bezpłatnej konsultacji</span>
+            <span class="font-sans text-[10px] text-black leading-normal">Rozmowa jest bezpłatna. Podana cena to koszt usługi — płacisz dopiero, gdy po konsultacji zdecydujesz się na współpracę.</span>
           </div>
         </div>
       </div>
