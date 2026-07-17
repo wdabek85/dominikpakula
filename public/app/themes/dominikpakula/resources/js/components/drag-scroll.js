@@ -9,18 +9,39 @@ export default function dragScroll() {
   const sliders = document.querySelectorAll('[data-drag-scroll]');
   if (!sliders.length) return;
 
+  // Powyżej tego progu (px) ruch traktujemy jako przeciąganie, nie klik
+  const DRAG_THRESHOLD = 5;
+
   sliders.forEach((slider) => {
     let isDown = false;
     let startX;
+    let startPageX;
     let scrollLeft;
+    let dragged = false;
 
     slider.addEventListener('mousedown', (e) => {
       isDown = true;
+      dragged = false;
       slider.classList.add('cursor-grabbing');
       slider.classList.remove('cursor-grab');
       startX = e.pageX - slider.offsetLeft;
+      startPageX = e.pageX;
       scrollLeft = slider.scrollLeft;
     });
+
+    // Po realnym przeciągnięciu blokujemy klik (np. na linku karty),
+    // żeby przewijanie nie otwierało realizacji. Faza capture — wyprzedza link.
+    slider.addEventListener(
+      'click',
+      (e) => {
+        if (dragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          dragged = false;
+        }
+      },
+      true,
+    );
 
     slider.addEventListener('mouseleave', () => {
       isDown = false;
@@ -37,6 +58,9 @@ export default function dragScroll() {
     slider.addEventListener('mousemove', (e) => {
       if (!isDown) return;
       e.preventDefault();
+      if (Math.abs(e.pageX - startPageX) > DRAG_THRESHOLD) {
+        dragged = true;
+      }
       const x = e.pageX - slider.offsetLeft;
       const walk = (x - startX) * 1.5;
       slider.scrollLeft = scrollLeft - walk;
