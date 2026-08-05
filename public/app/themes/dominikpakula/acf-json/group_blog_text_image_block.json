@@ -97,6 +97,31 @@
             "placeholder": ""
         },
         {
+            "key": "field_ti_image_size",
+            "label": "Rozmiar zdjęcia",
+            "name": "ti_image_size",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Limit wysokości zdjęcia na desktopie. „Bez limitu” = zdjęcie na całą szerokość kolumny.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "choices": {
+                "small": "Małe (380px)",
+                "medium": "Średnie (560px)",
+                "large": "Duże (720px)",
+                "full": "Bez limitu"
+            },
+            "default_value": "medium",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
             "key": "field_ti_image",
             "label": "Zdjęcie",
             "name": "ti_image",
