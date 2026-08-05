@@ -9,7 +9,7 @@
   @if ($heading || $text)
     <div class="max-w-[720px] mx-auto mb-8 lg:mb-10 {{ $alignClass }}">
       @if ($heading)
-        <{{ $headingTag }} class="font-serif font-normal text-black {{ $headingTag === 'h2' ? 'text-3xl' : 'text-2xl' }} leading-tight">
+        <{{ $headingTag }} class="font-serif font-bold text-black {{ $headingTag === 'h2' ? 'text-3xl' : 'text-2xl' }} leading-tight">
           {{ $heading }}
         </{{ $headingTag }}>
       @endif
