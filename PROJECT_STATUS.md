@@ -1241,6 +1241,14 @@ Wykrywanie:
 - [ ] **Przegląd pozostałych 10 domen** na koncie `wiktor1249` pod kątem tego samego wzorca kont
 - [ ] Rozważyć 2FA (wtyczka przez Composer) — kod limituje próby, ale nie zastępuje drugiego składnika
 
+### Sekretny adres logowania (2026-08-05, po hardeningu)
+- `app/login-url.php` (nowy, ładowany w `functions.php`) + `Config::define('WP_LOGIN_SLUG', …)` w `config/application.php`.
+- Slug siedzi w `.env` każdego środowiska (**nie w repo**), inny na prod i na stagingu. Wejście na `/<slug>/` serwuje `wp-login.php`; bezpośrednie wejście na `wp-login.php` oraz na `wp-admin` bez sesji → 302 na stronę główną. Wszystkie adresy generowane przez WP (logowanie, wylogowanie, reset hasła, przekierowania) są przepisywane na slug.
+- Wyjątki: `action=postpass`, `admin-ajax.php`, `admin-post.php`.
+- **Awaryjny wyłącznik:** usuń `WP_LOGIN_SLUG` z `.env` → logowanie wraca na `wp-login.php`. Lokalnie zmiennej nie ma, więc Local działa standardowo.
+- Zweryfikowane na obu środowiskach curl-em (formularz pod slugiem, 302 na wp-login/wp-admin, POST ze złym hasłem → jednolity komunikat).
+- **Pułapka przy weryfikacji:** LiteSpeed serwował przez chwilę stare odpowiedzi (slug 404, wp-login 200) mimo działającego kodu. Sprawdzać z `?nocache=<losowe>`, zanim zacznie się szukać błędu w kodzie.
+
 ### Wnioski
 - `DISALLOW_FILE_MODS` uratował sytuację: intruz z prawami administratora **nie mógł** zainstalować wtyczki-backdoora, więc kompromitacja została w bazie i sprząta się usunięciem kont + rotacją haseł.
 - Brak jakiegokolwiek monitoringu oznaczał, że konta przybywały przez 15 dni niezauważone. Stąd dobowy audyt — bez niego następny taki incydent też wyjdzie przypadkiem.
