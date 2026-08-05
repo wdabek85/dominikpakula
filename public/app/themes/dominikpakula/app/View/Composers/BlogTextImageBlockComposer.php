@@ -19,7 +19,22 @@ class BlogTextImageBlockComposer extends Composer
             'image' => $this->normalizeImage(\get_field('ti_image')),
             'imageFirst' => \get_field('ti_image_position') === 'left',
             'alignClass' => \get_field('ti_text_align') === 'center' ? 'text-center' : 'text-left',
+            'imageSizeClass' => $this->imageSizeClass(),
         ];
+    }
+
+    /**
+     * Limit wysokości zdjęcia. Bez niego pionowe grafiki (np. plansze 1:2) rozpychają
+     * sekcję na kilkaset pikseli i zjadają layout.
+     */
+    private function imageSizeClass(): string
+    {
+        return match (\get_field('ti_image_size')) {
+            'small' => 'max-h-[380px]',
+            'large' => 'max-h-[720px]',
+            'full' => '',
+            default => 'max-h-[560px]',
+        };
     }
 
     /**
