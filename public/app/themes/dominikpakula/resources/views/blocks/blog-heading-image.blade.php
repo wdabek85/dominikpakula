@@ -12,9 +12,10 @@
   @endif
 
   @if ($image['url'])
-    {{-- Węższe niż kolumna tekstu i wycentrowane — zdjęcie ma być akcentem,
-         nie banerem na całą szerokość. --}}
-    <figure class="max-w-[620px] mx-auto block">
+    {{-- Wyśrodkowanie flexem, nie auto-marginesami: w treści wpisu (prose)
+         marginesy boczne figure bywają nadpisywane, `justify-center` jest odporne. --}}
+    <div class="flex justify-center">
+    <figure class="w-full max-w-[620px]">
       <img
         src="{{ $image['url'] }}"
         alt="{{ $image['alt'] }}"
@@ -31,6 +32,7 @@
         </figcaption>
       @endif
     </figure>
+    </div>
   @endif
 
 </section>
