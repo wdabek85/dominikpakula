@@ -144,6 +144,10 @@ Config::define('NONCE_SALT', env('NONCE_SALT'));
 Config::define('AUTOMATIC_UPDATER_DISABLED', true);
 Config::define('DISABLE_WP_CRON', env('DISABLE_WP_CRON') ?: false);
 
+// Sekretny adres logowania (obsługa w motywie: app/login-url.php).
+// Puste = wp-login.php działa standardowo. Wartość trzymamy w .env, nie w repo.
+Config::define('WP_LOGIN_SLUG', env('WP_LOGIN_SLUG') ?: '');
+
 // Disable the plugin and theme file editor in the admin
 Config::define('DISALLOW_FILE_EDIT', true);
 
