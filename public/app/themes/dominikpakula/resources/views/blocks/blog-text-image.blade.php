@@ -13,7 +13,7 @@
   @endif
 
   @if ($text || $image['url'])
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
 
       @if ($text)
         <div class="space-y-4 font-poppins text-base leading-relaxed text-black {{ $alignClass }} {{ $imageFirst ? 'lg:order-2' : '' }}">
@@ -30,7 +30,9 @@
             @if ($image['height']) height="{{ $image['height'] }}" @endif
             loading="lazy"
             decoding="async"
-            class="w-full h-auto rounded-sm"
+            {{-- Pionowe zdjęcia potrafią urosnąć na całą wysokość kolumny i zdominować
+                 sekcję — limit wysokości trzyma proporcje tekst/obraz w ryzach. --}}
+            class="max-h-[420px] lg:max-h-[520px] w-auto max-w-full h-auto mx-auto rounded-sm"
           >
         </figure>
       @endif
