@@ -370,6 +370,14 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.blog-text-image',
         ],
         [
+            'name' => 'blog-product-grid',
+            'title' => 'Siatka produktów (3 kolumny)',
+            'description' => 'Nagłówek + wstęp + dowolna liczba zdjęć produktów z repeatera. Desktop zawsze 3 kolumny. Opcjonalny link do sklepu na kafelce.',
+            'icon' => 'grid-view',
+            'group' => 'article',
+            'render_template' => 'blocks.blog-product-grid',
+        ],
+        [
             'name' => 'blog-pullquote',
             'title' => 'Pull quote (wyróżniona myśl)',
             'description' => 'Duża wyróżniona myśl z cudzysłowem — do akcentowania kluczowych wniosków w artykule.',
