@@ -378,6 +378,14 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.blog-product-grid',
         ],
         [
+            'name' => 'blog-heading-image',
+            'title' => 'Nagłówek + zdjęcie',
+            'description' => 'Nagłówek (wpada do spisu treści) i jedno duże zdjęcie pod spodem. Opcjonalny podpis.',
+            'icon' => 'format-image',
+            'group' => 'article',
+            'render_template' => 'blocks.blog-heading-image',
+        ],
+        [
             'name' => 'blog-pullquote',
             'title' => 'Pull quote (wyróżniona myśl)',
             'description' => 'Duża wyróżniona myśl z cudzysłowem — do akcentowania kluczowych wniosków w artykule.',
