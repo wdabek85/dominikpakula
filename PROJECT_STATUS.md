@@ -1122,3 +1122,73 @@ Pełny audyt meskistylista.pl (crawl 23 stron, formularze, black-box + review ko
   - Login: limit prób / 2FA (wtyczka przez Composer) — REST users + author już zablokowane kodem.
   - TRACE `→200` (L2) i `.git/` w docroot 403 (L3) — reguły serwera/`.htaccess`.
   - Po deployu zweryfikować `X-Powered-By` (jeśli `header_remove` nie zadziała — Acorn/serwer) i obecność HSTS.
+
+## Sesja 2026-07-17 — copy sidebara usługi, nagłówki bloga, klikalne karty portfolio
+
+Wszystkie zmiany zdeployowane end-to-end: `develop` → `staging` → `main` (produkcja meskistylista.pl), z buildem i czyszczeniem cache na obu serwerach. Zweryfikowane na żywo.
+
+### Sprawdzenie środowisk
+- Staging (`dominikpakula.wdb-creative.pl`) i produkcja (`meskistylista.pl`) — SSH OK (klucz bez hasła), HTTP 200, branche `staging`/`main` zgodne. Oba na tym samym serwerze dhosting (`web03-s232`).
+
+### Sidebar usługi — `sections/service/sidebar.blade.php`
+- Usunięty mylący dopisek „Cena zawiera 23% VAT, nie obejmuje kosztów przejazdów" (nie pasował do bloku z rezerwacją rozmowy).
+- Dodana etykieta **„cena usługi"** nad kwotą — żeby liczba (np. 2800 zł) nie wyglądała na koszt samej rozmowy.
+- Nowy dopisek pod przyciskiem: **„Rozmowa jest bezpłatna. Podana cena to koszt usługi — płacisz dopiero, gdy po konsultacji zdecydujesz się na współpracę."** Rozdziela bezpłatną konsultację od płatnej usługi (płatność po decyzji).
+
+### Blok blog — `blocks/blog.blade.php`
+- Nagłówki przepisane z brzmienia zespołowego + „świat technologii" na **pierwszą osobę i tematykę męskiego stylu** (strona jednego stylisty).
+  - H2: „Styl, inspiracje i porady – zajrzyj do moich najnowszych artykułów."
+  - Opis: „Na blogu dzielę się wiedzą i doświadczeniem ze świata męskiego stylu. Zobacz, co nowego i zainspiruj się do zmian w swoim wizerunku."
+- Teksty nadal hardcode w szablonie (do ew. przeniesienia na ACF w przyszłości).
+
+### Portfolio — cała karta klikalna
+- `components/portfolio-card.blade.php`: **stretched link** (jeden `<a>` z `absolute inset-0 z-20` na całą kartę, `data-card-link`, aria-label „Zobacz realizację: …"). Strzałka zamieniona z linku na element wizualny (`<span aria-hidden>` + `group-hover:scale-110`). Jeden cel fokusa zamiast małej strzałki — lepsza dostępność.
+- `js/components/drag-scroll.js`: **blokada kliknięcia po przeciągnięciu** (próg 5px → flaga `dragged` → `click` w fazie capture robi `preventDefault`+`stopPropagation`). Chroni sliderową wersję przed przypadkowym otwarciem realizacji przy drag-scrollu.
+- Miejsce: „Portfolio Komercyjne" w menu → strona **`/realizacje/`** (szablon `archive-portfolio.blade.php`, grid `:grid="true"`, bez slidera — więc klik działa bez ryzyka; drag-guard „na zapas" dla bloku sliderowego).
+
+### Learning zapisany do pamięci
+- **Po zmianach w Blade**, jeśli strona serwuje starą wersję mimo `git pull` + `npm run build`: wyczyścić skompilowany cache widoków Acorn: `wp acorn view:clear` + `wp cache flush` (przez `/opt/alt/php85/usr/bin/php ~/wp-cli.phar ... --path=public/wp`). `litespeed-purge` NIE jest zarejestrowaną komendą wp-cli w tym projekcie. Page cache LiteSpeed jest serwerowy z krótkim TTL (brak wtyczki LiteSpeed w WP).
+
+### Commity
+- Sidebar VAT→CTA: `1f70cd6`, lepszy CTA: `67da3f5`, doprecyzowanie ceny/rozmowy: `445ab10`
+- Nagłówki bloga: `9163719`
+- Klikalne karty portfolio + drag-guard: `12171e3`
+- Breadcrumb bloga: `ad52629` — `blog_url()` (`app/Blog/Helpers.php`) najpierw szuka statycznej strony o slugu `blog`, dopiero potem spada do `home_url()`. Wcześniej breadcrumb „Blog" na wpisie prowadził na stronę główną.
+- Produkcja (main) na końcu sesji: `8a0129c`
+
+## Sesja 2026-08-05 — porządek w bloczkach Gutenberga (kategorie + dostępność per typ treści)
+
+Problem: wszystkie 39 bloków ACF siedziało w jednej kategorii „Motyw". Przy pisaniu wpisu blogowego edytor pokazywał komplet — hero, bloki usługi, archiwa — bez sygnału, które są od bloga.
+
+### Grupy bloków — `app/blocks.php` (przebudowa rejestracji)
+Wprowadzone pojęcie **grupy**. Każdy blok ma klucz `group`, grupa decyduje o kategorii w edytorze **i** o `post_types` (gdzie blok w ogóle da się wstawić). Dwie funkcje pomocnicze w `App\`: `block_groups()` (definicje) i `block_category_order()` (kolejność kategorii per typ treści).
+
+| Grupa | Kategoria w edytorze | Dostępna w | Bloki |
+|-------|----------------------|------------|-------|
+| `article` | **Wpis blogowy — wstawki w treść** | wszędzie | blog-pullquote, blog-callout, blog-personal-quote, lookbook-section |
+| `blog` | **Blog i poradniki — sekcje** | `page` | blog (3 najnowsze), blog-archive, guides-archive, knowledge-base |
+| `service` | **Podstrona usługi** | `page`, `service` | 8× `service-*` (desc, desc-alt, what, why, process, faq, trust, video) |
+| `section` | **Sekcje stron** | `page`, `service` | hero, subpage-hero, page-header, services, offer, process, testimonials, portfolio, video, voucher, features, brand-logos, local-seo, manifest\*, text-columns\*, consultation-process, personal-intro |
+| `contact` | **Kontakt i newsletter** | wszędzie | contact, contact-bar, contact-channels, next-steps, newsletter, subscribe |
+
+\* `manifest` i `text-columns` mają własne `'post_types' => []` (nadpisanie grupy) — są na tyle uniwersalne, że mogą trafić też do wpisu.
+
+### Kolejność kategorii zależna od kontekstu
+`block_categories_all` dostaje `$context` i sortuje kategorie motywu pod edytowany typ treści:
+- `post` / `guide` → **Wpis blogowy** na górze, potem Kontakt, Blog, Sekcje, Usługa
+- `service` → Usługa, Sekcje, Kontakt, Wpis, Blog
+- reszta (strony) → Sekcje, Blog, Kontakt, Usługa, Wpis
+
+### Efekt w edytorze wpisu blogowego
+Widoczne tylko: **Wpis blogowy — wstawki w treść** (4 bloki, na samej górze listy) + **Kontakt i newsletter** + `manifest`/`text-columns`. Hero, archiwa i bloki usługi zniknęły z wyszukiwarki.
+
+### Ważne o `post_types`
+Ograniczenie działa **wyłącznie na wstawianie nowych bloków**. Treść, która już gdzieś istnieje, renderuje się dalej bez zmian (blok jest zarejestrowany globalnie, filtrowana jest tylko wyszukiwarka). Jeśli okaże się, że jakiś blok był używany poza swoim typem i teraz go nie widać przy edycji — wystarczy dopisać `'post_types' => []` przy tym bloku.
+
+### Zmienione pliki
+- `app/blocks.php` — pełna przebudowa: `block_groups()`, `block_category_order()`, klucz `group` przy każdym z 39 bloków, warunkowe `post_types`, `block_categories_all` z `$context` (2 argumenty). Stara kategoria `theme` („Motyw") usunięta — kategoria nie jest zapisywana w treści, więc istniejące bloki nic nie tracą.
+- Tytuł bloku `blog` doprecyzowany: „Blog" → „Blog — 3 najnowsze wpisy" (mylił się ze stroną zbiorczą i wstawkami blogowymi).
+
+### Uwagi
+- Zmiana jest czysto PHP (brak nowych klas Tailwinda), ale build i tak leci — plus `wp acorn view:clear` na serwerach, zgodnie z learningiem z 2026-07-17.
+- Nie udało się zinwentaryzować użycia bloków na produkcji przez SSH (komendy `wp db query` / pętla po `wp post get` zablokowane przez klasyfikator uprawnień) — stąd konserwatywne `post_types` (sekcje dostępne i na stronach, i na usługach).
