@@ -12,7 +12,9 @@
   @endif
 
   @if ($image['url'])
-    <figure class="max-w-[820px] mx-auto">
+    {{-- Węższe niż kolumna tekstu i wycentrowane — zdjęcie ma być akcentem,
+         nie banerem na całą szerokość. --}}
+    <figure class="max-w-[620px] mx-auto">
       <img
         src="{{ $image['url'] }}"
         alt="{{ $image['alt'] }}"
