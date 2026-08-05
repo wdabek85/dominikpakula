@@ -7,7 +7,7 @@
 <section class="not-prose my-10 lg:my-12">
 
   @if ($heading)
-    <{{ $headingTag }} class="font-serif font-normal text-black {{ $headingTag === 'h2' ? 'text-3xl' : 'text-2xl' }} leading-tight mb-6 lg:mb-8 {{ $alignClass }}">
+    <{{ $headingTag }} class="font-serif font-bold text-black {{ $headingTag === 'h2' ? 'text-3xl' : 'text-2xl' }} leading-tight mb-6 lg:mb-8 {{ $alignClass }}">
       {{ $heading }}
     </{{ $headingTag }}>
   @endif
