@@ -362,6 +362,14 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.lookbook-section',
         ],
         [
+            'name' => 'blog-text-image',
+            'title' => 'Tekst + zdjęcie (2 kolumny)',
+            'description' => 'Nagłówek na całą szerokość (wpada do spisu treści) + tekst i zdjęcie obok siebie. Zdjęcie do wyboru po lewej lub prawej.',
+            'icon' => 'align-pull-right',
+            'group' => 'article',
+            'render_template' => 'blocks.blog-text-image',
+        ],
+        [
             'name' => 'blog-pullquote',
             'title' => 'Pull quote (wyróżniona myśl)',
             'description' => 'Duża wyróżniona myśl z cudzysłowem — do akcentowania kluczowych wniosków w artykule.',
