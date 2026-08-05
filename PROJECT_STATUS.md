@@ -1233,13 +1233,20 @@ Wykrywanie:
 - **Alarm mailowy o nowym administratorze** — `user_register` / `set_user_role` / `add_user_role`; mail z loginem, e-mailem, IP, kto wykonał.
 - **Dobowy audyt listy adminów** (cron `dp_admin_audit`) — porównuje bieżącą listę z opcją `dp_known_admins` i mailuje o różnicy. **To jedyna kontrola, która wyłapałaby ten incydent**, bo wpis prosto do bazy nie odpala żadnego hooka. Pierwsze uruchomienie zapisuje stan odniesienia — dlatego czyszczenie obcych kont trzeba zrobić PRZED albo skasować `dp_known_admins` po sprzątaniu.
 
+### Sprzątanie — wykonane 2026-08-05
+- [x] **Nowe konto administratora** `dpakula` (ID 22, `kontakt@meskistylista.pl`) na produkcji — hasło wygenerowane przez wp-cli, zmienione przez usera po pierwszym logowaniu
+- [x] **Usunięte wszystkie 24 obce konta** — 20 na produkcji, 4 na stagingu (`--reassign=1`, treści przepisane na ID 1)
+- [x] **Sesje wyczyszczone** — `wp user session destroy 1 --all` na obu środowiskach (konto `admin` miało 6 wiszących sesji)
+- [x] **Rotacja saltów** na prod i staging — 8 wartości (80 znaków, `openssl rand`) wygenerowanych bezpośrednio na serwerze, backup w `.env.bak-20260805`. Po rotacji smoke-test: home/blog/usługi/panel = 200
+- [x] **Sekretny adres logowania** aktywny na obu środowiskach (patrz sekcja wyżej)
+- [x] Weryfikacja końcowa: zero obcych kont, zero haseł aplikacji, `git status` czysty, `core verify-checksums` OK, cron bez obcych zadań
+
 ### Do zrobienia — poza kodem (user)
-- [ ] **Zmiana hasła dhosting (panel + SSH + MySQL)** — priorytet 1. Po zmianie hasła MySQL podmienić `DB_PASSWORD` w `.env` na obu serwerach, inaczej strony padną.
-- [ ] **Usunięcie 24 obcych kont** (20 prod + 4 staging) + `wp user session destroy 1 --all`
-- [ ] **Nowe konto administratora** o nieoczywistej nazwie; stare `admin` (ID 1) do zdegradowania lub usunięcia — login `admin` jest zgadywalny
-- [ ] **Rotacja saltów** w `.env` obu środowisk (roots.io/salts) — unieważnia wszystkie ciasteczka logowania, także sesje intruza
-- [ ] **Przegląd pozostałych 10 domen** na koncie `wiktor1249` pod kątem tego samego wzorca kont
+- [ ] **Zmiana hasła dhosting (panel + SSH + MySQL)** — priorytet 1, jedyny nie domknięty element wektora. Po zmianie hasła MySQL podmienić `DB_PASSWORD` w `.env` na obu serwerach, inaczej strony padną.
+- [ ] Stare konto `admin` (ID 1) — zdegradować lub usunąć po przepisaniu treści; login `admin` jest zgadywalny. E-mail wciąż `dev-email@wpengine.local` (dlatego reset hasła nie działał).
+- [ ] **Przegląd pozostałych 10 domen** na koncie `wiktor1249` pod kątem tego samego wzorca kont (`Nx_*`, `w2s_*`, `wp2_*`)
 - [ ] Rozważyć 2FA (wtyczka przez Composer) — kod limituje próby, ale nie zastępuje drugiego składnika
+- [ ] Usunąć backupy `.env.bak-20260805` z obu serwerów, gdy potwierdzisz że wszystko działa (zawierają stare salty i hasło do bazy)
 
 ### Sekretny adres logowania (2026-08-05, po hardeningu)
 - `app/login-url.php` (nowy, ładowany w `functions.php`) + `Config::define('WP_LOGIN_SLUG', …)` w `config/application.php`.
