@@ -1192,3 +1192,56 @@ Ograniczenie działa **wyłącznie na wstawianie nowych bloków**. Treść, któ
 ### Uwagi
 - Zmiana jest czysto PHP (brak nowych klas Tailwinda), ale build i tak leci — plus `wp acorn view:clear` na serwerach, zgodnie z learningiem z 2026-07-17.
 - Nie udało się zinwentaryzować użycia bloków na produkcji przez SSH (komendy `wp db query` / pętla po `wp post get` zablokowane przez klasyfikator uprawnień) — stąd konserwatywne `post_types` (sekcje dostępne i na stronach, i na usługach).
+
+## 🚨 INCYDENT BEZPIECZEŃSTWA 2026-08-05 — obce konta administratora (prod + staging)
+
+Wykryty przy okazji zgłoszenia „nie mogę się zalogować na admina, a nie zmieniałem hasła".
+
+### Zakres
+- **meskistylista.pl (prod):** 20 obcych kont administratora, zakładanych od **2026-07-21 01:13** do **2026-08-04 23:58**. Wzorce nazw: `Nx_*@nx.invalid` (7), `w2s_*@wp2shell.local` (7), `wp2_*@wp2shell.invalid` (4), `wpenginebot@wpengine.com`, `wpsvc_*@wordpress-svc.internal`.
+- **dominikpakula.wdb-creative.pl (staging):** 4 obce konta od **2026-07-20 20:35** (`Nx_*`, `bunk_*`, `wp_admin_9d7008@local.host`).
+- **Aktywne sesje intruza w chwili wykrycia:** 2 (`wp2_507429c8c1c6`, `wpenginebot`). Konto `admin` miało 6 wiszących sesji.
+
+### Co NIE zostało naruszone (zweryfikowane)
+- Pliki motywu i Bedrocka — `git status` czysty na obu serwerach, zero podmian
+- Rdzeń WordPressa — `wp core verify-checksums` przechodzi
+- Brak PHP w `uploads/`, brak obcych wtyczek, mu-pluginów i drop-inów
+- `.htaccess` niezmieniony (7.07), cron czysty, `users_can_register=0`
+- Brak haseł aplikacji (typowa persystencja) na jakimkolwiek koncie
+- `~/.ssh/authorized_keys` — 4 klucze, wszystkie własne (`deploy@zahakowani-prod` to klucz do `zahakowani.pl`, innej domeny na tym samym koncie), plik nietykany od 12.05
+- Treści: od 15.07 zmienione 3 pozycje, wszystkie autorstwa ID 1 (własne edycje)
+- **Rezerwacje: 0 rekordów** — brak danych osobowych klientów do wykradzenia. Newsletter siedzi w Brevo, nie w WP.
+
+### Wektor wejścia — ustalenia z logów
+Logi dostępowe: `~/.logs/www/<domena>/access.log*` (dhosting trzyma od 07.07, nie na dysku projektu).
+- **W momencie powstania pierwszego konta (21.07 01:13) NIE MA żadnego żądania HTTP** — ani logowania, ani wywołania REST. Konta nie powstały przez formularz ani API tej witryny.
+- Pierwsze zalogowanie intruza w logach: **29.07 12:06 z IP `87.120.93.46` (DE)** — `POST /wp/wp-login.php` → 302 **za pierwszym razem**, bez śladu zgadywania hasła. Przyszedł z gotowymi danymi konta założonego wcześniej.
+- Po zalogowaniu próbował `plugin-install.php` i `update-core.php` → 404 (ścieżki Bedrocka) — a instalacja wtyczek i tak jest zablokowana przez `DISALLOW_FILE_MODS`/`DISALLOW_FILE_EDIT` w `config/application.php`. To tłumaczy brak backdoora w plikach.
+- XML-RPC: próby z TR (20.07, 21.07) → 403, odbite przez serwer.
+
+**Wniosek:** wpis szedł z pominięciem WordPressa — dostęp do bazy lub do konta hostingowego. Pasuje do tego niezrealizowany od maja punkt „rotacja hasła SSH dhosting (było plaintextem w czacie)" — to samo hasło jest hasłem MySQL, a obie strony (prod + staging) współdzielą konto `wiktor1249`. Na koncie stoi **11 domen pod jednym użytkownikiem systemowym**, więc alternatywny scenariusz to kompromitacja sąsiedniej witryny i wejście przez współdzielony filesystem. Rozstrzygnięcie wymaga sprawdzenia pozostałych 10 stron (nie zrobione — komendy poza katalogiem projektu blokuje klasyfikator uprawnień).
+
+### Hardening wdrożony w kodzie — `app/security.php` (dopisek)
+Blokady dróg wejścia przez aplikację:
+- **Limit prób logowania** — 5 nieudanych z jednego IP / 15 min blokuje kolejne (transient, `authenticate` prio 30 + `wp_login_failed` + `wp_login`). Domykało otwarty punkt audytu z lipca.
+- **Jednolity komunikat błędu logowania** (`login_errors`) — koniec z rozróżnianiem „zły login" / „złe hasło".
+- **XML-RPC wyłączony** w aplikacji (`xmlrpc_enabled`, `xmlrpc_methods`, zdjęty `X-Pingback`) — kanał brute-force przez `system.multicall`.
+- **Hasła aplikacji wyłączone** (`wp_is_application_passwords_available`) — działają po zmianie hasła konta, wygodna persystencja.
+- **Zakaz zakładania kont przez REST** (`rest_pre_insert_user`, tylko tworzenie; aktualizacje profilu przechodzą).
+
+Wykrywanie:
+- **Alarm mailowy o nowym administratorze** — `user_register` / `set_user_role` / `add_user_role`; mail z loginem, e-mailem, IP, kto wykonał.
+- **Dobowy audyt listy adminów** (cron `dp_admin_audit`) — porównuje bieżącą listę z opcją `dp_known_admins` i mailuje o różnicy. **To jedyna kontrola, która wyłapałaby ten incydent**, bo wpis prosto do bazy nie odpala żadnego hooka. Pierwsze uruchomienie zapisuje stan odniesienia — dlatego czyszczenie obcych kont trzeba zrobić PRZED albo skasować `dp_known_admins` po sprzątaniu.
+
+### Do zrobienia — poza kodem (user)
+- [ ] **Zmiana hasła dhosting (panel + SSH + MySQL)** — priorytet 1. Po zmianie hasła MySQL podmienić `DB_PASSWORD` w `.env` na obu serwerach, inaczej strony padną.
+- [ ] **Usunięcie 24 obcych kont** (20 prod + 4 staging) + `wp user session destroy 1 --all`
+- [ ] **Nowe konto administratora** o nieoczywistej nazwie; stare `admin` (ID 1) do zdegradowania lub usunięcia — login `admin` jest zgadywalny
+- [ ] **Rotacja saltów** w `.env` obu środowisk (roots.io/salts) — unieważnia wszystkie ciasteczka logowania, także sesje intruza
+- [ ] **Przegląd pozostałych 10 domen** na koncie `wiktor1249` pod kątem tego samego wzorca kont
+- [ ] Rozważyć 2FA (wtyczka przez Composer) — kod limituje próby, ale nie zastępuje drugiego składnika
+
+### Wnioski
+- `DISALLOW_FILE_MODS` uratował sytuację: intruz z prawami administratora **nie mógł** zainstalować wtyczki-backdoora, więc kompromitacja została w bazie i sprząta się usunięciem kont + rotacją haseł.
+- Brak jakiegokolwiek monitoringu oznaczał, że konta przybywały przez 15 dni niezauważone. Stąd dobowy audyt — bez niego następny taki incydent też wyjdzie przypadkiem.
+- Hasła produkcyjne nigdy nie mogą przechodzić przez czat. Punkt „rotacja hasła SSH" wisiał niezrealizowany od maja i jest dziś głównym podejrzanym.
