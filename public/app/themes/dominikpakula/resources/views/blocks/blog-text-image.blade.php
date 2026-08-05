@@ -13,7 +13,7 @@
   @endif
 
   @if ($text || $image['url'])
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
 
       @if ($text)
         <div class="space-y-4 font-poppins text-base leading-relaxed text-black {{ $alignClass }} {{ $imageFirst ? 'lg:order-2' : '' }}">
@@ -22,7 +22,12 @@
       @endif
 
       @if ($image['url'])
-        <figure class="{{ $imageFirst ? 'lg:order-1' : '' }}">
+        {{-- Na desktopie obraz jest pozycjonowany absolutnie, więc nie wpływa na
+             wysokość wiersza gridu — tę wyznacza kolumna z tekstem, a zdjęcie
+             dopasowuje się do niej (object-contain, bez przycinania).
+             min-h chroni przed mikroskopijnym zdjęciem przy bardzo krótkim tekście.
+             Na mobile układ jest stackowany, więc obraz płynie normalnie. --}}
+        <figure class="lg:relative lg:h-full lg:min-h-[280px] {{ $imageFirst ? 'lg:order-1' : '' }}">
           <img
             src="{{ $image['url'] }}"
             alt="{{ $image['alt'] }}"
@@ -30,9 +35,8 @@
             @if ($image['height']) height="{{ $image['height'] }}" @endif
             loading="lazy"
             decoding="async"
-            {{-- Pionowe zdjęcia potrafią urosnąć na całą wysokość kolumny i zdominować
-                 sekcję — limit wysokości trzyma proporcje tekst/obraz w ryzach. --}}
-            class="max-h-[420px] lg:max-h-[520px] w-auto max-w-full h-auto mx-auto rounded-sm"
+            class="max-h-[420px] w-auto max-w-full h-auto mx-auto rounded-sm
+                   lg:absolute lg:inset-0 lg:size-full lg:max-h-none lg:object-contain lg:object-center"
           >
         </figure>
       @endif
