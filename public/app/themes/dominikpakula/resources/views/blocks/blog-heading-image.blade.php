@@ -14,7 +14,7 @@
   @if ($image['url'])
     {{-- Węższe niż kolumna tekstu i wycentrowane — zdjęcie ma być akcentem,
          nie banerem na całą szerokość. --}}
-    <figure class="max-w-[620px] mx-auto">
+    <figure class="max-w-[620px] mx-auto block">
       <img
         src="{{ $image['url'] }}"
         alt="{{ $image['alt'] }}"
@@ -22,7 +22,7 @@
         @if ($image['height']) height="{{ $image['height'] }}" @endif
         loading="lazy"
         decoding="async"
-        class="w-full h-auto rounded-sm"
+        class="block w-full h-auto mx-auto rounded-sm"
       >
 
       @if ($caption)
