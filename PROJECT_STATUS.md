@@ -464,7 +464,7 @@ Po przebudowie sezon 3 — editorial layout, 3 sekcje stackowane (TAK / POLECAM 
 ### Grupa: **Usługa** (lokalizacja: `Post Type is equal to service`) — rozszerzona w sezonie 3
 Pola dodatkowe do tych co już istnieją (service_sidebar_title/description/price/tags):
 - [x] `service_included_heading` (Text, fallback "W cenie znajdziesz") ✅ (2026-05-21) — field group "Usługa Obejmuje" w `acf-json/group_69f246a2f3a88.json`
-- [x] `service_included_items` (Repeater z sub-fieldem `service_included_item` Textarea) ✅ (2026-05-21) — pierwotnie pole było błędnie utworzone jako Text, naprawione na Repeater. Composer `ServiceComposer::includedItems()` ma fallback hardcoded (4 punkty) dla usług bez wpisanych pozycji — **wciąż do wypełnienia per usługa** w panelu (lokal + staging osobno).
+- [x] `service_included_items` (Repeater z sub-fieldem `service_included_item` Textarea) ✅ (2026-05-21) — pierwotnie pole było błędnie utworzone jako Text, naprawione na Repeater. Composer `ServiceComposer::includedItems()` ma fallback hardcoded (4 punkty) dla usług bez wpisanych pozycji. **✅ WYPEŁNIONE 2026-08-06** — wszystkie 6 usług na produkcji i stagingu, po 4 pozycje, z notatki usera (patrz sesja 2026-08-06). Fallback od tej pory nieaktywny dla tych usług. **Lokalnie nadal puste.**
 
 ### Sprawdzić czy istnieje (prawdopodobnie tak, bo używany na podstronach usług):
 **Grupa: Blok Opinie** (lokalizacja: `Block is equal to acf/testimonials`)
@@ -1317,6 +1317,30 @@ Sekcja „Autor" była osobnym, pełnoszerokościowym blokiem pod gridem — bio
 - Wcześniej w tej samej sesji: usunięte `max-w-[640px]` z akapitu bio (tekst łamał się dużo wcześniej niż galeria nad nim).
 - **Uwaga:** kolumna treści to `lg:col-span-8 xl:col-span-9`, więc bio łamie się na więcej linii niż w wersji pełnoszerokościowej. Jeśli okaże się za ciasno — zmniejszyć avatar albo przenieść bio pod niego zamiast obok.
 - `author-bio` jest używany **wyłącznie** w `single-post` (sprawdzone grepem), więc przebudowa partiala nie dotyka innych szablonów.
+
+### Zmiana 5 — „W cenie znajdziesz" wypełnione per usługa (zmiana w BAZIE, nie w kodzie)
+Repeater ACF `service_included_items` był pusty we wszystkich usługach, więc sidebar leciał z hardcodowanego fallbacku w `ServiceComposer::includedItems()` (`Konsultacja 1-1 (60 min)` / `Plan stylizacji dopasowany do Ciebie` / …). Uzupełnione z notatki usera, **6 usług × 4 pozycje, na produkcji i na stagingu**.
+
+| ID | Usługa | Lista |
+|----|--------|-------|
+| 362 | Zakupy ze stylistą | zakupy |
+| 138 | Przegląd szafy + zakupy | zakupy |
+| 477 | Zakupy ze Stylistą Kraków | zakupy |
+| 367 | Zakupy Online ze Stylistą | online |
+| 354 | Przegląd szafy | przegląd |
+| 358 | Stylizacja Okazjonalna | okazjonalna |
+
+- Zapis przez `wp eval-file` + `update_field()` (skrypt jednorazowy, po wykonaniu usunięty z serwera). ID usług są **takie same na prod i na stagingu** (bazy z tego samego importu).
+- Dwie normalizacje względem notatki: „Wiedz**ą** na temat tkanin…" → „Wiedza…", oraz małe „konsultacja 1-1" → „Konsultacja 1-1" (spójnie z pozostałymi listami).
+- **To zmiana w bazie — nie wersjonuje się w gicie.** Przy nadpisaniu bazy produkcyjnej importem trzeba powtórzyć.
+- **Uwaga na pomyłkę:** sekcja **„Co Dostaniesz"** w treści strony usługi to co innego — blok `acf/service-what` z własnymi polami (`what_items`: ikona + tytuł + opis), edytowany w Gutenbergu per strona. Nie ma nic wspólnego z sidebarowym `service_included_items` i nie został tknięty.
+
+### Zmiana 6 — tytuły i slugi usług + `app/redirects.php`
+- **477**: „Zakupy ze Stylista Kraków" (prod) / „Zakupy ze Stylista **Karków**" (staging, literówka) → **„Zakupy ze Stylistą Kraków"** na obu.
+- **477 slug**: `zakupy-ze-stylista-krakow-2` (prod) / `zakupy-ze-stylista-karkow` (staging) → **`krakow`**. Sufiks `-2` brał się z kolizji z **załącznikiem ID 437** o slugu `zakupy-ze-stylista-krakow`. Nowy URL: `/uslugi/zakupy-ze-stylista/krakow/` (477 jest dzieckiem usługi 362).
+- **362**: „Zakupy ze stylista" → **„Zakupy ze stylistą"**. Slug bez zmian, więc URL się nie ruszył.
+- **🔑 Pułapka:** `wp_check_for_changed_slugs()` (a więc `_wp_old_slug` i automatyczne przekierowanie WP) **nie działa dla typów hierarchicznych** — a `service` jest hierarchiczny. Po zmianie sluga stary adres dawał **404, nie 301**. Stąd nowy plik:
+- **`app/redirects.php`** (nowy, dopisany do listy w `functions.php` po `login-url`) — mapa `stara ścieżka => nowa ścieżka`, wpięta w `template_redirect` z priorytetem 1, odpala się wyłącznie gdy `is_404()`. Zawiera oba stare adresy Krakowa (prod + staging). Kolejne zmiany slugów w hierarchicznych CPT dopisywać do `App\redirect_map()`.
 
 ### ⚠️ Weryfikacja renderu — cache brzegowy na produkcji ignoruje query string
 Uzupełnienie learningu z 2026-07-17, kosztowało dziś dwa fałszywe alarmy (avatar autora, kolejność sekcji):
