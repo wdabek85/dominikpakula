@@ -42,7 +42,7 @@
             @foreach ($section['items'] as $item)
               <li class="flex gap-2.5 font-poppins text-sm leading-relaxed {{ $i === 0 ? 'text-white/85' : 'text-black/75' }}">
                 <span class="shrink-0 select-none {{ $i === 0 ? 'text-white/40' : 'text-black/30' }}" aria-hidden="true">&mdash;</span>
-                <span class="[&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2">
+                <span class="desc-card-item">
                   @if ($section['allow_html'])
                     {!! $item !!}
                   @else

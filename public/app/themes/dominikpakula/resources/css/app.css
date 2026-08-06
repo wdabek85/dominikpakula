@@ -23,6 +23,17 @@ a {
   text-decoration: none;
 }
 
+/* Linki wewnątrz punktów bloku „Dla kogo — wariant C”.
+   Treść przychodzi z WYSIWYG, więc nie da się jej otagować klasami z Blade.
+   Nie używamy tu wariantów arbitralnych [&_a]: — wptexturize zamienia `&`
+   na `&#038;` w treści z the_content i klasa przestaje działać. */
+.desc-card-item a {
+  @apply font-semibold underline underline-offset-2 whitespace-nowrap transition-colors;
+}
+.desc-card-item a:hover {
+  @apply opacity-70;
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
