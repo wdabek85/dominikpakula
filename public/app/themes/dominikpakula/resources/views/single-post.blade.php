@@ -20,11 +20,11 @@
       {{-- 2. Body + sticky sidebar --}}
       @include('partials.blog.body')
 
-      {{-- 3. Subscribe --}}
-      @include('partials.blog.subscribe')
-
-      {{-- 4. Author bio --}}
+      {{-- 3. Author bio --}}
       @include('partials.blog.author-bio')
+
+      {{-- 4. Subscribe --}}
+      @include('partials.blog.subscribe')
 
       {{-- 5. Booking CTA --}}
       @include('partials.blog.booking-cta')
