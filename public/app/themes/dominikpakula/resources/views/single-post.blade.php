@@ -17,28 +17,25 @@
       {{-- 1. Hero --}}
       @include('partials.blog.hero')
 
-      {{-- 2. Body + sticky sidebar --}}
+      {{-- 2. Body + sticky sidebar (na dole kolumny treści: podpis autora) --}}
       @include('partials.blog.body')
 
-      {{-- 3. Author bio --}}
-      @include('partials.blog.author-bio')
-
-      {{-- 4. Subscribe --}}
+      {{-- 3. Subscribe --}}
       @include('partials.blog.subscribe')
 
-      {{-- 5. Booking CTA --}}
+      {{-- 4. Booking CTA --}}
       @include('partials.blog.booking-cta')
 
-      {{-- 6. Related posts --}}
+      {{-- 5. Related posts --}}
       @include('partials.blog.related-posts')
 
-      {{-- 7. Prev / Next --}}
+      {{-- 6. Prev / Next --}}
       @include('partials.blog.prev-next')
 
-      {{-- 8. Browse full blog --}}
+      {{-- 7. Browse full blog --}}
       @include('partials.blog.browse-full')
 
-      {{-- 9. Comments --}}
+      {{-- 8. Comments --}}
       <?php comments_template(); ?>
 
     </article>
