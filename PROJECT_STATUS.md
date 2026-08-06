@@ -1309,6 +1309,15 @@ Sekcja „Autor" pod wpisem brała avatar wprost z `get_avatar_url()`. Konta bez
 - Oba środowiska: `git pull` + `npm run build` + `wp acorn view:clear` + `wp cache flush`
 - Zweryfikowane w renderze — sekcja Autor wychodzi przed `id="newsletter-form"` i kartą Instagrama na obu środowiskach.
 
+### Zmiana 4 — podpis autora wewnątrz kolumny treści
+Sekcja „Autor" była osobnym, pełnoszerokościowym blokiem pod gridem — bio ciągnęło się przez całą stronę, także pod sidebarem, i nie trzymało się krawędzi tekstu wpisu.
+- `partials/blog/author-bio.blade.php` — zdjęty własny kontener (`mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16`); zastąpiony `mt-12 pt-10 border-t border-black/10` (ta sama cienka linia co nad tagami). Partial nie ma już własnych paddingów, bo dziedziczy je z kolumny.
+- `partials/blog/body.blade.php` — `@include('partials.blog.author-bio')` na samym dole kolumny treści, pod tagami i mobilnym share.
+- `single-post.blade.php` — usunięty osobny `@include`, numeracja sekcji poprawiona (0–8).
+- Wcześniej w tej samej sesji: usunięte `max-w-[640px]` z akapitu bio (tekst łamał się dużo wcześniej niż galeria nad nim).
+- **Uwaga:** kolumna treści to `lg:col-span-8 xl:col-span-9`, więc bio łamie się na więcej linii niż w wersji pełnoszerokościowej. Jeśli okaże się za ciasno — zmniejszyć avatar albo przenieść bio pod niego zamiast obok.
+- `author-bio` jest używany **wyłącznie** w `single-post` (sprawdzone grepem), więc przebudowa partiala nie dotyka innych szablonów.
+
 ### ⚠️ Weryfikacja renderu — cache brzegowy na produkcji ignoruje query string
 Uzupełnienie learningu z 2026-07-17, kosztowało dziś dwa fałszywe alarmy (avatar autora, kolejność sekcji):
 - Na `meskistylista.pl` **`?nocache=…` / `?bust=…` NIE omijają cache brzegowego** — dwa różne, losowe bustery zwróciły identyczną starą stronę, mimo że plik na serwerze był poprawny (`git log` + `grep` potwierdzone) i compiled views wyczyszczone.
