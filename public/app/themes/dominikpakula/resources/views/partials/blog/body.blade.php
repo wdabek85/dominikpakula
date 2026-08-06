@@ -50,6 +50,9 @@
         @include('partials.blog.share')
       </div>
 
+      {{-- Podpis autora — na samym dole treści, w szerokości kolumny wpisu --}}
+      @include('partials.blog.author-bio')
+
     </div>
 
     {{-- Sticky sidebar — po prawej na desktop --}}

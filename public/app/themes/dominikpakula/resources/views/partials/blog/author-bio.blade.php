@@ -1,5 +1,6 @@
-{{-- Author bio --}}
-<section class="mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16">
+{{-- Author bio — renderowany wewnątrz kolumny treści (partials/blog/body), więc bez
+     własnego kontenera i paddingów: bierze szerokość wpisu. --}}
+<section class="mt-12 pt-10 border-t border-black/10">
   <div class="flex flex-col sm:flex-row gap-6 items-start">
 
     @if ($author['avatar'])
