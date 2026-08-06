@@ -70,4 +70,10 @@
     @endforeach
 
   </div>
+
+  {{-- Banner prezentowy — pod siatką, tak jak w wariantach A i B --}}
+  <div class="mt-4">
+    <x-gift-banner />
+  </div>
+
 </div>
