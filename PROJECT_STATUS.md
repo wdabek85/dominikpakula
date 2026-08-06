@@ -1354,6 +1354,29 @@ Zgłoszenie po wypełnieniu `service_included_items`. Weryfikacja: wyciągnięty
 - **Trzecia i faktyczna przyczyna w tym zgłoszeniu: user patrzył na LOKALNĄ stronę.** Lokalna baza jest mocno nieaktualna — ma **1 usługę** (138 „Przegląd szafy + zakupy"), podczas gdy prod i staging mają **6**. Pole było tam puste, więc leciał fallback. Uzupełnione lokalnie 2026-08-06 (`wp eval-file` + `wp acorn view:clear`). **Do rozważenia: zrzut bazy z produkcji na lokalkę**, żeby nie pracować na treściach sprzed kilku miesięcy.
 - Druga przyczyna: **produkcja rewaliduje z opóźnieniem**. Po deployu zmiany w PHP stary stan potrafi się utrzymać kilkanaście sekund mimo `view:clear` + `cache flush` (przekierowanie Krakowa: 404 przy pierwszym sprawdzeniu, 301 po ~15 s, bez żadnej dodatkowej akcji). Staging odpowiada od razu.
 
+### Zmiana 7 — „Dla kogo” wariant C (karty) — TEST, tylko staging
+Nowy układ bloku „Czy ta usługa jest dla Ciebie?” wzorowany na referencji od usera: trzy karty obok siebie, **pierwsza (sekcja „Tak”) wyróżniona** `bg-primary` z CTA `.booking-trigger`, dwie pozostałe białe. Separatory rysowane przez `gap-px` na tle `black/10`.
+
+- `resources/views/blocks/service-desc-cards.blade.php` — nowy widok
+- `ServiceDescBlockComposer` — dopisany drugi widok do `$views`; **wariant C dzieli dane z wariantem A**, zero duplikacji logiki
+- `acf-json/group_69cbafc509318.json` — druga reguła lokalizacji (`block == acf/service-desc-cards`)
+- `app/blocks.php` — rejestracja „Dla kogo — wariant C (karty)”, grupa `service`
+- Na stagingu podmieniony w treści 5 głównych usług (362, 138, 354, 358, 367). Strona Kraków (477) zostaje na wariancie B.
+- **Na produkcji NIE wdrożone** — kod jest tylko na `develop`/`staging`, treść usług na prodzie dalej używa wariantu A.
+
+**Dlaczego podmiana nazwy bloku nie gubi treści:** ACF Blocks trzymają wartości pól w atrybucie `data` komentarza bloku (w `post_content`), nie w postmeta. Wspólna grupa pól + zmiana samej nazwy bloku = te same dane, inny render.
+
+**🔑 Wpadka i nauka — `wp_slash()`:**
+`wp_update_post()` **i `update_post_meta()`** robią wewnętrznie `wp_unslash()`. Pierwsza wersja skryptu podmieniającego zapisała treść bez `wp_slash()` → z każdego wpisu zniknęły wszystkie backslashe: `\r\n`→`rn`, `\t`→`t`, `<`→`u003c`, `"`→`u0022`. Widoczne na stronie jako literalne „rn” w tekście.
+- **Kopia zapasowa też była uszkodzona**, bo zapisał ją `update_post_meta()` bez `wp_slash()` — rewert przywrócił zepsutą treść. Kopia bez `wp_slash()` jest bezwartościowa.
+- Nadpisanie treścią z produkcji **odrzucone przez bezpiecznik** — staging ma własne teksty (358 różni się o 977 znaków).
+- Naprawa dwuetapowa: `uXXXX` → `\uXXXX` (tylko 3 kody w danych: `"`, `<`, `>` — sprawdzone, żadnego trafienia w prozę), potem `>rn t<` → `>\r\n \t<` wg wzorca z produkcji.
+- **Kolejność ma znaczenie:** naprawa `uXXXX` przed `rn` tworzy literę `e` przed `rn`, przez co lookbehind `[A-Za-z]` pomija trafienie. Za pierwszym razem właśnie tak zostały 3 niedobitki.
+- `rn` występuje w polskich słowach („oga**rn**ąć”) — wzorzec musi być zawężony do sąsiedztwa `<`/`>`.
+- Każdy krok walidował `json_decode()` wszystkich komentarzy bloków przed zapisem. Stan końcowy = format identyczny z produkcją.
+
+**🐛 Znaleziony przy okazji, NIEnaprawiony błąd na produkcji:** warianty arbitralne `[&_a]:` w `blocks/service-desc.blade.php` (wariant A) **nie działają w treści z `the_content`** — wptexturize zamienia `&` na `&#038;`, więc w HTML jest `[&#038;_a]:underline` i Tailwind tego nie dopasowuje. Na prodzie **54 zepsute wystąpienia** — linki w sekcji „Raczej nie” są nieostylowane. Wariant C omija problem klasą `.desc-card-item` + regułą `@apply` w `app.css`. **Wariant A do poprawienia tym samym sposobem** (patrz `feedback_wptexturize_arbitrary_variants`).
+
 ### ⚠️ Weryfikacja renderu — cache brzegowy na produkcji ignoruje query string
 Uzupełnienie learningu z 2026-07-17, kosztowało dziś dwa fałszywe alarmy (avatar autora, kolejność sekcji):
 - Na `meskistylista.pl` **`?nocache=…` / `?bust=…` NIE omijają cache brzegowego** — dwa różne, losowe bustery zwróciły identyczną starą stronę, mimo że plik na serwerze był poprawny (`git log` + `grep` potwierdzone) i compiled views wyczyszczone.
