@@ -2,11 +2,6 @@
 <section class="mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16">
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
 
-    {{-- Sticky sidebar — po lewej na desktop --}}
-    <aside class="hidden lg:block lg:col-span-4 xl:col-span-3 lg:order-first">
-      @include('partials.blog.sidebar')
-    </aside>
-
     {{-- Main content column --}}
     <div class="lg:col-span-8 xl:col-span-9 min-w-0">
 
@@ -56,6 +51,11 @@
       </div>
 
     </div>
+
+    {{-- Sticky sidebar — po prawej na desktop --}}
+    <aside class="hidden lg:block lg:col-span-4 xl:col-span-3">
+      @include('partials.blog.sidebar')
+    </aside>
 
   </div>
 </section>
