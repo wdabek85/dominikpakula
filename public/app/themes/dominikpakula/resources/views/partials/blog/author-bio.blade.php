@@ -25,7 +25,7 @@
       </h2>
 
       @if ($author['bio'])
-        <p class="font-poppins text-base text-black/80 leading-relaxed max-w-[640px]">
+        <p class="font-poppins text-base text-black/80 leading-relaxed">
           {{ $author['bio'] }}
         </p>
       @else

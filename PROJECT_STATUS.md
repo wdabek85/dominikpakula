@@ -1301,10 +1301,21 @@ Sekcja „Autor" pod wpisem brała avatar wprost z `get_avatar_url()`. Konta bez
 - Commit na `develop`: **`5cb4725`** → merge `staging` **`215f518`** → merge `main` **`7bf761c`**
 - Oba środowiska: `git pull` + `npm run build` + `wp acorn view:clear` + `wp cache flush`
 - Zweryfikowane curl-em w renderze: staging i produkcja zwracają `<img src=".../Strona-5-300x200.jpg">` w sekcji Autor.
-- **Pułapka przy weryfikacji (powtórka z 2026-08-05):** pierwsze sprawdzenie produkcji pokazało jeszcze `secure.gravatar.com/...&d=mm`, mimo `view:clear` + `cache flush`. To był nieodświeżony LiteSpeed, nie kod — powtórzenie z **innym** cache-busterem (`?bust=<losowe>`) zwróciło już portret. Zanim zacznie się szukać błędu w composerze: sprawdzić drugim, świeżym query stringiem.
+- **Pułapka przy weryfikacji:** pierwsze sprawdzenie produkcji pokazało jeszcze `secure.gravatar.com/...&d=mm`, mimo `view:clear` + `cache flush`. To był nieodświeżony cache brzegowy, nie kod — kolejne żądanie (już po wygaśnięciu TTL) zwróciło portret. Nie zadziałał tu cache-buster w query stringu, tylko upływ czasu — patrz sekcja niżej.
 - Diagnostyka przy okazji (wp-cli na prod): `wp post get 42` → „portret dominik", `_wp_attached_file` = `2026/03/Strona-5-scaled.jpg`, `wp_get_attachment_image_url(42, 'medium')` zwraca URL poprawnie na obu środowiskach.
 
-**Zmiana 3 (kolejność sekcji):** — do zdeployowania
+**Zmiana 3 (kolejność sekcji):**
+- Commit na `develop`: **`407d469`** → merge `staging` **`cf19b66`** → merge `main` **`3bf4b60`**
+- Oba środowiska: `git pull` + `npm run build` + `wp acorn view:clear` + `wp cache flush`
+- Zweryfikowane w renderze — sekcja Autor wychodzi przed `id="newsletter-form"` i kartą Instagrama na obu środowiskach.
+
+### ⚠️ Weryfikacja renderu — cache brzegowy na produkcji ignoruje query string
+Uzupełnienie learningu z 2026-07-17, kosztowało dziś dwa fałszywe alarmy (avatar autora, kolejność sekcji):
+- Na `meskistylista.pl` **`?nocache=…` / `?bust=…` NIE omijają cache brzegowego** — dwa różne, losowe bustery zwróciły identyczną starą stronę, mimo że plik na serwerze był poprawny (`git log` + `grep` potwierdzone) i compiled views wyczyszczone.
+- Omija dopiero nagłówek żądania: `curl -s -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' <URL>` — i wtedy od razu widać nową wersję.
+- Cache wygasa sam po ~minucie; zwykłe żądanie pokazuje wtedy nowe.
+- Na stagingu query string wystarcza — stąd mylące wrażenie, że „na stagingu działa, na prodzie nie".
+- **Kolejność diagnozy przy podejrzeniu nieudanego deployu:** `git log -1` na serwerze → `grep` zmienionego fragmentu w pliku → `curl` z nagłówkiem no-cache. Dopiero gdy to nie pomoże, szukać błędu w kodzie.
 
 ### Bez zmian w stosunku do poprzedniej sesji
 Otwarte punkty z incydentu 2026-08-05 (rotacja hasła dhosting, stare konto `admin` ID 1, przegląd 10 pozostałych domen, 2FA, usunięcie `.env.bak-20260805`) — **nadal do zrobienia po stronie usera**.
