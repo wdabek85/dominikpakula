@@ -1,6 +1,6 @@
 {
     "key": "group_69cbafc509318",
-    "title": "Opis Usługi\/Dla kogo",
+    "title": "Opis Usługi/Dla kogo",
     "fields": [
         {
             "key": "field_69cbafc5031c8",
@@ -314,7 +314,14 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/service-desc"
+                "value": "acf/service-desc"
+            }
+        ],
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/service-desc-cards"
             }
         ]
     ],
