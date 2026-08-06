@@ -19,11 +19,12 @@
     </h2>
   @endif
 
-  {{-- Siatka kart. `gap-px` na tle black/10 rysuje cienkie linie między kartami. --}}
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-black/10 border border-black/10 rounded overflow-hidden">
+  {{-- Siatka: dwie kolumny (Tak + Polecam), a ostatnia sekcja („Raczej nie”)
+       pełną szerokością pod spodem. `gap-px` na tle black/10 rysuje separatory. --}}
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-black/10 border border-black/10 rounded overflow-hidden">
 
     @foreach ($sections as $i => $section)
-      <article class="flex flex-col gap-4 p-6 lg:p-7 {{ $i === 0 ? 'bg-primary text-white' : 'bg-white' }}">
+      <article class="flex flex-col gap-4 p-6 lg:p-7 {{ $i === 0 ? 'bg-primary text-white' : 'bg-white' }} {{ $i === count($sections) - 1 ? 'md:col-span-2' : '' }}">
 
         @if ($section['eyebrow'])
           <span class="font-metro text-xs uppercase tracking-[3px] {{ $i === 0 ? 'text-white/60' : 'text-black/50' }}">
