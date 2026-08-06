@@ -1341,6 +1341,17 @@ Repeater ACF `service_included_items` był pusty we wszystkich usługach, więc 
 - **362**: „Zakupy ze stylista" → **„Zakupy ze stylistą"**. Slug bez zmian, więc URL się nie ruszył.
 - **🔑 Pułapka:** `wp_check_for_changed_slugs()` (a więc `_wp_old_slug` i automatyczne przekierowanie WP) **nie działa dla typów hierarchicznych** — a `service` jest hierarchiczny. Po zmianie sluga stary adres dawał **404, nie 301**. Stąd nowy plik:
 - **`app/redirects.php`** (nowy, dopisany do listy w `functions.php` po `login-url`) — mapa `stara ścieżka => nowa ścieżka`, wpięta w `template_redirect` z priorytetem 1, odpala się wyłącznie gdy `is_404()`. Zawiera oba stare adresy Krakowa (prod + staging). Kolejne zmiany slugów w hierarchicznych CPT dopisywać do `App\redirect_map()`.
+- Zweryfikowane: stary URL → **301** na `/uslugi/zakupy-ze-stylista/krakow/`, nowy → 200, na obu środowiskach.
+
+**Ta sama literówka w opiniach (CPT `testimonial`, pole `testimonial_service`):**
+- prod: opinia **103 (Michał)** miała `"Zakupy ze stylista "` (bez „ą", ze spacją na końcu) → `Zakupy ze stylistą`
+- staging: opinia **88 (Karol)** — to samo. Uwaga: **opinie na stagingu to inne osoby niż na prodzie** (103 = Wiktor, 101 = Adam, 88 = Karol), więc ID nie mapują się 1:1 jak w usługach.
+- Po poprawkach: **zero** wystąpień starego zapisu na stronach głównych obu środowisk.
+
+### ❓ „Nic się nie zmieniło na produkcji" — sprawdzone, nic nie jest hardkodowane
+Zgłoszenie po wypełnieniu `service_included_items`. Weryfikacja: wyciągnięty tekst z żywej strony prod pokazuje **nowe** pozycje, a stary fallback (`Konsultacja 1-1 (60 min)`, `Plan stylizacji dopasowany do Ciebie` z `ServiceComposer.php:162-167`) nie pojawia się na żadnej z 5 dostępnych stron usług.
+- Najczęstsza pomyłka: sekcja **„Co Dostaniesz"** w treści strony to blok `acf/service-what` (pola `what_items`: ikona + tytuł + opis, edytowane w Gutenbergu per strona) — **to nie jest** sidebarowe `service_included_items` i nie da się jej wypełnić z tej samej listy jednolinijkowców.
+- Druga przyczyna: **produkcja rewaliduje z opóźnieniem**. Po deployu zmiany w PHP stary stan potrafi się utrzymać kilkanaście sekund mimo `view:clear` + `cache flush` (przekierowanie Krakowa: 404 przy pierwszym sprawdzeniu, 301 po ~15 s, bez żadnej dodatkowej akcji). Staging odpowiada od razu.
 
 ### ⚠️ Weryfikacja renderu — cache brzegowy na produkcji ignoruje query string
 Uzupełnienie learningu z 2026-07-17, kosztowało dziś dwa fałszywe alarmy (avatar autora, kolejność sekcji):
