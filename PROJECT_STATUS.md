@@ -1261,21 +1261,50 @@ Wykrywanie:
 - Brak jakiegokolwiek monitoringu oznaczał, że konta przybywały przez 15 dni niezauważone. Stąd dobowy audyt — bez niego następny taki incydent też wyjdzie przypadkiem.
 - Hasła produkcyjne nigdy nie mogą przechodzić przez czat. Punkt „rotacja hasła SSH" wisiał niezrealizowany od maja i jest dziś głównym podejrzanym.
 
-## Sesja 2026-08-06 — sidebar wpisu blogowego po prawej stronie
+## Sesja 2026-08-06 — wpis blogowy: sidebar po prawej, zdjęcie autora, kolejność sekcji
 
-### Zmiana — `partials/blog/body.blade.php`
+### Zmiana 1 — sidebar po prawej, `partials/blog/body.blade.php`
 - `<aside>` ze sticky sidebarem (TOC + „Czytaj też" + Share) przeniesiony **fizycznie za** kolumnę contentu; usunięte `lg:order-first`.
 - Efekt uboczny na plus: kolejność w DOM zgadza się teraz z wizualną, więc czytnik ekranu i tabulacja idą **najpierw przez treść wpisu**, dopiero potem przez TOC/share. Wcześniej `order-first` je rozjeżdżał.
 - Mobile bez zmian — sidebar dalej `hidden lg:block`, TOC w `<details>` i share pod treścią.
 - Partiale `sidebar`, `toc`, `share`, `related-teaser` nie miały żadnych klas zależnych od strony (`border-l`, `pl-*` itp.) — nic nie wymagało korekty.
 
+### Zmiana 2 — zdjęcie autora w sekcji „Autor", `SinglePostComposer.php`
+Sekcja „Autor" pod wpisem brała avatar wprost z `get_avatar_url()`. Konta bez Gravatara (m.in. `dpakula` na produkcji) pokazywały domyślną szarą sylwetkę.
+- Nowa metoda `SinglePostComposer::authorPhoto(int $authorId): string` — kolejność źródeł:
+  1. pole ACF `author_photo` z profilu użytkownika (`get_field('author_photo', "user_{$id}")`)
+  2. wspólny portret — stała `FALLBACK_PORTRAIT_ID = 42` („portret dominik", ten sam załącznik co fallback w `PersonalIntroBlockComposer`)
+  3. Gravatar (`get_avatar_url`, 192px)
+- Pole ACF obsłużone we wszystkich formatach zwrotu (Array / ID / URL) przez `match(true)` — pole tworzone ręcznie w panelu, więc nie zakładamy ustawienia.
+- Blade `partials/blog/author-bio.blade.php` **bez zmian** — dalej dostaje gotowy URL w `$author['avatar']`.
+- **Kadr do sprawdzenia okiem:** załącznik 42 to `Strona-5-scaled.jpg` w proporcji poziomej 3:2 (medium = 300×200), a wyświetla się w kółku z `object-cover` — WP przycina środkowy kwadrat i obcina boki. Jeśli kadr nie siada, wgrać kwadratowe zdjęcie i podpiąć przez `author_photo`.
+- **Do zrobienia w panelu (user):** pole `author_photo` (typ **Image**, lokalizacja `User Form is equal to All`). Zakładać jako **nową grupę**, nie dopisywać do grupy z `author_role` — tamta powstała przed auto-syncem i **nie ma jej w `acf-json/`**, więc siedzi tylko w bazie i nie pojedzie gitem na prod.
+
+### Zmiana 3 — kolejność sekcji: „Autor" przed „Subscribe", `single-post.blade.php`
+- Było: body → **subscribe** → **author bio** → booking CTA. Jest: body → **author bio** → **subscribe** → booking CTA.
+- **Świadome odwrócenie wcześniejszej decyzji projektowej** z briefu (2026-04-21: „subscribe natychmiast po body, przed author bio — email capture kiedy reader jest zaangażowany"). Decyzja usera 2026-08-06: podpis autora ma iść bezpośrednio pod treścią, newsletter/Instagram dopiero pod nim.
+- Zmiana to wyłącznie przestawienie dwóch `@include` — oba partiale niezmienione, numeracja komentarzy w szablonie zaktualizowana.
+
 ### Deploy — develop → staging → produkcja (ta sama sesja)
+
+**Zmiana 1 (sidebar):**
 - Commit na `develop`: **`de5cbd0`**
 - Merge `develop → staging` (--no-ff): **`a9df5e2`** → SSH `git pull` + `npm run build` (Vite 1.87s) + `wp acorn view:clear` + `wp cache flush`
 - Zweryfikowane przez usera na stagingu → merge `staging → main` (--no-ff): **`04c531c`** → SSH `git pull` + `npm run build` (Vite 1.76s) + view:clear + cache flush
 - Na `staging` względem `main` nie było żadnych obcych commitów — na produkcję pojechała wyłącznie ta zmiana.
 - Hashe assetów po buildzie identyczne na obu środowiskach (`app-DNoLvp9J.css`, `app-DvaDIHZ1.js`) — zmiana była czysto w Blade, CSS/JS bez różnic. `view:clear` był tu **konieczny**, bo build sam z siebie nie odświeża skompilowanych widoków.
 - Wszystkie trzy branche zsynchronizowane, praca wraca na `develop`.
+
+**PROJECT_STATUS.md** (sam dokument): commit **`bfce46e`** na `develop`, pojechał na serwery razem z kolejną paczką.
+
+**Zmiana 2 (zdjęcie autora):**
+- Commit na `develop`: **`5cb4725`** → merge `staging` **`215f518`** → merge `main` **`7bf761c`**
+- Oba środowiska: `git pull` + `npm run build` + `wp acorn view:clear` + `wp cache flush`
+- Zweryfikowane curl-em w renderze: staging i produkcja zwracają `<img src=".../Strona-5-300x200.jpg">` w sekcji Autor.
+- **Pułapka przy weryfikacji (powtórka z 2026-08-05):** pierwsze sprawdzenie produkcji pokazało jeszcze `secure.gravatar.com/...&d=mm`, mimo `view:clear` + `cache flush`. To był nieodświeżony LiteSpeed, nie kod — powtórzenie z **innym** cache-busterem (`?bust=<losowe>`) zwróciło już portret. Zanim zacznie się szukać błędu w composerze: sprawdzić drugim, świeżym query stringiem.
+- Diagnostyka przy okazji (wp-cli na prod): `wp post get 42` → „portret dominik", `_wp_attached_file` = `2026/03/Strona-5-scaled.jpg`, `wp_get_attachment_image_url(42, 'medium')` zwraca URL poprawnie na obu środowiskach.
+
+**Zmiana 3 (kolejność sekcji):** — do zdeployowania
 
 ### Bez zmian w stosunku do poprzedniej sesji
 Otwarte punkty z incydentu 2026-08-05 (rotacja hasła dhosting, stare konto `admin` ID 1, przegląd 10 pozostałych domen, 2FA, usunięcie `.env.bak-20260805`) — **nadal do zrobienia po stronie usera**.
