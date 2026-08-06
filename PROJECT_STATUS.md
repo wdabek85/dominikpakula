@@ -464,7 +464,7 @@ Po przebudowie sezon 3 — editorial layout, 3 sekcje stackowane (TAK / POLECAM 
 ### Grupa: **Usługa** (lokalizacja: `Post Type is equal to service`) — rozszerzona w sezonie 3
 Pola dodatkowe do tych co już istnieją (service_sidebar_title/description/price/tags):
 - [x] `service_included_heading` (Text, fallback "W cenie znajdziesz") ✅ (2026-05-21) — field group "Usługa Obejmuje" w `acf-json/group_69f246a2f3a88.json`
-- [x] `service_included_items` (Repeater z sub-fieldem `service_included_item` Textarea) ✅ (2026-05-21) — pierwotnie pole było błędnie utworzone jako Text, naprawione na Repeater. Composer `ServiceComposer::includedItems()` ma fallback hardcoded (4 punkty) dla usług bez wpisanych pozycji. **✅ WYPEŁNIONE 2026-08-06** — wszystkie 6 usług na produkcji i stagingu, po 4 pozycje, z notatki usera (patrz sesja 2026-08-06). Fallback od tej pory nieaktywny dla tych usług. **Lokalnie nadal puste.**
+- [x] `service_included_items` (Repeater z sub-fieldem `service_included_item` Textarea) ✅ (2026-05-21) — pierwotnie pole było błędnie utworzone jako Text, naprawione na Repeater. Composer `ServiceComposer::includedItems()` ma fallback hardcoded (4 punkty) dla usług bez wpisanych pozycji. **✅ WYPEŁNIONE 2026-08-06** — wszystkie 6 usług na produkcji i stagingu + jedyna usługa istniejąca lokalnie (138), po 4 pozycje, z notatki usera (patrz sesja 2026-08-06). Fallback od tej pory nieaktywny dla tych usług.
 
 ### Sprawdzić czy istnieje (prawdopodobnie tak, bo używany na podstronach usług):
 **Grupa: Blok Opinie** (lokalizacja: `Block is equal to acf/testimonials`)
@@ -1351,6 +1351,7 @@ Repeater ACF `service_included_items` był pusty we wszystkich usługach, więc 
 ### ❓ „Nic się nie zmieniło na produkcji" — sprawdzone, nic nie jest hardkodowane
 Zgłoszenie po wypełnieniu `service_included_items`. Weryfikacja: wyciągnięty tekst z żywej strony prod pokazuje **nowe** pozycje, a stary fallback (`Konsultacja 1-1 (60 min)`, `Plan stylizacji dopasowany do Ciebie` z `ServiceComposer.php:162-167`) nie pojawia się na żadnej z 5 dostępnych stron usług.
 - Najczęstsza pomyłka: sekcja **„Co Dostaniesz"** w treści strony to blok `acf/service-what` (pola `what_items`: ikona + tytuł + opis, edytowane w Gutenbergu per strona) — **to nie jest** sidebarowe `service_included_items` i nie da się jej wypełnić z tej samej listy jednolinijkowców.
+- **Trzecia i faktyczna przyczyna w tym zgłoszeniu: user patrzył na LOKALNĄ stronę.** Lokalna baza jest mocno nieaktualna — ma **1 usługę** (138 „Przegląd szafy + zakupy"), podczas gdy prod i staging mają **6**. Pole było tam puste, więc leciał fallback. Uzupełnione lokalnie 2026-08-06 (`wp eval-file` + `wp acorn view:clear`). **Do rozważenia: zrzut bazy z produkcji na lokalkę**, żeby nie pracować na treściach sprzed kilku miesięcy.
 - Druga przyczyna: **produkcja rewaliduje z opóźnieniem**. Po deployu zmiany w PHP stary stan potrafi się utrzymać kilkanaście sekund mimo `view:clear` + `cache flush` (przekierowanie Krakowa: 404 przy pierwszym sprawdzeniu, 301 po ~15 s, bez żadnej dodatkowej akcji). Staging odpowiada od razu.
 
 ### ⚠️ Weryfikacja renderu — cache brzegowy na produkcji ignoruje query string
