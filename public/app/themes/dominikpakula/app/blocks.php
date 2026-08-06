@@ -248,6 +248,14 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-video',
         ],
         [
+            'name' => 'service-desc-cards',
+            'title' => 'Dla kogo — wariant C (karty)',
+            'description' => 'Alternatywa „Dla kogo”: trzy karty obok siebie, pierwsza (Tak) wyróżniona kolorem. Te same pola co wariant A.',
+            'icon' => 'grid-view',
+            'group' => 'service',
+            'render_template' => 'blocks.service-desc-cards',
+        ],
+        [
             'name' => 'service-desc-alt',
             'title' => 'Dla kogo — wariant B (check-lista)',
             'description' => 'Alternatywa „Dla kogo”: dwie karty obok siebie — Tak (ptaszki) vs To nie to (iksy).',
