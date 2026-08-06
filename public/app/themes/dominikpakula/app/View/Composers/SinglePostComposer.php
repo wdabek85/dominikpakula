@@ -10,6 +10,12 @@ use function App\Blog\related_posts;
 
 class SinglePostComposer extends Composer
 {
+    /**
+     * Wspólny portret Dominika ("portret dominik") — ten sam załącznik co fallback
+     * w `PersonalIntroBlockComposer`. Używany dopóki autor nie ma pola `author_photo`.
+     */
+    protected const FALLBACK_PORTRAIT_ID = 42;
+
     protected static $views = [
         'single-post',
         'partials.blog.*',
@@ -66,7 +72,7 @@ class SinglePostComposer extends Composer
                 'id' => $authorId,
                 'name' => get_the_author_meta('display_name', $authorId),
                 'bio' => get_the_author_meta('description', $authorId),
-                'avatar' => get_avatar_url($authorId, ['size' => 192]) ?: '',
+                'avatar' => $this->authorPhoto($authorId),
                 'url' => get_author_posts_url($authorId),
             ],
             'tags' => get_the_tags($postId) ?: [],
@@ -77,6 +83,32 @@ class SinglePostComposer extends Composer
             'categoriesTop' => $this->topCategories($primaryCategory?->term_id, 6),
             'shareLinks' => $this->shareLinks($title, $permalink),
         ];
+    }
+
+    /**
+     * Zdjęcie autora w kolejności: pole ACF `author_photo` z profilu użytkownika →
+     * wspólny portret (FALLBACK_PORTRAIT_ID) → Gravatar. Pole obsługuje wszystkie
+     * formaty zwrotu ACF (Array / ID / URL), bo tworzone jest ręcznie w panelu.
+     */
+    protected function authorPhoto(int $authorId): string
+    {
+        $field = function_exists('get_field')
+            ? \get_field('author_photo', "user_{$authorId}")
+            : null;
+
+        $url = match (true) {
+            is_array($field) => $field['sizes']['medium'] ?? $field['url'] ?? '',
+            is_numeric($field) => wp_get_attachment_image_url((int) $field, 'medium') ?: '',
+            is_string($field) => $field,
+            default => '',
+        };
+
+        if ($url) {
+            return $url;
+        }
+
+        return wp_get_attachment_image_url(self::FALLBACK_PORTRAIT_ID, 'medium')
+            ?: (get_avatar_url($authorId, ['size' => 192]) ?: '');
     }
 
     protected function mapRelatedPosts(int $postId, int $limit): array

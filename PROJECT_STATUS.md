@@ -1260,3 +1260,22 @@ Wykrywanie:
 - `DISALLOW_FILE_MODS` uratował sytuację: intruz z prawami administratora **nie mógł** zainstalować wtyczki-backdoora, więc kompromitacja została w bazie i sprząta się usunięciem kont + rotacją haseł.
 - Brak jakiegokolwiek monitoringu oznaczał, że konta przybywały przez 15 dni niezauważone. Stąd dobowy audyt — bez niego następny taki incydent też wyjdzie przypadkiem.
 - Hasła produkcyjne nigdy nie mogą przechodzić przez czat. Punkt „rotacja hasła SSH" wisiał niezrealizowany od maja i jest dziś głównym podejrzanym.
+
+## Sesja 2026-08-06 — sidebar wpisu blogowego po prawej stronie
+
+### Zmiana — `partials/blog/body.blade.php`
+- `<aside>` ze sticky sidebarem (TOC + „Czytaj też" + Share) przeniesiony **fizycznie za** kolumnę contentu; usunięte `lg:order-first`.
+- Efekt uboczny na plus: kolejność w DOM zgadza się teraz z wizualną, więc czytnik ekranu i tabulacja idą **najpierw przez treść wpisu**, dopiero potem przez TOC/share. Wcześniej `order-first` je rozjeżdżał.
+- Mobile bez zmian — sidebar dalej `hidden lg:block`, TOC w `<details>` i share pod treścią.
+- Partiale `sidebar`, `toc`, `share`, `related-teaser` nie miały żadnych klas zależnych od strony (`border-l`, `pl-*` itp.) — nic nie wymagało korekty.
+
+### Deploy — develop → staging → produkcja (ta sama sesja)
+- Commit na `develop`: **`de5cbd0`**
+- Merge `develop → staging` (--no-ff): **`a9df5e2`** → SSH `git pull` + `npm run build` (Vite 1.87s) + `wp acorn view:clear` + `wp cache flush`
+- Zweryfikowane przez usera na stagingu → merge `staging → main` (--no-ff): **`04c531c`** → SSH `git pull` + `npm run build` (Vite 1.76s) + view:clear + cache flush
+- Na `staging` względem `main` nie było żadnych obcych commitów — na produkcję pojechała wyłącznie ta zmiana.
+- Hashe assetów po buildzie identyczne na obu środowiskach (`app-DNoLvp9J.css`, `app-DvaDIHZ1.js`) — zmiana była czysto w Blade, CSS/JS bez różnic. `view:clear` był tu **konieczny**, bo build sam z siebie nie odświeża skompilowanych widoków.
+- Wszystkie trzy branche zsynchronizowane, praca wraca na `develop`.
+
+### Bez zmian w stosunku do poprzedniej sesji
+Otwarte punkty z incydentu 2026-08-05 (rotacja hasła dhosting, stare konto `admin` ID 1, przegląd 10 pozostałych domen, 2FA, usunięcie `.env.bak-20260805`) — **nadal do zrobienia po stronie usera**.
