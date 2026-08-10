@@ -1421,3 +1421,26 @@ Build lokalny odpalony (`npm run build`), `NavigationComposer.php` przeszedł `p
 - Lista usług: `sm:grid-cols-2` → `xl:grid-cols-2`, bo poniżej xl kolumna jest za wąska na pełne nazwy usług.
 
 **Do zapamiętania:** przy `grid-cols-[...]` z sztywnymi `minmax()` zawsze licz sumę minimów + gapy względem najwęższego breakpointu, na którym klasa działa, i ostatni elastyczny tor pisz jako `minmax(0,_1fr)`, nie `1fr`.
+
+### Tablet w pionie (md, 768–1023 px) — 2 kolumny w dwóch sekcjach
+
+Dotyczy strony głównej i `/uslugi/` — obie używają tych samych bloków, więc zmiana w szablonie bloku pokrywa obie strony.
+
+**`blocks/offer/index.blade.php`** („MOJA OFERTA") — `grid-cols-1 lg:grid-cols-4` → `grid-cols-1 md:grid-cols-2 lg:grid-cols-4`.
+
+**`blocks/services/index.blade.php`** („Powiedz mi, z czym się mierzysz") — sekcja była flexem (`flex-col lg:flex-row`), bo od lg karty mają stałe 300 px, a highlight rozpycha się na resztę. Na md przełączona na grid: `flex flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row`. Przy 4 elementach (highlight + 3 karty) daje układ 2×2.
+
+**`blocks/services/highlight-card.blade.php`** — `h-[436px] lg:h-auto lg:min-h-[436px]` → `h-[436px] md:h-auto md:min-h-[436px]`. Bez tego w gridzie na md karta zostawałaby na sztywnych 436 px zamiast rosnąć do wysokości wiersza. `lg:` warianty zbędne, bo `md:` obowiązuje też wyżej.
+
+**Uwaga przy zmianie display przez warianty:** `md:grid` + `lg:flex` działa, bo Tailwind emituje media queries w kolejności breakpointów (48rem przed 64rem) — zweryfikowane w skompilowanym CSS.
+
+### Listingi bloga — 3 kolumny od md
+
+- `blocks/blog.blade.php` (blok „najnowsze wpisy", 3 ostatnie) — `grid-cols-1 lg:grid-cols-3` → `grid-cols-1 md:grid-cols-3`.
+- `blocks/blog-archive.blade.php` — `grid-cols-1 md:grid-cols-2 lg:grid-cols-3` → `grid-cols-1 md:grid-cols-3` (usunięty pośredni krok na 2 kolumny).
+- `partials/blog/related-posts.blade.php` — już miał `md:grid-cols-3`, bez zmian.
+- `lg:grid-cols-3` stało się zbędne, bo `md:` obowiązuje też wyżej.
+
+Przy 768 px daje to ~229 px na kartę (`px-4` = 32 px + 2 × `gap-5`). `blog-card` nie ma sztywnych szerokości, więc się skaluje.
+
+**NIE ruszone (do decyzji usera):** `blocks/guides-archive.blade.php` i `partials/guide/related.blade.php` dalej mają `md:grid-cols-2 lg:grid-cols-3` — to poradniki, nie blog.

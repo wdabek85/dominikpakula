@@ -13,7 +13,8 @@
     </div>
 
     {{-- Grid z wpisami --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    {{-- Od md (tablet w pionie) od razu 3 kolumny — bez pośredniego kroku na 2 --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
       @foreach ($posts as $post)
         <x-blog-card
           :title="$post['title']"
