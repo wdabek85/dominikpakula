@@ -17,8 +17,10 @@
     </div>
   @endif
 
-  {{-- Grid: highlight card + service cards --}}
-  <div class="flex flex-col lg:flex-row gap-6">
+  {{-- Grid: highlight card + service cards.
+       Tablet w pionie (md): 2-kolumnowy grid; od lg wracamy na rząd flexa,
+       bo karty mają tam stałe 300 px, a highlight rozpycha się na resztę. --}}
+  <div class="flex flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row gap-6">
 
     {{-- Highlight card --}}
     @if ($highlightImage)

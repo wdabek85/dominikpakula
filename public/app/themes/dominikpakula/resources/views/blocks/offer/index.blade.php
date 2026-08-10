@@ -21,7 +21,8 @@
 
   {{-- Grid kart --}}
   @if ($cards)
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+    {{-- Tablet w pionie (md): 2 kolumny zamiast jednej --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
       @foreach ($cards as $card)
         <x-service-card
           :variant="$cardVariant"
