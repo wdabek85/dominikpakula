@@ -1408,3 +1408,16 @@ Pliki:
 **Bez zmian:** JS — `mega-menu.js` nie ma logiki breakpointowej, a `initMegaPanel()` robi early-return gdy nie znajdzie triggera. Jeśli ostatnią pozycją okaże się trigger mega-menu, handlery po prostu nigdy nie odpalą (element `display:none`).
 
 Build lokalny odpalony (`npm run build`), `NavigationComposer.php` przeszedł `php -l` (PHP 8.5 z Local). **Nie zdeployowane na staging ani prod.**
+
+### Stopka — overflow na tablecie w poziomie (ta sama sesja)
+
+**Problem:** stopka wychodziła poza ekran w zakresie 1024–1279 px. `$gridCols` definiował 5 sztywnych torów od `lg`: `minmax(180,220) + minmax(160,180) + minmax(180,220) + minmax(140,170)` = **660 px minimum** + 4 × `gap-12` = **192 px**, razem 852 px. Przy 1024 px na treść zostaje 864 px (`px-20` = 160 px), więc na piąty tor zostawało 12 px — a `1fr` ma domyślnie `min-width: auto`, czyli nie schodzi poniżej min-content nazw usług. Efekt: poziomy scroll.
+
+**Zmiana** (`resources/views/sections/footer.blade.php`):
+- Sztywne tory przeniesione z `lg:` na `xl:` — mieszczą się dopiero od 1280 px.
+- Skala kolumn: `grid-cols-1` → `sm:grid-cols-2` → `lg:grid-cols-3` → `xl:` sztywne tory. Przy 1024 px daje to 3 × 256 px.
+- Ostatni tor `1fr` → **`minmax(0,_1fr)`** — bez tego tor nie może zejść poniżej min-content i to on generuje overflow.
+- `min-w-0` na wszystkich pięciu kolumnach (dzieci grida też mają domyślnie `min-width: auto`).
+- Lista usług: `sm:grid-cols-2` → `xl:grid-cols-2`, bo poniżej xl kolumna jest za wąska na pełne nazwy usług.
+
+**Do zapamiętania:** przy `grid-cols-[...]` z sztywnymi `minmax()` zawsze licz sumę minimów + gapy względem najwęższego breakpointu, na którym klasa działa, i ostatni elastyczny tor pisz jako `minmax(0,_1fr)`, nie `1fr`.
