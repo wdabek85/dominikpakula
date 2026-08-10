@@ -9,19 +9,21 @@
   $addressLine2 = $contact['address_line2'] ?? '';
   $instagramHandle = $social['instagram_handle'] ?? 'dpakula_stylist';
 
+  // Sztywne tory mieszczą się dopiero od xl (1280 px). Niżej: 1 → 2 → 3 kolumny.
+  // Ostatni tor to minmax(0,_1fr), bo samo 1fr ma min-width:auto i nie pozwala kolumnie się zwęzić.
   $gridCols = ! empty($footerMenu)
-    ? 'lg:grid-cols-[minmax(180px,_220px)_minmax(160px,_180px)_minmax(180px,_220px)_minmax(140px,_170px)_1fr]'
-    : 'lg:grid-cols-[minmax(180px,_220px)_minmax(160px,_180px)_minmax(180px,_220px)_1fr]';
+    ? 'xl:grid-cols-[minmax(180px,_220px)_minmax(160px,_180px)_minmax(180px,_220px)_minmax(140px,_170px)_minmax(0,_1fr)]'
+    : 'xl:grid-cols-[minmax(180px,_220px)_minmax(160px,_180px)_minmax(180px,_220px)_minmax(0,_1fr)]';
 @endphp
 
 <footer class="content-info bg-[#f1f1f1] text-[#19121e]">
 
   {{-- Główna sekcja stopki --}}
   <div class="mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16">
-    <div class="grid grid-cols-1 sm:grid-cols-2 {{ $gridCols }} gap-10 lg:gap-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 {{ $gridCols }} gap-10 lg:gap-12">
 
       {{-- Kolumna 1: logo + slogan --}}
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6 min-w-0">
         <a href="{{ home_url('/') }}" class="shrink-0" aria-label="{{ $siteName ?? get_bloginfo('name') }} — Strona główna">
           @if (has_custom_logo())
             <img
@@ -44,7 +46,7 @@
       </div>
 
       {{-- Kolumna 2: dane formalne --}}
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6 min-w-0">
         <p class="font-poppins font-semibold text-base text-[#19121e]">
           Adres
         </p>
@@ -63,7 +65,7 @@
       </div>
 
       {{-- Kolumna 3: kontakt --}}
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6 min-w-0">
         <p class="font-poppins font-semibold text-base text-[#19121e]">
           Dane kontaktowe
         </p>
@@ -99,7 +101,7 @@
 
       {{-- Kolumna 4: szybka nawigacja (z menu WP "Footer Navigation") --}}
       @if (! empty($footerMenu))
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6 min-w-0">
           <p class="font-poppins font-semibold text-base text-[#19121e]">
             Nawigacja
           </p>
@@ -122,12 +124,13 @@
 
       {{-- Kolumna 5: usługi (z CPT service przez NavigationComposer) --}}
       @if (! empty($navServices))
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-6 min-w-0">
           <p class="font-poppins font-semibold text-base text-[#19121e]">
             Moje usługi
           </p>
 
-          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm font-poppins">
+          {{-- Dwie kolumny dopiero od xl — niżej kolumna usług jest za wąska na pełne nazwy --}}
+          <ul class="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-3 text-sm font-poppins">
             @foreach ($navServices as $service)
               <li>
                 <a href="{{ $service['url'] }}" class="flex items-center gap-2 hover:text-primary transition-colors">
