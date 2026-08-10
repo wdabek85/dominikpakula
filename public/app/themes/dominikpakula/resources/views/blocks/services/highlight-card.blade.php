@@ -1,4 +1,5 @@
-<div class="group relative flex flex-col justify-end rounded overflow-hidden h-[436px] lg:h-auto lg:min-h-[436px] lg:min-w-[300px] lg:flex-1 px-5 py-4">
+{{-- Od md karta rośnie do wysokości wiersza (grid/flex), niżej ma stałe 436 px --}}
+<div class="group relative flex flex-col justify-end rounded overflow-hidden h-[436px] md:h-auto md:min-h-[436px] lg:min-w-[300px] lg:flex-1 px-5 py-4">
 
   @if ($image)
     <img

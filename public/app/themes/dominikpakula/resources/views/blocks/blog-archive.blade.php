@@ -73,7 +73,8 @@
 
   {{-- Grid wpisów --}}
   @if (! empty($posts))
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    {{-- Od md (tablet w pionie) od razu 3 kolumny — spójnie z blokiem „najnowsze wpisy" --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
       @foreach ($posts as $post)
         <x-blog-card
           :title="$post['title']"
