@@ -464,7 +464,7 @@ Po przebudowie sezon 3 — editorial layout, 3 sekcje stackowane (TAK / POLECAM 
 ### Grupa: **Usługa** (lokalizacja: `Post Type is equal to service`) — rozszerzona w sezonie 3
 Pola dodatkowe do tych co już istnieją (service_sidebar_title/description/price/tags):
 - [x] `service_included_heading` (Text, fallback "W cenie znajdziesz") ✅ (2026-05-21) — field group "Usługa Obejmuje" w `acf-json/group_69f246a2f3a88.json`
-- [x] `service_included_items` (Repeater z sub-fieldem `service_included_item` Textarea) ✅ (2026-05-21) — pierwotnie pole było błędnie utworzone jako Text, naprawione na Repeater. Composer `ServiceComposer::includedItems()` ma fallback hardcoded (4 punkty) dla usług bez wpisanych pozycji. **✅ WYPEŁNIONE 2026-08-06** — wszystkie 6 usług na produkcji i stagingu, po 4 pozycje, z notatki usera (patrz sesja 2026-08-06). Fallback od tej pory nieaktywny dla tych usług. **Lokalnie nadal puste.**
+- [x] `service_included_items` (Repeater z sub-fieldem `service_included_item` Textarea) ✅ (2026-05-21) — pierwotnie pole było błędnie utworzone jako Text, naprawione na Repeater. Composer `ServiceComposer::includedItems()` ma fallback hardcoded (4 punkty) dla usług bez wpisanych pozycji. **✅ WYPEŁNIONE 2026-08-06** — wszystkie 6 usług na produkcji i stagingu + jedyna usługa istniejąca lokalnie (138), po 4 pozycje, z notatki usera (patrz sesja 2026-08-06). Fallback od tej pory nieaktywny dla tych usług.
 
 ### Sprawdzić czy istnieje (prawdopodobnie tak, bo używany na podstronach usług):
 **Grupa: Blok Opinie** (lokalizacja: `Block is equal to acf/testimonials`)
@@ -1341,6 +1341,41 @@ Repeater ACF `service_included_items` był pusty we wszystkich usługach, więc 
 - **362**: „Zakupy ze stylista" → **„Zakupy ze stylistą"**. Slug bez zmian, więc URL się nie ruszył.
 - **🔑 Pułapka:** `wp_check_for_changed_slugs()` (a więc `_wp_old_slug` i automatyczne przekierowanie WP) **nie działa dla typów hierarchicznych** — a `service` jest hierarchiczny. Po zmianie sluga stary adres dawał **404, nie 301**. Stąd nowy plik:
 - **`app/redirects.php`** (nowy, dopisany do listy w `functions.php` po `login-url`) — mapa `stara ścieżka => nowa ścieżka`, wpięta w `template_redirect` z priorytetem 1, odpala się wyłącznie gdy `is_404()`. Zawiera oba stare adresy Krakowa (prod + staging). Kolejne zmiany slugów w hierarchicznych CPT dopisywać do `App\redirect_map()`.
+- Zweryfikowane: stary URL → **301** na `/uslugi/zakupy-ze-stylista/krakow/`, nowy → 200, na obu środowiskach.
+
+**Ta sama literówka w opiniach (CPT `testimonial`, pole `testimonial_service`):**
+- prod: opinia **103 (Michał)** miała `"Zakupy ze stylista "` (bez „ą", ze spacją na końcu) → `Zakupy ze stylistą`
+- staging: opinia **88 (Karol)** — to samo. Uwaga: **opinie na stagingu to inne osoby niż na prodzie** (103 = Wiktor, 101 = Adam, 88 = Karol), więc ID nie mapują się 1:1 jak w usługach.
+- Po poprawkach: **zero** wystąpień starego zapisu na stronach głównych obu środowisk.
+
+### ❓ „Nic się nie zmieniło na produkcji" — sprawdzone, nic nie jest hardkodowane
+Zgłoszenie po wypełnieniu `service_included_items`. Weryfikacja: wyciągnięty tekst z żywej strony prod pokazuje **nowe** pozycje, a stary fallback (`Konsultacja 1-1 (60 min)`, `Plan stylizacji dopasowany do Ciebie` z `ServiceComposer.php:162-167`) nie pojawia się na żadnej z 5 dostępnych stron usług.
+- Najczęstsza pomyłka: sekcja **„Co Dostaniesz"** w treści strony to blok `acf/service-what` (pola `what_items`: ikona + tytuł + opis, edytowane w Gutenbergu per strona) — **to nie jest** sidebarowe `service_included_items` i nie da się jej wypełnić z tej samej listy jednolinijkowców.
+- **Trzecia i faktyczna przyczyna w tym zgłoszeniu: user patrzył na LOKALNĄ stronę.** Lokalna baza jest mocno nieaktualna — ma **1 usługę** (138 „Przegląd szafy + zakupy"), podczas gdy prod i staging mają **6**. Pole było tam puste, więc leciał fallback. Uzupełnione lokalnie 2026-08-06 (`wp eval-file` + `wp acorn view:clear`). **Do rozważenia: zrzut bazy z produkcji na lokalkę**, żeby nie pracować na treściach sprzed kilku miesięcy.
+- Druga przyczyna: **produkcja rewaliduje z opóźnieniem**. Po deployu zmiany w PHP stary stan potrafi się utrzymać kilkanaście sekund mimo `view:clear` + `cache flush` (przekierowanie Krakowa: 404 przy pierwszym sprawdzeniu, 301 po ~15 s, bez żadnej dodatkowej akcji). Staging odpowiada od razu.
+
+### Zmiana 7 — „Dla kogo” wariant C (karty) — TEST, tylko staging
+Nowy układ bloku „Czy ta usługa jest dla Ciebie?” wzorowany na referencji od usera: trzy karty obok siebie, **pierwsza (sekcja „Tak”) wyróżniona** `bg-primary` z CTA `.booking-trigger`, dwie pozostałe białe. Separatory rysowane przez `gap-px` na tle `black/10`.
+
+- `resources/views/blocks/service-desc-cards.blade.php` — nowy widok
+- `ServiceDescBlockComposer` — dopisany drugi widok do `$views`; **wariant C dzieli dane z wariantem A**, zero duplikacji logiki
+- `acf-json/group_69cbafc509318.json` — druga reguła lokalizacji (`block == acf/service-desc-cards`)
+- `app/blocks.php` — rejestracja „Dla kogo — wariant C (karty)”, grupa `service`
+- Na stagingu podmieniony w treści 5 głównych usług (362, 138, 354, 358, 367). Strona Kraków (477) zostaje na wariancie B.
+- **Na produkcji NIE wdrożone** — kod jest tylko na `develop`/`staging`, treść usług na prodzie dalej używa wariantu A.
+
+**Dlaczego podmiana nazwy bloku nie gubi treści:** ACF Blocks trzymają wartości pól w atrybucie `data` komentarza bloku (w `post_content`), nie w postmeta. Wspólna grupa pól + zmiana samej nazwy bloku = te same dane, inny render.
+
+**🔑 Wpadka i nauka — `wp_slash()`:**
+`wp_update_post()` **i `update_post_meta()`** robią wewnętrznie `wp_unslash()`. Pierwsza wersja skryptu podmieniającego zapisała treść bez `wp_slash()` → z każdego wpisu zniknęły wszystkie backslashe: `\r\n`→`rn`, `\t`→`t`, `<`→`u003c`, `"`→`u0022`. Widoczne na stronie jako literalne „rn” w tekście.
+- **Kopia zapasowa też była uszkodzona**, bo zapisał ją `update_post_meta()` bez `wp_slash()` — rewert przywrócił zepsutą treść. Kopia bez `wp_slash()` jest bezwartościowa.
+- Nadpisanie treścią z produkcji **odrzucone przez bezpiecznik** — staging ma własne teksty (358 różni się o 977 znaków).
+- Naprawa dwuetapowa: `uXXXX` → `\uXXXX` (tylko 3 kody w danych: `"`, `<`, `>` — sprawdzone, żadnego trafienia w prozę), potem `>rn t<` → `>\r\n \t<` wg wzorca z produkcji.
+- **Kolejność ma znaczenie:** naprawa `uXXXX` przed `rn` tworzy literę `e` przed `rn`, przez co lookbehind `[A-Za-z]` pomija trafienie. Za pierwszym razem właśnie tak zostały 3 niedobitki.
+- `rn` występuje w polskich słowach („oga**rn**ąć”) — wzorzec musi być zawężony do sąsiedztwa `<`/`>`.
+- Każdy krok walidował `json_decode()` wszystkich komentarzy bloków przed zapisem. Stan końcowy = format identyczny z produkcją.
+
+**🐛 Znaleziony przy okazji, NIEnaprawiony błąd na produkcji:** warianty arbitralne `[&_a]:` w `blocks/service-desc.blade.php` (wariant A) **nie działają w treści z `the_content`** — wptexturize zamienia `&` na `&#038;`, więc w HTML jest `[&#038;_a]:underline` i Tailwind tego nie dopasowuje. Na prodzie **54 zepsute wystąpienia** — linki w sekcji „Raczej nie” są nieostylowane. Wariant C omija problem klasą `.desc-card-item` + regułą `@apply` w `app.css`. **Wariant A do poprawienia tym samym sposobem** (patrz `feedback_wptexturize_arbitrary_variants`).
 
 ### ⚠️ Weryfikacja renderu — cache brzegowy na produkcji ignoruje query string
 Uzupełnienie learningu z 2026-07-17, kosztowało dziś dwa fałszywe alarmy (avatar autora, kolejność sekcji):
@@ -1352,3 +1387,24 @@ Uzupełnienie learningu z 2026-07-17, kosztowało dziś dwa fałszywe alarmy (av
 
 ### Bez zmian w stosunku do poprzedniej sesji
 Otwarte punkty z incydentu 2026-08-05 (rotacja hasła dhosting, stare konto `admin` ID 1, przegląd 10 pozostałych domen, 2FA, usunięcie `.env.bak-20260805`) — **nadal do zrobienia po stronie usera**.
+
+---
+
+## Sesja 2026-08-11 — nawigacja na tablecie w poziomie
+
+**Problem:** przy szerokościach tabletu w poziomie (1024–1279 px) desktopowa nawigacja się rozjeżdża — logo + pozycje menu + 3 ikony social + CTA nie mieszczą się w jednym rzędzie.
+
+**Rozwiązanie (wybrane przez usera):** progi `lg` zostają bez zmian (poniżej 1024 px dalej hamburger), a w zakresie `lg`–`xl` **ukrywana jest ostatnia pozycja pierwszego poziomu** menu `primary_navigation`. Od 1280 px w górę menu jest kompletne. W menu mobilnym pozycja jest widoczna zawsze.
+
+> Uwaga na przyszłość: pierwsze podejście przesuwało cały próg desktop↔mobile z `lg` na `xl` — **cofnięte**, user chciał zachować desktopową nawigację na tabletach w poziomie.
+
+Pliki:
+- `app/View/Composers/NavigationComposer.php` — nowe metody `menuItems(string $location)` i `lastTopLevelId(array $items)`; do widoków trafiają `primaryMenuItems` (surowe pozycje menu) i `primaryLastItemId`. Przy okazji: pobieranie menu zeszło z Blade do Composera, zgodnie z zasadą „backend do backendu”.
+- `resources/views/sections/header/nav-desktop.blade.php` — `$menuItems` bierze się z `$primaryMenuItems`; zmienna `$tabletHidden` (`hidden xl:block` dla ostatniej pozycji) doklejana do wszystkich czterech wariantów renderowania pozycji: trigger mega-menu Usług, trigger mega-menu Bazy Wiedzy, zwykły dropdown i zwykły link.
+- `resources/views/sections/header/nav-mobile.blade.php` — usunięty hack `$menuItems = $menuItems ?? wp_get_nav_menu_items(...)`, dane idą z Composera.
+
+**Dlaczego `hidden xl:block`, a nie `lg:hidden`:** nav jest `hidden lg:flex`, więc poniżej `lg` pozycja i tak nie istnieje na ekranie. `hidden xl:block` daje jeden spójny zapis dla wszystkich czterech wariantów (`<a>` i `<div>`), a w kontenerze flex `block` vs `inline` nie robi różnicy wizualnej.
+
+**Bez zmian:** JS — `mega-menu.js` nie ma logiki breakpointowej, a `initMegaPanel()` robi early-return gdy nie znajdzie triggera. Jeśli ostatnią pozycją okaże się trigger mega-menu, handlery po prostu nigdy nie odpalą (element `display:none`).
+
+Build lokalny odpalony (`npm run build`), `NavigationComposer.php` przeszedł `php -l` (PHP 8.5 z Local). **Nie zdeployowane na staging ani prod.**

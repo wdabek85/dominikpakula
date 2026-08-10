@@ -6,8 +6,12 @@ use Roots\Acorn\View\Composer;
 
 class ServiceDescBlockComposer extends Composer
 {
+    // Wariant C (`blocks.service-desc-cards`) celowo dzieli dane z wariantem A —
+    // ten sam zestaw pól `desc_*`, inny tylko układ. Dzięki temu podmiana bloku
+    // w treści nie gubi tekstów wpisanych per usługa.
     protected static $views = [
         'blocks.service-desc',
+        'blocks.service-desc-cards',
     ];
 
     public function with(): array

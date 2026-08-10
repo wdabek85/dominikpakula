@@ -2,11 +2,7 @@
 @if (has_nav_menu('primary_navigation'))
   <nav class="hidden lg:flex items-center gap-12" aria-label="{{ wp_get_nav_menu_name('primary_navigation') }}">
     @php
-      $menuItems = wp_get_nav_menu_items(
-        wp_get_nav_menu_object(
-          get_nav_menu_locations()['primary_navigation'] ?? 0
-        )
-      ) ?: [];
+      $menuItems = $primaryMenuItems ?? [];
       $currentUrl = home_url(add_query_arg([], $GLOBALS['wp']->request ?? ''));
     @endphp
 
@@ -14,6 +10,8 @@
       @if (!$item->menu_item_parent)
         @php
           $children = array_filter($menuItems, fn($child) => (int) $child->menu_item_parent === $item->ID);
+          // Tablet w poziomie (1024–1279 px): ostatnia pozycja się nie mieści, chowamy ją do xl.
+          $tabletHidden = (int) $item->ID === ($primaryLastItemId ?? 0) ? 'hidden xl:block' : '';
           $isActive = rtrim($item->url, '/') === rtrim($currentUrl, '/');
           $isServicesItem = !empty($navServices) && (
             str_contains(strtolower($item->title), 'usług') ||
@@ -28,7 +26,7 @@
 
         @if ($isKnowledgeItem)
           {{-- Knowledge base mega-menu trigger --}}
-          <div data-mega-trigger-kb>
+          <div class="{{ $tabletHidden }}" data-mega-trigger-kb>
             <button
               class="flex items-center gap-1 font-poppins text-base leading-5 text-black cursor-pointer transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
               aria-expanded="false"
@@ -41,7 +39,7 @@
 
         @elseif ($isServicesItem && count($navServices) > 0)
           {{-- Mega-menu trigger --}}
-          <div data-mega-trigger>
+          <div class="{{ $tabletHidden }}" data-mega-trigger>
             <button
               class="flex items-center gap-1 font-poppins text-base leading-5 text-black cursor-pointer transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
               aria-expanded="false"
@@ -54,7 +52,7 @@
 
         @elseif (count($children) > 0)
           {{-- Regular dropdown item --}}
-          <div class="relative group">
+          <div class="relative group {{ $tabletHidden }}">
             <button
               class="flex items-center gap-1 font-poppins text-base leading-5 text-black cursor-pointer transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
               aria-expanded="false"
@@ -81,7 +79,7 @@
           {{-- Regular item --}}
           <a
             href="{{ $item->url }}"
-            class="font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }}"
+            class="font-poppins text-base leading-5 text-black transition-colors hover:text-primary {{ $isActive ? 'underline underline-offset-4' : '' }} {{ $tabletHidden }}"
           >
             {{ $item->title }}
           </a>
