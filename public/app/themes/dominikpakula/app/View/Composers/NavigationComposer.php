@@ -15,12 +15,45 @@ class NavigationComposer extends Composer
 
     public function with(): array
     {
+        $primaryItems = $this->menuItems('primary_navigation');
+
         return [
             'navServices' => $this->services(),
             'navBlog' => $this->postsForNav('post', 3),
             'navGuides' => $this->postsForNav('guide', 3),
             'footerMenu' => $this->menuForLocation('footer_navigation'),
+            'primaryMenuItems' => $primaryItems,
+            'primaryLastItemId' => $this->lastTopLevelId($primaryItems),
         ];
+    }
+
+    /**
+     * Surowe pozycje menu dla lokalizacji — używane przez nav-desktop i nav-mobile.
+     */
+    protected function menuItems(string $location): array
+    {
+        $menuId = get_nav_menu_locations()[$location] ?? 0;
+
+        if (! $menuId) {
+            return [];
+        }
+
+        return wp_get_nav_menu_items($menuId) ?: [];
+    }
+
+    /**
+     * ID ostatniej pozycji pierwszego poziomu — chowana na tabletach w poziomie,
+     * gdzie desktopowa nawigacja nie mieści się w jednym rzędzie.
+     */
+    protected function lastTopLevelId(array $items): int
+    {
+        $topLevel = array_values(array_filter($items, fn ($item) => ! $item->menu_item_parent));
+
+        if (! $topLevel) {
+            return 0;
+        }
+
+        return (int) end($topLevel)->ID;
     }
 
     protected function menuForLocation(string $location): array

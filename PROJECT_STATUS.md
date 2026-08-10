@@ -1387,3 +1387,24 @@ Uzupełnienie learningu z 2026-07-17, kosztowało dziś dwa fałszywe alarmy (av
 
 ### Bez zmian w stosunku do poprzedniej sesji
 Otwarte punkty z incydentu 2026-08-05 (rotacja hasła dhosting, stare konto `admin` ID 1, przegląd 10 pozostałych domen, 2FA, usunięcie `.env.bak-20260805`) — **nadal do zrobienia po stronie usera**.
+
+---
+
+## Sesja 2026-08-11 — nawigacja na tablecie w poziomie
+
+**Problem:** przy szerokościach tabletu w poziomie (1024–1279 px) desktopowa nawigacja się rozjeżdża — logo + pozycje menu + 3 ikony social + CTA nie mieszczą się w jednym rzędzie.
+
+**Rozwiązanie (wybrane przez usera):** progi `lg` zostają bez zmian (poniżej 1024 px dalej hamburger), a w zakresie `lg`–`xl` **ukrywana jest ostatnia pozycja pierwszego poziomu** menu `primary_navigation`. Od 1280 px w górę menu jest kompletne. W menu mobilnym pozycja jest widoczna zawsze.
+
+> Uwaga na przyszłość: pierwsze podejście przesuwało cały próg desktop↔mobile z `lg` na `xl` — **cofnięte**, user chciał zachować desktopową nawigację na tabletach w poziomie.
+
+Pliki:
+- `app/View/Composers/NavigationComposer.php` — nowe metody `menuItems(string $location)` i `lastTopLevelId(array $items)`; do widoków trafiają `primaryMenuItems` (surowe pozycje menu) i `primaryLastItemId`. Przy okazji: pobieranie menu zeszło z Blade do Composera, zgodnie z zasadą „backend do backendu”.
+- `resources/views/sections/header/nav-desktop.blade.php` — `$menuItems` bierze się z `$primaryMenuItems`; zmienna `$tabletHidden` (`hidden xl:block` dla ostatniej pozycji) doklejana do wszystkich czterech wariantów renderowania pozycji: trigger mega-menu Usług, trigger mega-menu Bazy Wiedzy, zwykły dropdown i zwykły link.
+- `resources/views/sections/header/nav-mobile.blade.php` — usunięty hack `$menuItems = $menuItems ?? wp_get_nav_menu_items(...)`, dane idą z Composera.
+
+**Dlaczego `hidden xl:block`, a nie `lg:hidden`:** nav jest `hidden lg:flex`, więc poniżej `lg` pozycja i tak nie istnieje na ekranie. `hidden xl:block` daje jeden spójny zapis dla wszystkich czterech wariantów (`<a>` i `<div>`), a w kontenerze flex `block` vs `inline` nie robi różnicy wizualnej.
+
+**Bez zmian:** JS — `mega-menu.js` nie ma logiki breakpointowej, a `initMegaPanel()` robi early-return gdy nie znajdzie triggera. Jeśli ostatnią pozycją okaże się trigger mega-menu, handlery po prostu nigdy nie odpalą (element `display:none`).
+
+Build lokalny odpalony (`npm run build`), `NavigationComposer.php` przeszedł `php -l` (PHP 8.5 z Local). **Nie zdeployowane na staging ani prod.**

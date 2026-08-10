@@ -33,11 +33,7 @@
         {{-- Nav Links --}}
         @if (has_nav_menu('primary_navigation'))
           @php
-            $menuItems = $menuItems ?? wp_get_nav_menu_items(
-              wp_get_nav_menu_object(
-                get_nav_menu_locations()['primary_navigation'] ?? 0
-              )
-            ) ?: [];
+            $menuItems = $primaryMenuItems ?? [];
           @endphp
 
           <nav class="px-5 py-6 flex-1 overflow-y-auto" aria-label="Menu mobilne">
