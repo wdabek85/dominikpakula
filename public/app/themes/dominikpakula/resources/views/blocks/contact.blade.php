@@ -107,6 +107,30 @@
           </div>
         </div>
 
+        {{-- Telefon — opcjonalny, do odpowiedzi SMS-em --}}
+        <div class="flex flex-col gap-2">
+          <label for="contact-phone" class="font-poppins font-semibold text-sm leading-4 text-[#595959]">
+            Telefon <span class="font-normal">(opcjonalnie)</span>
+          </label>
+          <div class="flex items-center gap-2 border border-[#e2e2e2] px-4 py-3 focus-within:border-primary transition-colors">
+            <x-icons.phone class="size-6 shrink-0 text-[#595959]" aria-hidden="true" />
+            <input
+              type="tel"
+              id="contact-phone"
+              name="phone"
+              placeholder="+48 000 000 000"
+              class="w-full font-poppins font-medium text-base leading-[26px] text-[#595959] placeholder:text-[#595959] bg-transparent outline-none"
+              inputmode="tel"
+              autocomplete="tel"
+              maxlength="30"
+              aria-describedby="contact-phone-hint"
+            >
+          </div>
+          <p id="contact-phone-hint" class="font-poppins text-xs leading-[14px] text-[#595959]">
+            Zostaw numer, jeśli wolisz odpowiedź SMS-em.
+          </p>
+        </div>
+
         {{-- Wiadomość --}}
         <div class="flex flex-col gap-2">
           <label for="contact-message" class="font-poppins font-semibold text-sm leading-4 text-[#595959]">Wiadomość</label>
