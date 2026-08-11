@@ -87,7 +87,7 @@ function api_contact_submit(\WP_REST_Request $request): \WP_REST_Response
         $body .= '<li><strong>Telefon:</strong> <a href="tel:' . esc_attr($phoneLink) . '">' . esc_html($phone) . '</a></li>';
     }
 
-    $body .= '<li><strong>Zgoda RODO:</strong> ✔ udzielona ' . esc_html($consentStamp) . '</li>';
+    $body .= '<li><strong>Zgoda RODO:</strong> TAK — udzielona ' . esc_html($consentStamp) . ' (treść niżej)</li>';
     $body .= '</ul>';
     $body .= '<h3>Wiadomość</h3>';
     $body .= '<p style="white-space:pre-wrap">' . esc_html($message) . '</p>';
