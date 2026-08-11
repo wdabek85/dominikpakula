@@ -4,6 +4,8 @@ namespace App\View\Composers;
 
 use Roots\Acorn\View\Composer;
 
+use function App\Blog\author_photo;
+
 class BlogBlockComposer extends Composer
 {
     protected static $views = [
@@ -24,12 +26,15 @@ class BlogBlockComposer extends Composer
 
         foreach ($posts as $post) {
             $image = get_the_post_thumbnail_url($post->ID, 'medium_large') ?: '';
+            $authorId = (int) $post->post_author;
 
             $items[] = [
                 'title' => get_the_title($post->ID),
                 'excerpt' => wp_trim_words(get_the_excerpt($post->ID), 30, '...'),
                 'date' => get_the_date('j F Y', $post->ID),
-                'author' => get_the_author_meta('display_name', $post->post_author),
+                'author' => get_the_author_meta('display_name', $authorId),
+                'authorAvatar' => author_photo($authorId, 'thumbnail'),
+                'authorRole' => \get_field('author_role', 'user_' . $authorId) ?: '',
                 'url' => get_permalink($post->ID),
                 'image' => $image,
             ];

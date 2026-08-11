@@ -21,6 +21,8 @@
           :excerpt="$post['excerpt']"
           :date="$post['date']"
           :author="$post['author']"
+          :authorAvatar="$post['authorAvatar']"
+          :authorRole="$post['authorRole']"
           :url="$post['url']"
           :image="$post['image']"
         />

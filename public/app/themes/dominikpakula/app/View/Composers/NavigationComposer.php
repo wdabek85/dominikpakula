@@ -11,6 +11,9 @@ class NavigationComposer extends Composer
         'sections.header.nav-desktop',
         'sections.header.nav-mobile',
         'sections.footer',
+        // Puste stany (404, wyszukiwarka bez wyników) korzystają z tych samych
+        // danych: pozycji menu na skróty i listy usług.
+        'sections.not-found.*',
     ];
 
     public function with(): array

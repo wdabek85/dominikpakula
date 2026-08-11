@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-  @include('partials.page-header')
-
   @if (! have_posts())
-    <x-alert type="warning">
-      {!! __('Sorry, no results were found.', 'sage') !!}
-    </x-alert>
-
-    {!! get_search_form(false) !!}
+    @include('sections.not-found.hero', [
+      'heading' => 'Nic nie znalazłem',
+      'lead' => 'Dla frazy „' . get_search_query() . '" nie mam żadnych wyników. Spróbuj innego słowa albo zacznij od usług.',
+    ])
+    @include('sections.not-found.services')
+  @else
+    @include('partials.page-header')
   @endif
 
   @while(have_posts()) @php(the_post())
