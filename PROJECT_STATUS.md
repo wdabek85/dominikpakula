@@ -1481,3 +1481,33 @@ Trafiła do **kosza 2026-08-07 19:13:54** (czas warszawski). `_edit_lock` wskazy
 Przywrócenie: `wp_untrash_post(234)` — **uwaga, wraca jako `draft`, nie `publish`** — potem `wp post update 234 --post_status=publish`. Pozycja menu 693 „Baza Wiedzy" wskazywała na Blog (256, ustawione przez usera 2026-08-10 13:43), przepięta na 234 przez `update_post_meta(693, '_menu_item_object_id', wp_slash('234'))`.
 
 **Uwaga na przyszłość:** motyw linkuje na sztywno do `/baza-wiedzy/` w `nav-desktop.blade.php:189` i `nav-mobile.blade.php:257`. Jeśli ta strona kiedyś zniknie, oba linki prowadzą w 404 — warto to podpiąć pod ID strony albo dodać fallback.
+
+---
+
+## Sesja 2026-08-11 (cd.) — avatar autora na listingach + strona 404
+
+### Avatar autora — dlaczego pokazywał szarą sylwetkę
+Logika wyboru zdjęcia autora (ACF `author_photo` z profilu użytkownika → wspólny portret ID 42 „portret dominik" → Gravatar) siedziała **tylko** w `SinglePostComposer::authorPhoto()`. Przez to pojedynczy wpis pokazywał portret, a listingi leciały prosto na `get_avatar_url()` i renderowały domyślną sylwetkę Gravatara, bo konto autora nie ma zarejestrowanego Gravatara.
+
+- **`app/Blog/Helpers.php`** — nowa funkcja `App\Blog\author_photo(int $authorId, string $size = 'medium')` + stała `FALLBACK_PORTRAIT_ID = 42` przeniesiona z composera. Obsługuje wszystkie formaty zwrotu ACF (Array / ID / URL).
+- **`SinglePostComposer`** — metoda i stała usunięte, delegacja do helpera (`use function App\Blog\author_photo`).
+- **`BlogArchiveBlockComposer`** — `get_avatar_url(…80)` → `author_photo($authorId, 'thumbnail')`.
+- **`BlogBlockComposer`** — w ogóle nie przekazywał avatara ani roli autora; dodane `authorAvatar` + `authorRole`.
+- **`blocks/blog.blade.php`** — karta dostaje `:authorAvatar` i `:authorRole`.
+
+Zweryfikowane na prodzie: `/blog/` i strona główna renderują `…/uploads/2026/03/Strona-5-150x150.jpg`, Gravatar został już tylko w schema JSON-LD Rank Matha (to jego pole, nie nasze).
+
+### Strona 404 i puste stany
+Wzorowana na referencji od usera (screenshot z `miejskafala`): hero z H1, leadem, dwoma CTA i blokiem „Dokąd dalej", pod spodem karty usług.
+
+- **`sections/not-found/hero.blade.php`** — przyjmuje `$heading`, `$lead`, `$primaryLabel`, `$primaryUrl` przez `@include(…, [...])`, więc jeden plik obsługuje 404, pustą wyszukiwarkę i pusty listing. „Dokąd dalej" bierze pozycje z `$primaryMenuItems`.
+- **`sections/not-found/services.blade.php`** — `x-service-card variant="detailed"` z `$navServices`, grid `1 → md:2 → lg:4`. Bez `description`, bo wariant renderuje ją w `font-metro text-xs` (patrz `feedback_fonts` — metro nie nadaje się na wielolinijkowy tekst).
+- **`404.blade.php`**, **`search.blade.php`**, **`index.blade.php`** — przepisane na te sekcje zamiast `x-alert` + gołego `get_search_form()`.
+- **`NavigationComposer`** — do `$views` dopisane `sections.not-found.*`.
+
+**Status HTTP zostaje 404** — świadomie bez auto-redirectu na stronę główną (soft 404 psuje sygnał dla Google i gubi usera).
+
+### `app/redirects.php` — dopasowanie po slugu
+Drugi hook `template_redirect` (priorytet 2, po mapie statycznej): jeśli 404 i ostatni segment ścieżki pasuje do opublikowanego wpisu (`post`, `page`, `service`, `guide`, `portfolio`) → 301 na jego permalink. Zabezpieczenia: pomija segmenty numeryczne i z kropką (pliki), oraz sprawdza czy cel nie jest tą samą ścieżką (pętla).
+
+Zweryfikowane na prodzie: `/taka-strona-nie-istnieje-test-404/` → **404** z pełną nową stroną; `/?s=zzzqqqxxx` → „Nic nie znalazłem" + sekcje.
