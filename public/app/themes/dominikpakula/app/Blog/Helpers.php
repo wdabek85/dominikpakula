@@ -7,6 +7,52 @@
 namespace App\Blog;
 
 /**
+ * Wspólny portret Dominika („portret dominik") — ten sam załącznik co fallback
+ * w `PersonalIntroBlockComposer`. Używany dopóki autor nie ma pola `author_photo`.
+ */
+const FALLBACK_PORTRAIT_ID = 42;
+
+/**
+ * Zdjęcie autora w kolejności: pole ACF `author_photo` z profilu użytkownika →
+ * wspólny portret (FALLBACK_PORTRAIT_ID) → Gravatar.
+ *
+ * Pole obsługuje wszystkie formaty zwrotu ACF (Array / ID / URL), bo grupy pól
+ * tworzone są ręcznie w panelu i ustawienie „Return Format" bywa różne.
+ *
+ * Bez tego helpera listingi lecą prosto na `get_avatar_url()` i pokazują szarą
+ * sylwetkę Gravatara, bo konto autora nie ma zarejestrowanego Gravatara.
+ */
+function author_photo(int $authorId, string $size = 'medium'): string
+{
+    if ($authorId <= 0) {
+        return '';
+    }
+
+    $field = function_exists('get_field')
+        ? \get_field('author_photo', "user_{$authorId}")
+        : null;
+
+    $url = match (true) {
+        is_array($field) => $field['sizes'][$size] ?? $field['url'] ?? '',
+        is_numeric($field) => wp_get_attachment_image_url((int) $field, $size) ?: '',
+        is_string($field) => $field,
+        default => '',
+    };
+
+    if ($url) {
+        return $url;
+    }
+
+    $fallback = wp_get_attachment_image_url(FALLBACK_PORTRAIT_ID, $size);
+
+    if ($fallback) {
+        return $fallback;
+    }
+
+    return get_avatar_url($authorId, ['size' => 192]) ?: '';
+}
+
+/**
  * Estimate reading time in minutes. Min 1.
  * Uses UTF-8-safe preg_split (str_word_count breaks on Polish diacritics).
  */
