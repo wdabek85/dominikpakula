@@ -432,7 +432,7 @@ arrow-left, arrow-long-right, arrow-right, arrow-up-right, check, chevron-down, 
 - [ ] `social_twitter_url` (URL)
 
 ### Grupa: **Profil autora** (lokalizacja: `User Form is equal to All`)
-- [x] `author_role` (Text, np. "Stylista Modivo") — utworzone lokalnie 2026-04-22, **na staging do zrobienia**
+- [x] `author_role` (Text, np. "Osobisty Stylista od 2020") — utworzone lokalnie 2026-04-22, **na staging do zrobienia**
 
 ### Grupa: **Personal Intro** (lokalizacja: `Block is equal to acf/personal-intro`)
 Blok na stronie Kontakt, sekcja humanizująca z avatarem Dominika.
