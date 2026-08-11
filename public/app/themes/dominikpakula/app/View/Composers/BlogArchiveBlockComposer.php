@@ -5,6 +5,8 @@ namespace App\View\Composers;
 use Roots\Acorn\View\Composer;
 use WP_Query;
 
+use function App\Blog\author_photo;
+
 class BlogArchiveBlockComposer extends Composer
 {
     protected static $views = [
@@ -63,7 +65,7 @@ class BlogArchiveBlockComposer extends Composer
                     'image' => get_the_post_thumbnail_url($post->ID, 'medium_large') ?: '',
                     'category' => $primaryCategory,
                     'author' => get_the_author_meta('display_name', $authorId),
-                    'authorAvatar' => get_avatar_url($authorId, ['size' => 80]) ?: '',
+                    'authorAvatar' => author_photo($authorId, 'thumbnail'),
                     'authorRole' => \get_field('author_role', 'user_' . $authorId) ?: '',
                 ];
             }
