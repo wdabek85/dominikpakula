@@ -154,8 +154,7 @@
             required
           >
           <span class="font-poppins text-xs leading-[14px] text-[#01000d]">
-            Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z
-            <a href="{{ home_url('/polityka-prywatnosci/') }}" class="underline">polityką prywatności</a>.*
+            {!! $gdprConsent !!}*
           </span>
         </label>
 

@@ -71,6 +71,12 @@ function api_contact_submit(\WP_REST_Request $request): \WP_REST_Response
     $adminEmail = get_option('admin_email');
     $siteName = get_bloginfo('name');
 
+    $consentStamp = current_time('d.m.Y H:i');
+
+    // Referer pochodzi od przeglądarki, więc traktujemy go jako deklarację,
+    // nie dowód — w mailu jest odpowiednio opisany.
+    $sourceUrl = esc_url_raw((string) $request->get_header('referer'));
+
     $body = '<h2>Nowa wiadomość z formularza kontaktowego</h2>';
     $body .= '<ul>';
     $body .= '<li><strong>Imię:</strong> ' . esc_html($name) . '</li>';
@@ -81,11 +87,27 @@ function api_contact_submit(\WP_REST_Request $request): \WP_REST_Response
         $body .= '<li><strong>Telefon:</strong> <a href="tel:' . esc_attr($phoneLink) . '">' . esc_html($phone) . '</a></li>';
     }
 
+    $body .= '<li><strong>Zgoda RODO:</strong> ✔ udzielona ' . esc_html($consentStamp) . '</li>';
     $body .= '</ul>';
     $body .= '<h3>Wiadomość</h3>';
     $body .= '<p style="white-space:pre-wrap">' . esc_html($message) . '</p>';
-    $body .= '<hr style="border:none;border-top:1px solid #eee;margin-top:20px">';
-    $body .= '<p style="color:#888;font-size:12px;">GDPR zaakceptowane: ' . esc_html(current_time('mysql')) . ' (IP: ' . esc_html(get_client_ip()) . ')</p>';
+
+    // Dowód zgody — RODO art. 7 ust. 1 wymaga wykazania, NA CO użytkownik się zgodził,
+    // więc archiwizujemy dokładną treść checkboxa, a nie samo „tak".
+    $body .= '<h3>Zgoda na przetwarzanie danych</h3>';
+    $body .= '<div style="border-left:3px solid #282435;background:#f7f7f9;padding:12px 16px;">';
+    $body .= '<p style="margin:0 0 8px;">Nadawca zaznaczył obowiązkowy checkbox o treści:</p>';
+    $body .= '<p style="margin:0 0 12px;font-style:italic;">„' . esc_html(contact_consent_plain()) . '"</p>';
+    $body .= '<p style="margin:0;font-size:12px;color:#555;line-height:1.6;">';
+    $body .= 'Data i godzina: <strong>' . esc_html($consentStamp) . '</strong><br>';
+    $body .= 'Adres IP: <strong>' . esc_html(get_client_ip()) . '</strong><br>';
+    $body .= 'Formularz: <strong>kontaktowy</strong>';
+
+    if ($sourceUrl) {
+        $body .= '<br>Strona (wg przeglądarki): <strong>' . esc_html($sourceUrl) . '</strong>';
+    }
+
+    $body .= '</p></div>';
 
     $subject = 'Wiadomość z formularza — ' . $name;
 
