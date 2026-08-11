@@ -33,6 +33,7 @@ export default function contactForm() {
 
     const name = document.getElementById('contact-name').value.trim();
     const email = document.getElementById('contact-email').value.trim();
+    const phone = document.getElementById('contact-phone')?.value.trim() || '';
     const message = document.getElementById('contact-message').value.trim();
     const gdpr = document.getElementById('contact-gdpr').checked;
     const website = document.getElementById('contact-website')?.value || '';
@@ -59,7 +60,7 @@ export default function contactForm() {
           'Content-Type': 'application/json',
           'X-WP-Nonce': nonce,
         },
-        body: JSON.stringify({ name, email, message, gdpr, website }),
+        body: JSON.stringify({ name, email, phone, message, gdpr, website }),
       });
 
       const result = await res.json();

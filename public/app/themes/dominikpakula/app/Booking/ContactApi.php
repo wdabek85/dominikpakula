@@ -38,6 +38,7 @@ function api_contact_submit(\WP_REST_Request $request): \WP_REST_Response
 
     $name = sanitize_text_field($data['name'] ?? '');
     $email = sanitize_email($data['email'] ?? '');
+    $phone = trim(sanitize_text_field($data['phone'] ?? ''));
     $message = sanitize_textarea_field($data['message'] ?? '');
     $gdpr = ! empty($data['gdpr']);
 
@@ -47,6 +48,16 @@ function api_contact_submit(\WP_REST_Request $request): \WP_REST_Response
 
     if (! is_email($email)) {
         return new \WP_REST_Response(['error' => 'Nieprawidłowy adres e-mail.'], 400);
+    }
+
+    // Telefon jest opcjonalny — walidujemy tylko gdy użytkownik coś wpisał.
+    if ($phone !== '') {
+        if (mb_strlen($phone) > 30
+            || ! preg_match('/^[0-9+\-\s()]+$/', $phone)
+            || strlen(preg_replace('/\D/', '', $phone)) < 9
+        ) {
+            return new \WP_REST_Response(['error' => 'Nieprawidłowy numer telefonu.'], 400);
+        }
     }
 
     if (! $gdpr) {
@@ -64,6 +75,12 @@ function api_contact_submit(\WP_REST_Request $request): \WP_REST_Response
     $body .= '<ul>';
     $body .= '<li><strong>Imię:</strong> ' . esc_html($name) . '</li>';
     $body .= '<li><strong>E-mail:</strong> ' . esc_html($email) . '</li>';
+
+    if ($phone !== '') {
+        $phoneLink = preg_replace('/[^0-9+]/', '', $phone);
+        $body .= '<li><strong>Telefon:</strong> <a href="tel:' . esc_attr($phoneLink) . '">' . esc_html($phone) . '</a></li>';
+    }
+
     $body .= '</ul>';
     $body .= '<h3>Wiadomość</h3>';
     $body .= '<p style="white-space:pre-wrap">' . esc_html($message) . '</p>';

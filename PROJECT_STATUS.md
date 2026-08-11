@@ -432,7 +432,7 @@ arrow-left, arrow-long-right, arrow-right, arrow-up-right, check, chevron-down, 
 - [ ] `social_twitter_url` (URL)
 
 ### Grupa: **Profil autora** (lokalizacja: `User Form is equal to All`)
-- [x] `author_role` (Text, np. "Stylista Modivo") — utworzone lokalnie 2026-04-22, **na staging do zrobienia**
+- [x] `author_role` (Text, np. "Osobisty Stylista od 2020") — utworzone lokalnie 2026-04-22, **na staging do zrobienia**
 
 ### Grupa: **Personal Intro** (lokalizacja: `Block is equal to acf/personal-intro`)
 Blok na stronie Kontakt, sekcja humanizująca z avatarem Dominika.
@@ -1511,3 +1511,30 @@ Wzorowana na referencji od usera (screenshot z `miejskafala`): hero z H1, leadem
 Drugi hook `template_redirect` (priorytet 2, po mapie statycznej): jeśli 404 i ostatni segment ścieżki pasuje do opublikowanego wpisu (`post`, `page`, `service`, `guide`, `portfolio`) → 301 na jego permalink. Zabezpieczenia: pomija segmenty numeryczne i z kropką (pliki), oraz sprawdza czy cel nie jest tą samą ścieżką (pętla).
 
 Zweryfikowane na prodzie: `/taka-strona-nie-istnieje-test-404/` → **404** z pełną nową stroną; `/?s=zzzqqqxxx` → „Nic nie znalazłem" + sekcje.
+
+---
+
+## Sesja 2026-08-11
+
+### Zmiana treści na produkcji: rola autora
+`wp_usermeta` → user ID 1 → ACF `author_role`: „Stylista Modivo" → **„Osobisty Stylista od 2020"**. Zmiana wykonana przez `wp search-replace --all-tables --precise` na prodzie (1 trafienie w całej bazie), potem `acorn view:clear` + `cache flush`. Zweryfikowane na `/blog/` — renderuje się w `x-blog-card`.
+
+**Nie zrobione:** staging (komenda blokowana przez uprawnienia — do odpalenia ręcznie) i lokal (Local nie był uruchomiony).
+
+Uwaga: na stronie „O mnie" (ID 440) zostaje osobna wzmianka „Modivo" — to nazwa logotypu klienta w bloku logos (`logos_items_3_name` + załącznik ID 456). Świadomie nietknięta.
+
+### Formularz kontaktowy — opcjonalne pole telefonu
+Powód: ludzie piszą mailem, ale szybciej odpowiedzieć SMS-em, jeśli zostawią numer.
+
+- **`blocks/contact.blade.php`** — nowe pole między E-mailem a Wiadomością. `type="tel"`, `inputmode="tel"`, `autocomplete="tel"`, `maxlength="30"`, **bez `required`**. Ramka z `<x-icons.phone>` w środku, spójna z polem E-mail (`focus-within:border-primary`). Pod polem hint „Zostaw numer, jeśli wolisz odpowiedź SMS-em." powiązany przez `aria-describedby`.
+- **`js/components/contact-form.js`** — `phone` czytany przez `?.` (formularz działa też bez tego pola) i dokładany do payloadu. Celowo **bez walidacji blokującej po stronie klienta** — pole opcjonalne, nie chcemy odbijać usera literówką.
+- **`Booking/ContactApi.php`** — `$phone` sanitowany + trim. Walidacja odpala się **tylko gdy pole niepuste**: dozwolone `[0-9+\-\s()]`, min 9 cyfr po odfiltrowaniu nie-cyfr, max 30 znaków → inaczej 400 „Nieprawidłowy numer telefonu.". W mailu powiadomienia dochodzi `<li>` z klikalnym `tel:` (link czyszczony do `[^0-9+]`), pomijany gdy numer pusty.
+
+Przetestowane przypadki: `+48 500 600 700`, `500600700`, `500-600-700`, `(12) 345 67 89` → OK; `123`, `abc123456789`, `500600700; DROP`, numer >30 znaków → odrzucone.
+
+**Status:** na `develop` + `staging`, zbudowane na serwerze, zweryfikowane w HTML na `dominikpakula.wdb-creative.pl/kontakt/`. **Na produkcję niewypchnięte.**
+
+### Do zrobienia
+- [ ] Polityka prywatności — dopisać zdanie o opcjonalnym numerze telefonu w § 4 (propozycja tekstu przygotowana, czeka na akceptację usera)
+- [ ] Deploy formularza na produkcję (`main`) — wymaga zgody usera
+- [ ] Polityka prywatności ma `dominikpakula.pl` w § 2 i § 1, a produkcja stoi na `meskistylista.pl` — do poprawy niezależnie od tej zmiany
