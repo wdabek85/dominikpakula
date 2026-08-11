@@ -1444,3 +1444,40 @@ Dotyczy strony głównej i `/uslugi/` — obie używają tych samych bloków, wi
 Przy 768 px daje to ~229 px na kartę (`px-4` = 32 px + 2 × `gap-5`). `blog-card` nie ma sztywnych szerokości, więc się skaluje.
 
 **NIE ruszone (do decyzji usera):** `blocks/guides-archive.blade.php` i `partials/guide/related.blade.php` dalej mają `md:grid-cols-2 lg:grid-cols-3` — to poradniki, nie blog.
+
+---
+
+## 🚨 INCYDENT 2026-08-10 — przejęcie konta `admin` ID 1 na produkcji
+
+Wykryty 2026-08-11 przy okazji pytania „gdzie zniknęła strona /baza-wiedzy/". Drugi incydent na tym samym koncie co 2026-08-05.
+
+### Dowód
+Konto **`admin` ID 1** (`dev-email@wpengine.local`, relikt z Local by Flywheel) miało 3 aktywne sesje:
+
+| Zalogowano (UTC) | IP | rDNS | UA |
+|---|---|---|---|
+| 2026-08-07 17:12 | 91.150.222.195 | `dynamic.play.pl` | Mac / Safari |
+| 2026-08-10 02:44 | **34.70.236.161** | **`googleusercontent.com`** | Mac / Chrome |
+| 2026-08-10 05:52 | **34.70.236.161** | **`googleusercontent.com`** | Windows / Chrome |
+
+Dwa logowania z VM w Google Cloud, dwa różne user-agenty — automat. Zostawiły changesety Customizera (posty 689, 692) z payloadem `nav_menu_item` o tytule `proof` i URL `https://github.com/dinosn/wp2shell-lab` (publiczne repo do ćwiczenia przejmowania WP) plus dwa posty typu `request`/status `parse` (687, 690) z datą `2020-01-01`. Pozycja „proof" **nigdy nie była żywa w żadnym menu**.
+
+### Czego NIE znaleziono
+`wp core verify-checksums` czyste · brak PHP w `uploads/` · `mu-plugins` czyste · brak drop-inów · `.htaccess` standardowy · `git status` czysty · 2 konta, zero ukrytych ról · cron czysty · wtyczki tylko ACF Pro + Rank Math. **Brak trwałego backdoora.** Wektor najpewniej hasło konta `admin`.
+
+### Containment (2026-08-11)
+1. `wp user session destroy 1 --all` + `22 --all` → 0 sesji
+2. `wp user update 1 --user_pass=<48 hex> --role=subscriber`
+3. Rotacja 8 saltów w `.env` prod (`~/dp-rotate-salts.php`, backup `~/env-backup-meskistylista-20260811` chmod 600). Po rotacji `/`, `/baza-wiedzy/`, `/uslugi/`, `/blog/` → 200.
+
+### Otwarte
+- Artefakty 687, 689, 690, 692 **zostały w bazie** — inertne, stanowią dowód; do skasowania z wp-admin gdy trzeba.
+- **Staging: to samo konto `admin` ID 1, i jest to jedyne konto tego środowiska** — nie degradować, tylko zmienić hasło. Staging czysty (0 sesji, 0 śladów).
+- Rotacja hasła dhosting — otwarta od 2026-08-05. 2FA — brak.
+
+### Przy okazji: strona /baza-wiedzy/
+Trafiła do **kosza 2026-08-07 19:13:54** (czas warszawski). `_edit_lock` wskazywał ID 1, sesja z `dynamic.play.pl` zalogowana 19:12 → akcja ręczna z panelu, najpewniej samego usera. Na stagingu strona cały czas opublikowana.
+
+Przywrócenie: `wp_untrash_post(234)` — **uwaga, wraca jako `draft`, nie `publish`** — potem `wp post update 234 --post_status=publish`. Pozycja menu 693 „Baza Wiedzy" wskazywała na Blog (256, ustawione przez usera 2026-08-10 13:43), przepięta na 234 przez `update_post_meta(693, '_menu_item_object_id', wp_slash('234'))`.
+
+**Uwaga na przyszłość:** motyw linkuje na sztywno do `/baza-wiedzy/` w `nav-desktop.blade.php:189` i `nav-mobile.blade.php:257`. Jeśli ta strona kiedyś zniknie, oba linki prowadzą w 404 — warto to podpiąć pod ID strony albo dodać fallback.
