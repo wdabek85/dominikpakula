@@ -1534,7 +1534,38 @@ Przetestowane przypadki: `+48 500 600 700`, `500600700`, `500-600-700`, `(12) 34
 
 **Status:** na `develop` + `staging`, zbudowane na serwerze, zweryfikowane w HTML na `dominikpakula.wdb-creative.pl/kontakt/`. **Na produkcję niewypchnięte.**
 
+### Deploy na produkcję
+Formularz z polem telefonu wdrożony na `main` + build na serwerze. Zweryfikowane w HTML na `meskistylista.pl/kontakt/`.
+
+### Dokumenty prawne — uzupełnione na produkcji
+Polityka prywatności (ID 3) i Regulamin (ID 379) zaktualizowane bezpośrednio w bazie prod przez `wp eval-file` + `wp_slash()`. Podmiany robione skryptem z asercjami (każda musiała trafić dokładną liczbę razy, inaczej przerwanie bez zapisu) — 14 podmian, wszystkie potwierdzone. Kopie oryginałów: patrz historia rewizji WP.
+
+**Poprawione rozbieżności ze stanem faktycznym:**
+- E-mail `kontakt@dominikpakula.pl` → `kontakt@meskistylista.pl` (2 miejsca w polityce, 8 w regulaminie)
+- Telefon `+48 884 826 068` → `+48 577 190 949` (zgodnie z tym co widnieje na stronie)
+- Domena `dominikpakula.pl` → `meskistylista.pl` (§ 2 polityki, § 1.1 i link do polityki w regulaminie)
+
+**Uzupełnione placeholdery:**
+- § 5 polityki lit. a i b — hosting i poczta: dhosting.pl Sp. z o.o., ul. Pamiętna 14B/2, 02-972 Warszawa, KRS 0000336780, NIP 7010198361. Zweryfikowane: MX wskazuje `dpoczta.pl`, SPF `include:_mail.dhosting.pl`
+- § 5 lit. e — **dodane Brevo** (wcześniej w ogóle nie było, mimo że newsletter przez nie leci)
+- § 5 lit. f — system rezerwacji: własny, w ramach Serwisu, bez zewnętrznego dostawcy kalendarza
+- § 4 polityki — nowy ustęp o dobrowolności numeru telefonu (art. 6 ust. 1 lit. b i f RODO)
+- § 7.4 regulaminu — ważność Vouchera: **12 miesięcy**
+- § 13.1 regulaminu — obowiązuje od **11 sierpnia 2026 r.**
+- **Załącznik nr 1 do regulaminu** — wzór formularza odstąpienia. § 8 ust. 2 się na niego powoływał, ale dokument go nie zawierał
+
+### Zgoda RODO jako dowód w mailu
+Wcześniej mail miał tylko szary drobny druk „GDPR zaakceptowane: <data>". RODO art. 7 ust. 1 wymaga wykazania **na co** użytkownik się zgodził, więc sam fakt nie wystarcza.
+
+- **`app/Booking/Consent.php`** (nowy) — kanoniczna treść zgody w trzech wariantach: `contact_consent_template()` (szablon z `%s` na link), `contact_consent_html()` (dla widoku, z klikalnym linkiem), `contact_consent_plain()` (dla maila, z rozwiniętym URL-em). Jedno źródło prawdy — formularz i archiwum mailowe nie mogą się rozjechać.
+- **`ContactBlockComposer`** (nowy) — podaje `$gdprConsent` do `blocks.contact`. Widok przestał hardkodować tekst zgody.
+- **`ContactApi`** — wiersz „Zgoda RODO: TAK — udzielona <data>" w podsumowaniu + osobna sekcja „Zgoda na przetwarzanie danych" z dokładną treścią checkboxa, datą, IP i adresem strony (Referer, opisany jako deklaracja przeglądarki, nie dowód).
+
+Przetestowane na stagingu przez `wp eval-file` z przechwyceniem `pre_wp_mail` (żaden mail nie wyszedł): z numerem → 200 z pełną sekcją zgody; bez numeru → 200, wiersz telefonu pominięty, sekcja zgody obecna; numer `123` → 400; brak zgody → 400; 4. próba w 10 min → 429 (rate limiter).
+
 ### Do zrobienia
-- [ ] Polityka prywatności — dopisać zdanie o opcjonalnym numerze telefonu w § 4 (propozycja tekstu przygotowana, czeka na akceptację usera)
-- [ ] Deploy formularza na produkcję (`main`) — wymaga zgody usera
-- [ ] Polityka prywatności ma `dominikpakula.pl` w § 2 i § 1, a produkcja stoi na `meskistylista.pl` — do poprawy niezależnie od tej zmiany
+- [ ] **Adres do korespondencji** — jedyny placeholder jaki został. 3 miejsca: § 1 polityki, § 1.3 regulaminu, Załącznik nr 1. Wymagany przez ustawę o prawach konsumenta, user zdecydował zostawić na później
+- [ ] **Deploy zgody RODO w mailu na produkcję** — jest na `develop` + `staging`, czeka na zgodę usera na push `main`
+- [ ] **Polityka opisuje narzędzia, których nie ma** — § 5 lit. c/d, § 8 i § 9 opisują Google Analytics 4, Google Ads, GTM i Cookiebot. Produkcyjny HTML nie ładuje ani jednego zewnętrznego skryptu. User świadomie zostawił te zapisy, bo planuje wdrożyć analitykę — do domknięcia razem z bannerem zgód
+- [ ] Brevo w § 5 wpisane bez pełnych danych rejestrowych — nie udało się ich pobrać z oficjalnych stron Brevo, do uzupełnienia
+- [ ] Staging ma dalej starą rolę autora („Stylista Modivo") — komenda blokowana przez uprawnienia
