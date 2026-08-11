@@ -1035,6 +1035,13 @@ Dedykowana strona „Jak działa konsultacja" — do niej prowadzi link „Jak t
 - `wp rewrite flush` wykonany.
 - **Do zrobienia przez usera:** przypisać kategorie do poradników; opublikować Regulamin (po wklejeniu treści); **opublikować Politykę prywatności (ID 3 — nadal draft, link w stopce daje 404)**; podmienić demo-poradniki na realne treści.
 
+### Pułapka deployu: okno OPcache
+Przy deployu zgody RODO `/kontakt/` na chwilę zwróciło „W witrynie wystąpił błąd krytyczny". Przyczyna: `opcache.revalidate_freq=2` na dhostingu. Po `git pull` web miał już nowy `ContactBlockComposer.php` (plik nowy, więc bez wpisu w cache), ale wciąż stary `booking.php` z cache — bez `require Consent.php`. Efekt: wywołanie nieistniejącej jeszcze `contact_consent_html()`.
+
+Naprawiło się samo po ~2 s. CLI tego nie pokazuje, bo nie korzysta ze współdzielonego OPcache — `wp eval` renderował stronę poprawnie w tym samym czasie, gdy www zwracało błąd.
+
+**Wniosek na przyszłość:** gdy commit dodaje nowy plik i jednocześnie modyfikuje plik, który go ładuje, po `git pull` na prodzie odczekaj kilka sekund przed weryfikacją albo zresetuj OPcache. Pojedynczy błąd 500 tuż po deployu nie musi oznaczać zepsutego kodu.
+
 ### Do zrobienia ręcznie (user)
 - [ ] Utworzyć kategorie poradników (Poradniki → Kategorie) i przypisać je do poradników — dopiero wtedy pojawi się pasek filtrów (chipsy renderują się tylko dla `hide_empty=true`).
 - [ ] Utworzyć stronę WP „Poradniki" (slug `poradniki`), szablon „Strona z blokami", ułożyć bloki: `page-header` (tytuł/opis/breadcrumb) → **`guides-archive`** → `subscribe` → `contact`.
@@ -1565,7 +1572,6 @@ Przetestowane na stagingu przez `wp eval-file` z przechwyceniem `pre_wp_mail` (�
 
 ### Do zrobienia
 - [ ] **Adres do korespondencji** — jedyny placeholder jaki został. 3 miejsca: § 1 polityki, § 1.3 regulaminu, Załącznik nr 1. Wymagany przez ustawę o prawach konsumenta, user zdecydował zostawić na później
-- [ ] **Deploy zgody RODO w mailu na produkcję** — jest na `develop` + `staging`, czeka na zgodę usera na push `main`
 - [ ] **Polityka opisuje narzędzia, których nie ma** — § 5 lit. c/d, § 8 i § 9 opisują Google Analytics 4, Google Ads, GTM i Cookiebot. Produkcyjny HTML nie ładuje ani jednego zewnętrznego skryptu. User świadomie zostawił te zapisy, bo planuje wdrożyć analitykę — do domknięcia razem z bannerem zgód
 - [ ] Brevo w § 5 wpisane bez pełnych danych rejestrowych — nie udało się ich pobrać z oficjalnych stron Brevo, do uzupełnienia
 - [ ] Staging ma dalej starą rolę autora („Stylista Modivo") — komenda blokowana przez uprawnienia
