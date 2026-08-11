@@ -13,6 +13,7 @@ require_once __DIR__ . '/Booking/Admin.php';
 require_once __DIR__ . '/Booking/Calendar.php';
 require_once __DIR__ . '/Booking/EmailTemplates.php';
 require_once __DIR__ . '/Booking/Mail.php';
+require_once __DIR__ . '/Booking/Consent.php';
 require_once __DIR__ . '/Booking/VoucherApi.php';
 require_once __DIR__ . '/Booking/ContactApi.php';
 require_once __DIR__ . '/Booking/NewsletterApi.php';
