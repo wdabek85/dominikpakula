@@ -169,6 +169,9 @@ Config::define('BREVO_LIST_ID', env('BREVO_LIST_ID') ?: '');
 Config::define('BREVO_DOI_TEMPLATE_ID', env('BREVO_DOI_TEMPLATE_ID') ?: '');
 Config::define('BREVO_DOI_REDIRECT_URL', env('BREVO_DOI_REDIRECT_URL') ?: '');
 
+// Google Tag Manager (see public/app/themes/dominikpakula/app/analytics.php)
+Config::define('GTM_CONTAINER_ID', env('GTM_CONTAINER_ID') ?: '');
+
 /**
  * Debugging Settings
  */

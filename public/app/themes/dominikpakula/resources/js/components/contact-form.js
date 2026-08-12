@@ -2,6 +2,7 @@
  * Contact Form — submits to /booking/v1/contact with GDPR + honeypot.
  */
 import { fetchWithTimeout } from '../lib/fetch-timeout.js';
+import { pushEvent } from '../lib/analytics.js';
 
 export default function contactForm() {
   const form = document.getElementById('contact-form');
@@ -67,6 +68,9 @@ export default function contactForm() {
 
       if (res.ok && result.success) {
         showSuccess(result.message);
+        // Konwersja liczona dopiero po potwierdzeniu z serwera — samo kliknięcie
+        // „Wyślij" mogło polec na walidacji albo rate limiterze.
+        pushEvent('contact_submit', { form_id: 'kontakt', has_phone: phone ? 'tak' : 'nie' });
         form.reset();
       } else {
         showError(result.error || 'Wystąpił błąd. Spróbuj ponownie.');

@@ -1575,3 +1575,57 @@ Przetestowane na stagingu przez `wp eval-file` z przechwyceniem `pre_wp_mail` (�
 - [ ] **Polityka opisuje narzędzia, których nie ma** — § 5 lit. c/d, § 8 i § 9 opisują Google Analytics 4, Google Ads, GTM i Cookiebot. Produkcyjny HTML nie ładuje ani jednego zewnętrznego skryptu. User świadomie zostawił te zapisy, bo planuje wdrożyć analitykę — do domknięcia razem z bannerem zgód
 - [ ] Brevo w § 5 wpisane bez pełnych danych rejestrowych — nie udało się ich pobrać z oficjalnych stron Brevo, do uzupełnienia
 - [ ] Staging ma dalej starą rolę autora („Stylista Modivo") — komenda blokowana przez uprawnienia
+
+---
+
+## Sesja 2026-08-12 — Google Tag Manager + zdarzenia konwersji
+
+### Decyzja: bez wtyczki GTM4WP
+GTM4WP zarabia na siebie przy WooCommerce / Contact Form 7 / Gravity Forms — automatycznie wypycha ich zdarzenia do dataLayer. Tu nie ma żadnego z nich: rezerwacja, voucher, kontakt i newsletter to własny kod REST (`app/Booking/*` + `resources/js/components/*`), o którym wtyczka nic nie wie. Zostałby z niej sam snippet kontenera plus ekran ustawień klikany ręcznie w adminie (poza gitem, niedeployowalny) i kolejna powierzchnia ataku — po dwóch incydentach przejęcia admina argument nie kosmetyczny. Scroll depth i kliknięcia `tel:`/`mailto:` ogarniają wbudowane triggery GTM.
+
+### ID kontenera przez .env (wzorzec Brevo)
+- `config/application.php` — `Config::define('GTM_CONTAINER_ID', env('GTM_CONTAINER_ID') ?: '')`
+- `.env.example` — nowa sekcja z opisem
+- `.env` (lokalny) — wpis zakomentowany, do odkomentowania przy testach
+- Kontener produkcyjny: **GTM-PQPMDHS4**. Puste ID = kod całkowicie uśpiony (wyłącznik awaryjny). Każde środowisko ma własną wartość, więc staging może mieć inny kontener albo żaden.
+
+### `app/analytics.php` (nowy, wpięty w `functions.php` po `security`)
+- Snippet w `wp_head` **priorytet 1** + `<noscript>` w `wp_body_open` priorytet 1 (layout ma `wp_body_open()` w pierwszej linii `<body>`).
+- **Nie ładuje się** gdy: brak/zły format ID, `is_admin`, AJAX, cron, REST, `is_preview`, `is_customize_preview`, oraz dla zalogowanych z `edit_posts` (redakcja nie zaśmieca statystyk). Zalogowany subskrybent jest liczony normalnie.
+- Decyzja `should_load()` memoizowana w statycznej — head i body muszą odpowiedzieć tak samo, inaczej powstałby osierocony `<noscript>`.
+- Walidacja ID regexem `/^GTM-[A-Z0-9]{4,}$/` — wartość trafia wprost do stringa w `<script>`. Odrzuca m.in. `GTM-X');alert(1)//`.
+- Kontekst strony wypychany do dataLayer **przed** snippetem (po starcie kontenera push nie zasili zmiennych czytanych przy inicjalizacji tagów): `pageType`, `postId`, `postType`, `postTitle`, `postCategory`, `postAuthor`, `isLoggedIn`. JSON kodowany z `JSON_HEX_TAG`, więc `</script>` w tytule wpisu nie rozerwie bloku.
+
+### Consent Mode — obsługuje Cookiebot, nie my
+Świadomie **nie** wypisujemy własnych `gtag('consent','default',…)`. Cookiebot ma wejść jako tag **wewnątrz** kontenera GTM (trigger „Consent Initialization – All Pages"). Dwa źródła defaultów potrafią się nadpisać i skończyć zgodą, której użytkownik nie dał.
+
+**Jeśli kiedyś Cookiebot wjedzie własnym `<script>` w `<head>` zamiast przez GTM — musi być WYŻEJ niż nasz snippet**, czyli trzeba podbić priorytet hooka `wp_head` w `analytics.php` powyżej priorytetu Cookiebota.
+
+### `resources/js/lib/analytics.js` (nowy)
+`pushEvent(name, params)` — jedyne miejsce dotykające `window.dataLayer`. Pomija puste wartości, żeby w GA4 nie lądowały wymiary „undefined". Nie sprawdza zgody sam — push do dataLayer niczego nie śledzi, decyzję podejmują tagi GTM + Cookiebot.
+
+### Zdarzenia wpięte w istniejące komponenty
+| Plik | Zdarzenia | Parametry |
+|---|---|---|
+| `booking.js` | `booking_start`, `booking_service_selected`, `booking_date_selected`, **`booking_submit`** | `service`, `date`, `entry_point` (`usluga`/`ogolne`) |
+| `voucher.js` | `voucher_start`, `voucher_service_selected`, `voucher_recipient_filled`, **`voucher_submit`** | `service`, `price` |
+| `contact-form.js` | **`contact_submit`** | `form_id`, `has_phone` |
+| `newsletter-form.js` | **`newsletter_signup`** | `placement` |
+
+Pogrubione = konwersje. Wszystkie odpalają się **po potwierdzeniu z serwera**, nie na kliknięcie — samo „Wyślij" mogło polec na walidacji albo rate limiterze.
+
+Przy okazji: `data-newsletter` dostało wartości (`blok-newsletter`, `blog-wpis`) — wcześniej był to goły atrybut, teraz zasila parametr `placement`.
+
+### Weryfikacja
+- `php -l` czysty na `analytics.php` i `application.php` (PHP z Local: `%APPDATA%\Local\lightning-services\php-8.2.27+1\bin\win32\php.exe` — `php` nie jest w PATH).
+- `npm run build` przechodzi (29 modułów, `app-DtrGYURt.js` 33.33 kB).
+- Snippet uruchomiony na stubach WP poza WordPressem — wyjście bajt w bajt zgodne z oryginałem od Google, walidacja ID odrzuca wstrzyknięcia.
+- **Nie sprawdzone w przeglądarce** — Local nie był uruchomiony. Do zrobienia po deployu.
+
+### Do zrobienia
+- [ ] `GTM_CONTAINER_ID=GTM-PQPMDHS4` dopisać do `.env` na produkcji (i ewentualnie na stagingu) — bez tego kod jest uśpiony
+- [ ] Cookiebot: tag CMP w GTM na triggerze „Consent Initialization – All Pages"
+- [ ] W GTM: tag GA4 Configuration + 4 triggery Custom Event na konwersje + tagi GA4 Event; w GA4 oznaczyć jako kluczowe zdarzenia
+- [ ] Zmienne dataLayer w GTM dla `pageType`, `postCategory`, `service`, `placement` (Data Layer Variable)
+- [ ] Sprawdzić Tag Assistantem: snippet w `<head>`, `<noscript>` zaraz po `<body>`, zdarzenia lecą po sukcesie formularza
+- [ ] Po uruchomieniu analityki polityka prywatności przestaje kłamać w § 5 lit. c/d, § 8, § 9 — zweryfikować czy zapisy zgadzają się ze stanem faktycznym (Cookiebot tak, Google Ads na razie nie)
