@@ -1620,10 +1620,22 @@ Przy okazji: `data-newsletter` dostało wartości (`blok-newsletter`, `blog-wpis
 - `php -l` czysty na `analytics.php` i `application.php` (PHP z Local: `%APPDATA%\Local\lightning-services\php-8.2.27+1\bin\win32\php.exe` — `php` nie jest w PATH).
 - `npm run build` przechodzi (29 modułów, `app-DtrGYURt.js` 33.33 kB).
 - Snippet uruchomiony na stubach WP poza WordPressem — wyjście bajt w bajt zgodne z oryginałem od Google, walidacja ID odrzuca wstrzyknięcia.
-- **Nie sprawdzone w przeglądarce** — Local nie był uruchomiony. Do zrobienia po deployu.
+- Local nie był uruchomiony, więc render sprawdzony dopiero na produkcji (niżej).
+
+### Deploy na produkcję (2026-08-12) — ZROBIONE
+`develop` a7c973c → `staging` a84fb9a → `main` f5d0e57, pull + `npm run build` na serwerze (Node 20.20.0), `acorn view:clear` + `cache flush` (zmieniły się 2 pliki Blade).
+
+`.env` na prodzie: dopisane `GTM_CONTAINER_ID=GTM-PQPMDHS4` (linia 27, uprawnienia 640). Backup przed zmianą: `~/env-backup-meskistylista-20260812` chmod 600.
+
+**Zweryfikowane na żywym HTML meskistylista.pl:**
+- Snippet to **pierwszy skrypt w `<head>`** (linie 7–14, przed `<title>`), `<noscript>` w linii 81 zaraz po `<body>` z linii 79
+- Bundle `app-DtrGYURt.js` (hash identyczny z lokalnym) zawiera wszystkie 10 nazw zdarzeń
+- dataLayer na stronie głównej: `pageType: front_page`, postId 6
+- dataLayer na wpisie: `pageType: single`, postId 610, `postCategory: Moda`, autor OK
+- 404 raportuje `pageType: not_found` (sprawdzone przypadkiem na `/author/`, zablokowanym przez `security.php`)
+- **Staging: 0 trafień `googletagmanager`** — kontener się tam nie ładuje, bo staging `.env` nie ma zmiennej. Izolacja środowisk potwierdzona, prod śledzi sam siebie.
 
 ### Do zrobienia
-- [ ] `GTM_CONTAINER_ID=GTM-PQPMDHS4` dopisać do `.env` na produkcji (i ewentualnie na stagingu) — bez tego kod jest uśpiony
 - [ ] Cookiebot: tag CMP w GTM na triggerze „Consent Initialization – All Pages"
 - [ ] W GTM: tag GA4 Configuration + 4 triggery Custom Event na konwersje + tagi GA4 Event; w GA4 oznaczyć jako kluczowe zdarzenia
 - [ ] Zmienne dataLayer w GTM dla `pageType`, `postCategory`, `service`, `placement` (Data Layer Variable)
