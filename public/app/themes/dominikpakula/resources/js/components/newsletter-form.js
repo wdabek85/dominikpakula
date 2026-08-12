@@ -12,6 +12,7 @@
  *   - optional [data-newsletter-error], [data-newsletter-success], [data-newsletter-disclaimer]
  */
 import { fetchWithTimeout } from '../lib/fetch-timeout.js';
+import { pushEvent } from '../lib/analytics.js';
 
 export default function newsletterForm() {
   if (!window.bookingData) return;
@@ -31,6 +32,8 @@ export default function newsletterForm() {
     const successEl = root.querySelector('[data-newsletter-success]');
     const disclaimer = root.querySelector('[data-newsletter-disclaimer]');
     const originalBtnText = submitBtn ? submitBtn.textContent : 'Zapisz się';
+    // Wartość data-newsletter mówi, który z formularzy zebrał zapis (blok vs blog).
+    const placement = root.dataset.newsletter || 'nieokreslone';
 
     function showError(msg) {
       if (errorEl) {
@@ -93,6 +96,7 @@ export default function newsletterForm() {
         if (res.ok && result.success) {
           if (submitBtn) submitBtn.textContent = 'Zapisano ✓';
           showSuccess(result.message || 'Dzięki! Jesteś zapisany na newsletter.');
+          pushEvent('newsletter_signup', { placement });
           emailInput.value = '';
         } else {
           showError(result.error || 'Wystąpił błąd. Spróbuj ponownie.');

@@ -16,7 +16,7 @@
       </div>
 
       {{-- Formularz --}}
-      <div class="flex flex-col gap-2 lg:max-w-[735px] items-center lg:items-start" data-newsletter>
+      <div class="flex flex-col gap-2 lg:max-w-[735px] items-center lg:items-start" data-newsletter="blok-newsletter">
         <form class="flex flex-col gap-3 w-full" novalidate>
           {{-- Honeypot — ukryte dla ludzi, widoczne dla botów --}}
           <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1">
