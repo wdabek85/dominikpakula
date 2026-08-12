@@ -7,6 +7,7 @@
 import createModalA11y from '../lib/modal-a11y.js';
 import { fetchWithTimeout } from '../lib/fetch-timeout.js';
 import { safeHref } from '../lib/safe-url.js';
+import { pushEvent } from '../lib/analytics.js';
 
 export default function voucher() {
   const modal = document.getElementById('voucher-modal');
@@ -17,15 +18,21 @@ export default function voucher() {
 
   let currentStep = 1;
   let selectedService = null;
+  // Cena z panelu jest tekstem („500 zł"), więc trzymamy ją jako etykietę do GA4,
+  // a nie jako liczbę do sumowania — voucher i tak nie jest tu opłacany.
+  let selectedPrice = null;
   const backBtn = document.getElementById('voucher-back');
 
   // --- Open / Close ---
   function open() {
     selectedService = null;
+    selectedPrice = null;
     goToStep(1);
     modal.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
     a11y.activate();
+
+    pushEvent('voucher_start');
   }
 
   function close() {
@@ -143,6 +150,8 @@ export default function voucher() {
 
       card.addEventListener('click', () => {
         selectedService = s.title;
+        selectedPrice = s.price || null;
+        pushEvent('voucher_service_selected', { service: selectedService, price: selectedPrice });
         goToStep(2);
       });
 
@@ -164,6 +173,7 @@ export default function voucher() {
         alert('Podaj przynajmniej imię obdarowanej osoby.');
         return;
       }
+      pushEvent('voucher_recipient_filled', { service: selectedService, price: selectedPrice });
       goToStep(3);
     });
   }
@@ -222,6 +232,8 @@ export default function voucher() {
         if (res.ok && result.success) {
           const msg = document.getElementById('voucher-success-message');
           if (msg) msg.textContent = result.message;
+          // Konwersja: zamówienie vouchera przyjęte przez serwer.
+          pushEvent('voucher_submit', { service: selectedService, price: selectedPrice });
           goToStep(4);
         } else {
           showError(result.error || 'Wystąpił błąd.');

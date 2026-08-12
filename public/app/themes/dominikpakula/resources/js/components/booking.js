@@ -8,6 +8,7 @@
 import createModalA11y from '../lib/modal-a11y.js';
 import { fetchWithTimeout } from '../lib/fetch-timeout.js';
 import { safeHref } from '../lib/safe-url.js';
+import { pushEvent } from '../lib/analytics.js';
 
 export default function booking() {
   const modal = document.getElementById('booking-modal');
@@ -49,6 +50,13 @@ export default function booking() {
     modal.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
     a11y.activate();
+
+    // Początek lejka. entry_point rozróżnia CTA z konkretnej usługi od ogólnego
+    // przycisku — w GA4 widać, które wejście domyka najwięcej rezerwacji.
+    pushEvent('booking_start', {
+      service: selectedService,
+      entry_point: selectedService ? 'usluga' : 'ogolne',
+    });
   }
 
   function close() {
@@ -170,6 +178,7 @@ export default function booking() {
 
       card.addEventListener('click', () => {
         selectedService = s.title;
+        pushEvent('booking_service_selected', { service: selectedService });
         goToStep(2);
       });
 
@@ -293,6 +302,7 @@ export default function booking() {
     calendar.querySelectorAll('[data-cal-date]').forEach((btn) => {
       btn.addEventListener('click', () => {
         selectedDate = btn.dataset.calDate;
+        pushEvent('booking_date_selected', { service: selectedService, date: selectedDate });
         goToStep(3);
       });
     });
@@ -368,6 +378,8 @@ export default function booking() {
         if (res.ok && result.success) {
           const msg = document.getElementById('booking-success-message');
           if (msg) msg.textContent = result.message;
+          // Główna konwersja — dopiero tu termin jest faktycznie zarezerwowany.
+          pushEvent('booking_submit', { service: selectedService, date: selectedDate });
           goToStep(4);
         } else {
           showError(result.error || 'Wystąpił błąd. Spróbuj ponownie.');
