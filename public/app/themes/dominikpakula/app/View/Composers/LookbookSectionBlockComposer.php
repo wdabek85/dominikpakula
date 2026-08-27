@@ -15,27 +15,32 @@ class LookbookSectionBlockComposer extends Composer
         $title = \get_field('lookbook_title') ?: '';
         $description = \get_field('lookbook_description') ?: '';
         $items = $this->items();
+        $rawLayout = \get_field('lookbook_layout') ?: 'grid-3';
 
         return [
             'title' => $title,
             'description' => $description,
-            'layout' => $this->layout(),
+            'layout' => $this->layout($rawLayout),
             'items' => $items,
-            'featuredFirst' => $this->featuredFirst(),
+            'featuredFirst' => $this->featuredFirst($rawLayout),
             'isEmpty' => ! $title && ! $description && ! $items,
             'isPreview' => $this->isPreview(),
         ];
     }
 
-    protected function layout(): string
+    /**
+     * Wartość z panelu → layout renderowany w Blade.
+     *
+     * `grid-5` i `grid-5-right` to ten sam układ (1 duże zdjęcie + siatka 2x2),
+     * różnią się wyłącznie stroną dużego zdjęcia — patrz `featuredFirst()`.
+     */
+    protected function layout(string $rawLayout): string
     {
-        $layout = \get_field('lookbook_layout') ?: 'grid-3';
-
-        // Aliasy nazewnicze — `grid-5` (1+4=5 itemów) === `split` (1 duże + 2x2)
         $aliases = [
             'grid-5' => 'split',
+            'grid-5-right' => 'split',
         ];
-        $layout = $aliases[$layout] ?? $layout;
+        $layout = $aliases[$rawLayout] ?? $rawLayout;
 
         if (! in_array($layout, ['grid-3', 'grid-4', 'split'], true)) {
             $layout = 'grid-3';
@@ -45,12 +50,22 @@ class LookbookSectionBlockComposer extends Composer
     }
 
     /**
-     * Strona dużego zdjęcia w layoucie `split`. Pole `lookbook_featured_position`
-     * ('left' | 'right'). Wszystko poza jawnym 'right' = lewa strona, więc brak
-     * pola albo pusta wartość zachowuje dotychczasowy układ.
+     * Strona dużego zdjęcia w layoucie split.
+     *
+     * Decyduje wybór layoutu w panelu: `grid-5-right` = duże zdjęcie po prawej,
+     * cała reszta = po lewej. Dodatkowo honorowane jest opcjonalne pole
+     * `lookbook_featured_position` ('left' | 'right'), gdyby kiedyś powstało —
+     * ale domyślnie NIE istnieje i wtedy nie ma żadnego wpływu.
+     *
+     * Wszystko poza jawnym „prawo" daje lewą stronę, więc brak pola i stare
+     * wpisy z `grid-5` renderują się dokładnie jak wcześniej.
      */
-    protected function featuredFirst(): bool
+    protected function featuredFirst(string $rawLayout): bool
     {
+        if ($rawLayout === 'grid-5-right') {
+            return false;
+        }
+
         return \get_field('lookbook_featured_position') !== 'right';
     }
 
