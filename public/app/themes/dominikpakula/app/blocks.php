@@ -433,7 +433,12 @@ add_action('acf/init', function () {
                 'align' => false,
                 'anchor' => true,
             ],
-            'render_callback' => function ($block) use ($template) {
+            // ACF podaje flagę podglądu ARGUMENTEM ($is_preview), nie w tablicy $block.
+            // Normalizujemy ją do $block['preview'], żeby widoki i composery miały
+            // jedno miejsce do sprawdzenia „czy renderujemy w edytorze".
+            'render_callback' => function ($block, $content = '', $isPreview = false) use ($template) {
+                $block['preview'] = (bool) $isPreview;
+
                 echo view($template, ['block' => $block])->render();
             },
         ]);
