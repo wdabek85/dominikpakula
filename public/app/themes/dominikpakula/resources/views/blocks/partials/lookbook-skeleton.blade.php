@@ -24,18 +24,18 @@
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
     <div class="flex flex-col gap-3">
-      <span class="{{ $box }} aspect-[4/5]"></span>
+      <span class="{{ $box }} aspect-square"></span>
       <div class="grid grid-cols-2 gap-3">
-        <span class="{{ $box }} aspect-square"></span>
-        <span class="{{ $box }} aspect-square"></span>
+        <span class="{{ $box }} aspect-[3/4]"></span>
+        <span class="{{ $box }} aspect-[3/4]"></span>
       </div>
     </div>
     <div class="flex flex-col gap-3">
       <div class="grid grid-cols-2 gap-3">
-        <span class="{{ $box }} aspect-square"></span>
-        <span class="{{ $box }} aspect-square"></span>
+        <span class="{{ $box }} aspect-[3/4]"></span>
+        <span class="{{ $box }} aspect-[3/4]"></span>
       </div>
-      <span class="{{ $box }} aspect-[4/5]"></span>
+      <span class="{{ $box }} aspect-square"></span>
     </div>
   </div>
 
