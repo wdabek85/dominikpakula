@@ -1738,7 +1738,7 @@ LEWA           PRAWA
 └───┘ └───┘    └─────────┘
 ```
 
-- Duże: `aspect-[4/5]`. Małe: `aspect-square`. **Nie podnosić bez przeliczenia** — patrz niżej.
+- Duże: `aspect-square`. Małe: `aspect-[3/4]`. **Nie podnosić bez przeliczenia** — patrz niżej.
 - Kolejność w repeaterze **kolumnami**: 1-3 lewa kolumna, 4-6 prawa (decyzja usera).
 - Nowy partial `blocks/partials/lookbook-grid-6.blade.php` — blok się nie rozrasta.
 - Gałąź w `lookbook-section` wymaga **min. 6 zdjęć**, inaczej spada na `grid-3`
@@ -1827,8 +1827,29 @@ na obu serwerach (`app-DwaNfIAT.css`). Zweryfikowane w żywym CSS: `aspect-squar
 > Uwaga: hashe assetów z builda lokalnego (Node 24) różnią się od serwerowych (Node 20).
 > To normalne — liczy się, że **oba serwery mają identyczny hash**.
 
+#### Druga korekta (2026-08-27) — to DUŻE miały zejść, nie małe
+
+Pierwsza korekta zbiła wysokość, ale odwrotnie niż user chciał: ścięła małe kadry do kwadratu,
+a duże zostawiła pionowe. User doprecyzował — niżej mają być **duże**, a małe mają wrócić
+do prostokąta, nawet kosztem odstępu między kolumnami.
+
+| | 1. wersja | po 1. korekcie | **teraz** |
+|---|---|---|---|
+| Duże | `aspect-[2/3]` 669px | `aspect-[4/5]` 558px | **`aspect-square` 446px** |
+| Małe | `aspect-[3/4]` 284px | `aspect-square` 213px | **`aspect-[3/4]` 284px** |
+| Kolumna | 973px | 790px | **750px** |
+
+Mimo powrotu prostokątnych małych kolumna wyszła 40px niżej niż po pierwszej korekcie.
+
+⚠️ Duże kadry są teraz kwadratowe → `object-cover` przycina sylwetkę. Przy wgrywaniu zdjęć
+modela trzymać postać na środku kadru. Ostrzeżenie jest też w komentarzu partiala.
+
+Deploy: `develop` 3a08ee9 → `staging` a7d18e2 → `main` ce0bdac na obu serwerach.
+**Hash CSS bez zmian** (`app-DwaNfIAT.css`) — obie klasy były już w bundlu, zmieniło się
+tylko który szablon której używa. To nie jest oznaka nieudanego builda.
+
 ### Do zrobienia
-- [ ] Wstawić grid-6 na realnym wpisie i ocenić kadry po zbiciu wysokości
+- [ ] Wstawić grid-6 na realnym wpisie i ocenić kadry (duże kwadratowe = ryzyko przycięcia sylwetki)
 - [ ] Wstawić `blog-soft-cta` na końcu wpisu i ocenić, czy jest wystarczająco delikatny
 - [ ] Sprawdzić w edytorze prod: placeholder pustego bloku + przełączenie lookbooka na `grid-5-right`
 - [ ] Rozważyć `mode => 'auto'` dla lookbooka (klik w blok otwiera formularz zamiast ołówka) —
