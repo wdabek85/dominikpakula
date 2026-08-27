@@ -9,14 +9,16 @@
 
   Na mobile wszystko schodzi w jedną kolumnę w kolejności: duże → para → para → duże.
 
-  Proporcje kadrów są dobrane tak, żeby kolumna zmieściła się w oknie laptopa.
-  Przy kolumnie treści ~912px kolumna mozaiki ma ~446px, więc:
-    duże `aspect-square` = 446px, małe `aspect-[3/4]` = 284px  →  446 + 20 + 284 = ~750px
-  Historia: pierwotne 2/3 + 3/4 dawało 973px i wyjeżdżało poza ekran, potem 4/5 + kwadrat
-  dało 790px. Nie zwiększaj tych proporcji bez przeliczenia pod realną szerokość kolumny.
+  Proporcje: duże `aspect-[2/3]`, małe `aspect-[3/4]` — WSZYSTKIE kadry prostokątne,
+  świadoma decyzja usera (2026-08-27), żadnych kwadratów.
 
-  Duże kadry są kwadratowe świadomie — sylwetki są przycinane przez object-cover,
-  więc przy wgrywaniu zdjęć modela trzymaj postać na środku kadru.
+  Przy kolumnie treści ~912px kolumna mozaiki ma ~446px, więc:
+    duże = 669px, małe = 284px  →  669 + 20 + 284 = ~973px
+
+  To WIĘCEJ niż widoczna wysokość okna MacBooka 14" (~870px), czyli mozaika nie mieści się
+  w jednym ekranie i trzeba ją przewinąć. Testowaliśmy dwa niższe warianty (4/5 + kwadrat
+  = 790px, kwadrat + 3/4 = 750px) i user wybrał powrót do prostokątów mimo tej wysokości.
+  Zanim to zmienisz — zapytaj, to nie jest przeoczenie.
 
   Zmienne: $items (wymagane min. 6 elementów — pilnuje tego blocks.lookbook-section).
 --}}
@@ -31,7 +33,7 @@
 
   {{-- Lewa kolumna: duże na górze, para pod spodem --}}
   <div class="flex flex-col gap-4 lg:gap-5">
-    @include('blocks.partials.lookbook-item', ['item' => $leftFeatured, 'aspect' => 'aspect-square'])
+    @include('blocks.partials.lookbook-item', ['item' => $leftFeatured, 'aspect' => 'aspect-[2/3]'])
 
     <div class="grid grid-cols-2 gap-4 lg:gap-5">
       @foreach ($leftPair as $item)
@@ -48,7 +50,7 @@
       @endforeach
     </div>
 
-    @include('blocks.partials.lookbook-item', ['item' => $rightFeatured, 'aspect' => 'aspect-square'])
+    @include('blocks.partials.lookbook-item', ['item' => $rightFeatured, 'aspect' => 'aspect-[2/3]'])
   </div>
 
 </div>
