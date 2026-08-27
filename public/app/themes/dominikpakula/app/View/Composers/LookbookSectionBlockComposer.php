@@ -12,6 +12,23 @@ class LookbookSectionBlockComposer extends Composer
 
     public function with(): array
     {
+        $title = \get_field('lookbook_title') ?: '';
+        $description = \get_field('lookbook_description') ?: '';
+        $items = $this->items();
+
+        return [
+            'title' => $title,
+            'description' => $description,
+            'layout' => $this->layout(),
+            'items' => $items,
+            'featuredFirst' => $this->featuredFirst(),
+            'isEmpty' => ! $title && ! $description && ! $items,
+            'isPreview' => $this->isPreview(),
+        ];
+    }
+
+    protected function layout(): string
+    {
         $layout = \get_field('lookbook_layout') ?: 'grid-3';
 
         // Aliasy nazewnicze — `grid-5` (1+4=5 itemów) === `split` (1 duże + 2x2)
@@ -24,12 +41,29 @@ class LookbookSectionBlockComposer extends Composer
             $layout = 'grid-3';
         }
 
-        return [
-            'title' => \get_field('lookbook_title') ?: '',
-            'description' => \get_field('lookbook_description') ?: '',
-            'layout' => $layout,
-            'items' => $this->items(),
-        ];
+        return $layout;
+    }
+
+    /**
+     * Strona dużego zdjęcia w layoucie `split`. Pole `lookbook_featured_position`
+     * ('left' | 'right'). Wszystko poza jawnym 'right' = lewa strona, więc brak
+     * pola albo pusta wartość zachowuje dotychczasowy układ.
+     */
+    protected function featuredFirst(): bool
+    {
+        return \get_field('lookbook_featured_position') !== 'right';
+    }
+
+    /**
+     * Czy render leci z edytora bloków. ACF wstawia `preview => true` w tablicy
+     * bloku (przekazywanej do widoku w app/blocks.php). Na froncie zawsze false —
+     * dzięki temu placeholder nigdy nie wychodzi do użytkownika.
+     */
+    protected function isPreview(): bool
+    {
+        $block = $this->view->getData()['block'] ?? null;
+
+        return is_array($block) && ! empty($block['preview']);
     }
 
     protected function items(): array
