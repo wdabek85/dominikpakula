@@ -1876,3 +1876,46 @@ Deploy: `develop` 753ba77 → `staging` df2b509 → `main` d1fb7b6 na obu serwer
       wymaga per-blokowego nadpisania `mode` w pętli rejestracji w `app/blocks.php`
 - [ ] Placeholder w pozostałych blokach (komponent jest już gotowy)
 
+## Sesja 2026-08-27 (cd.) — taksonomie bloga: kategoria cyklu, sezony, tagi marek
+
+Wpis „Przegląd nowości z sieciówek – jesień #1" (ID 742) siedział w **„Bez kategorii"** —
+bo to była domyślna kategoria WordPressa. Przy okazji uporządkowana taksonomia bloga.
+
+### Stan zastany
+- Kategorie: `Moda` (2 wpisy), `Bez kategorii` (1) · Tagi: **zero**
+- `season` („Sezony", publiczna, `/sezon/…`, hierarchiczna) — **istniała, ale nieużywana**, jeden pusty term „Lato"
+- `guide_category`: Garderoba / Okazje specjalne / Stylizacje (CPT `guide`, na razie 0 wpisów)
+- Archiwa renderują się z `index.blade.php` (brak dedykowanych szablonów `category`/`taxonomy`) — działają
+
+### Decyzje usera
+- **„Moda" zostaje bez zmian** (bez zmiany nazwy i slug, zero ryzyka dla URL-i) — dodana tylko nowa kategoria
+- **Tagi marek normalnie indeksowane** (nie noindex)
+
+### Wykonane na produkcji (WP-CLI)
+| Co | Wartość |
+|---|---|
+| Nowa kategoria | `Przeglądy sieciówek` (term 10, slug `przeglady-sieciowek`) + opis SEO |
+| Nowy sezon | `Jesień` (term 11, slug `jesien`) |
+| Wpis 742 | kategoria → Przeglądy sieciówek (zdjęte „Bez kategorii"), sezon → Jesień, tagi → Zara, Massimo Dutti, COS, Arket |
+| `default_category` | „Bez kategorii" → **Przeglądy sieciówek** (żeby następny wpis znów tam nie wpadł) |
+
+### Rank Math — tagi wypuszczone do indeksu
+Archiwa tagów były domyślnie zablokowane. Zmienione w `rank-math-options-titles`
+i `rank-math-options-sitemap`:
+- `tax_post_tag_robots`: `["noindex"]` → `["index"]` (`tax_post_tag_custom_robots` = on)
+- `tax_post_tag_add_meta_box`: off → **on** (żeby dało się pisać opisy SEO tagów)
+- `tax_post_tag_sitemap`: off → **on**
+
+Zweryfikowane na żywo: `/category/przeglady-sieciowek/`, `/sezon/jesien/`, `/tag/zara/`, `/tag/cos/` → 200;
+`<meta name="robots" content="follow, index, …">` na archiwum tagu; `post_tag-sitemap.xml` w indeksie
+sitemap i zawiera 4 marki.
+
+> To zmiany w BAZIE produkcji, nie w kodzie — przy ewentualnym nadpisaniu bazy prod importem
+> ze stagingu trzeba je odtworzyć (analogicznie do `pt_*_sitemap` z 2026-07-07).
+> Staging ma osobną bazę i tych terminów NIE ma.
+
+### Do rozważenia przy kolejnych wpisach z cyklu
+- Kategoria `Garderoba` dla Loafersów i „6 elementów" — dziś zostały w `Moda` świadomie
+- Dedykowany szablon archiwum kategorii (teraz fallback na `index.blade.php`)
+- Opisy SEO dla archiwów tagów marek, skoro są indeksowane
+
