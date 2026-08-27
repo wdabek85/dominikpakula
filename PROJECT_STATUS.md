@@ -240,7 +240,7 @@ resources/images/
 └── video-bg.jpg
 ```
 
-## ACF Blocks — zarejestrowane (20 bloków)
+## ACF Blocks — zarejestrowane (21 bloków)
 | Blok | Widok | Composer | Status |
 |------|-------|----------|--------|
 | Hero | blocks.hero | HeroComposer | Gotowy |
@@ -1771,8 +1771,45 @@ i `package-lock.json` — z `composer.json` usunięty jest `wpengine/advanced-cu
 (stary workaround na limit aktywacji ACF). Pull ich nie dotknął i **nie wolno ich zresetować**,
 bo `composer install` zacznie się wykrackać na 402 activation_limit.
 
+### Nowy blok 2026-08-27 — `blog-soft-cta` (delikatne CTA w treści wpisu)
+
+Cichy zaczep w toku czytania, z tekstu który user dostał od Dominika. Świadomie lżejszy
+od `blog-callout` (szare tło + kolorowa ramka + ikona) i od `blog-pullquote` (wyróżniona myśl).
+
+Układ: hairline 60px u góry (ten sam motyw co nagłówek lookbooka) → wyśrodkowany tekst
+**PT Serif** `text-lg lg:text-xl` → dyskretny link `font-metro` uppercase `tracking-[3px]`
+ze strzałką przesuwającą się na hover i podkreśleniem przez `border-b`.
+
+Pliki: `blocks/blog-soft-cta.blade.php`, `BlogSoftCtaBlockComposer.php`, rejestracja
+w `app/blocks.php` (grupa `article`, ikona `external`). Pusty blok korzysta z `x-block-placeholder`.
+
+a11y: `<aside>`, `focus-visible:ring`, strzałka `aria-hidden`, `rel="noopener"` przy `_blank`.
+
+**Composer defensywnie:** `soft_cta_url` obsłużone i jako tablica (typ Link) i jako string
+(Page Link / text) — zmiana typu pola w panelu niczego nie wywróci. **Bez domyślnego URL-a**
+(adresów nie hardkodujemy): puste pole = blok pokazuje sam tekst zamiast udawać, że gdzieś prowadzi.
+
+#### 🔑 Pola ACF = local JSON, NIE baza
+
+Przy okazji ustalone i zweryfikowane na prodzie: `acf_get_field_group()` zwraca dla grup
+blokowych `local="json"`, `ID=0` — **grupy pól nie istnieją w bazie**, wszystko ładuje się
+z `acf-json/` w motywie (domyślny load point ACF, żadnych filtrów w kodzie).
+
+Dlatego pola tego bloku powstały jako **plik w repo**: `acf-json/group_blog_soft_cta.json`
+(`soft_cta_text` textarea, `soft_cta_url` link/array, `soft_cta_label` text). Zero zapisów
+do bazy, działa na local/staging/prod, wersjonowane w Git.
+
+**Wyjątek:** starsze grupy siedzące w bazie (np. „LookBook" `group_69f1b8816b165`, post 277)
+JSON-em się nie nadpisze — tam idzie WP-CLI `acf_update_field`, osobno na prodzie i stagingu.
+
+Deploy: `develop` b8375c6 → `staging` 1de8e03 → `main` ab25edb, pull + `npm run build`
++ `acorn view:clear` + `cache flush` na OBU serwerach (identyczne hashe `editor-Z-AIGtmN.css`,
+`app-BW0Qa6KB.css`). Zweryfikowane po deployu na prodzie i stagingu: grupa `local="json"`,
+3 pola obecne, blok zarejestrowany, strony → 200.
+
 ### Do zrobienia
 - [ ] Wstawić grid-6 na realnym wpisie i sprawdzić proporcje kadrów (2/3 i 3/4 są do strojenia)
+- [ ] Wstawić `blog-soft-cta` na końcu wpisu i ocenić, czy jest wystarczająco delikatny
 - [ ] Sprawdzić w edytorze prod: placeholder pustego bloku + przełączenie lookbooka na `grid-5-right`
 - [ ] Rozważyć `mode => 'auto'` dla lookbooka (klik w blok otwiera formularz zamiast ołówka) —
       wymaga per-blokowego nadpisania `mode` w pętli rejestracji w `app/blocks.php`
