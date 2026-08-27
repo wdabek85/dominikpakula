@@ -1721,8 +1721,44 @@ w układzie split, wszystkie bez klas `lg:order-*` = duże zdjęcie po lewej, cz
 
 **Staging ma osobną bazę — tam choice `grid-5-right` NIE został dodany.**
 
+### Poprawka 2026-08-27 (trzecia tura) — nowy layout `grid-6`
+
+Mozaika 6 zdjęć z referencji (screenshot od usera): 2 kolumny płynące **niezależnie**,
+duże kadry po przekątnej. Wiersze celowo NIE są wyrównane.
+
+```
+LEWA           PRAWA
+┌─────────┐    ┌───┐ ┌───┐
+│    1    │    │ 4 │ │ 5 │
+│  (duże) │    └───┘ └───┘
+│         │    ┌─────────┐
+└─────────┘    │    6    │
+┌───┐ ┌───┐    │  (duże) │
+│ 2 │ │ 3 │    │         │
+└───┘ └───┘    └─────────┘
+```
+
+- Duże: `aspect-[2/3]` (wyższe niż `4/5` w split). Małe: `aspect-[3/4]`.
+- Kolejność w repeaterze **kolumnami**: 1-3 lewa kolumna, 4-6 prawa (decyzja usera).
+- Nowy partial `blocks/partials/lookbook-grid-6.blade.php` — blok się nie rozrasta.
+- Gałąź w `lookbook-section` wymaga **min. 6 zdjęć**, inaczej spada na `grid-3`
+  (analogicznie do `split` przy < 2) — niedokończony blok się nie rozjeżdża.
+- `lookbook-skeleton` dostał wariant `grid-6` dla podglądu pustego bloku.
+- Mobile: jedna kolumna, kolejność duże → para → para → duże.
+- Wariant odbity `grid-6-right` **świadomie pominięty** — user zdecydował „na razie tylko grid-6".
+
+Deploy: `develop` e966cfa → `staging` ea5caa8 → `main` 40f0b52, pull + `npm run build`
+(nowa klasa `aspect-[2/3]`, więc build KONIECZNY) + `acorn view:clear` + `cache flush`.
+Nowe assety: `editor-CsJw_yUA.css`, `app-CQyTf_cj.css`.
+
+Choice `grid-6` dopisany do pola ACF przez WP-CLI na prodzie. Pełna lista wartości
+`lookbook_layout`: `grid-3`, `grid-4`, `grid-5`, `grid-5-right`, `grid-6`.
+
+Zweryfikowane: `/` i wpis z lookbookami → 200, `aspect-[2/3]` obecne w żywym `editor.css`.
+
 ### Do zrobienia
-- [ ] W razie potrzeby dodać choice `grid-5-right` także w ACF na stagingu
+- [ ] Wstawić grid-6 na realnym wpisie i sprawdzić proporcje kadrów (2/3 i 3/4 są do strojenia)
+- [ ] W razie potrzeby dodać choice `grid-5-right` i `grid-6` także w ACF na stagingu
 - [ ] Sprawdzić w edytorze prod: placeholder pustego bloku + przełączenie lookbooka na `grid-5-right`
 - [ ] Rozważyć `mode => 'auto'` dla lookbooka (klik w blok otwiera formularz zamiast ołówka) —
       wymaga per-blokowego nadpisania `mode` w pętli rejestracji w `app/blocks.php`
