@@ -42,7 +42,7 @@ class LookbookSectionBlockComposer extends Composer
         ];
         $layout = $aliases[$rawLayout] ?? $rawLayout;
 
-        if (! in_array($layout, ['grid-3', 'grid-4', 'split'], true)) {
+        if (! in_array($layout, ['grid-3', 'grid-4', 'grid-6', 'split'], true)) {
             $layout = 'grid-3';
         }
 
