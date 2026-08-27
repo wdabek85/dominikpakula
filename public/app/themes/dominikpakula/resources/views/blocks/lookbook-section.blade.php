@@ -59,6 +59,10 @@
           </div>
         </div>
 
+      @elseif ($layout === 'grid-6' && count($items) >= 6)
+        {{-- GRID 6: mozaika 2 kolumny, duze kadry po przekatnej --}}
+        @include('blocks.partials.lookbook-grid-6', ['items' => $items])
+
       @elseif ($layout === 'grid-4')
         {{-- GRID 4 kolumny --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
