@@ -1738,7 +1738,7 @@ LEWA           PRAWA
 └───┘ └───┘    └─────────┘
 ```
 
-- Duże: `aspect-square`. Małe: `aspect-[3/4]`. **Nie podnosić bez przeliczenia** — patrz niżej.
+- Duże: `aspect-[2/3]`. Małe: `aspect-[3/4]` — wszystkie kadry prostokątne. Patrz niżej.
 - Kolejność w repeaterze **kolumnami**: 1-3 lewa kolumna, 4-6 prawa (decyzja usera).
 - Nowy partial `blocks/partials/lookbook-grid-6.blade.php` — blok się nie rozrasta.
 - Gałąź w `lookbook-section` wymaga **min. 6 zdjęć**, inaczej spada na `grid-3`
@@ -1848,8 +1848,28 @@ Deploy: `develop` 3a08ee9 → `staging` a7d18e2 → `main` ce0bdac na obu serwer
 **Hash CSS bez zmian** (`app-DwaNfIAT.css`) — obie klasy były już w bundlu, zmieniło się
 tylko który szablon której używa. To nie jest oznaka nieudanego builda.
 
+#### Finał strojenia (2026-08-27) — powrót do prostokątów, świadomie
+
+User obejrzał obie niższe wersje i zdecydował: **wracamy do pierwotnych proporcji**,
+wszystkie kadry prostokątne, żadnych kwadratów — mimo że mozaika nie mieści się w jednym ekranie.
+
+| | 1. wersja | korekta 1 | korekta 2 | **finalnie** |
+|---|---|---|---|---|
+| Duże | `aspect-[2/3]` 669px | `aspect-[4/5]` 558px | `aspect-square` 446px | **`aspect-[2/3]` 669px** |
+| Małe | `aspect-[3/4]` 284px | `aspect-square` 213px | `aspect-[3/4]` 284px | **`aspect-[3/4]` 284px** |
+| Kolumna | 973px | 790px | 750px | **973px** |
+
+**To NIE jest przeoczenie.** Kolumna 973px > ~870px widocznej wysokości okna MacBooka 14",
+czyli mozaikę trzeba przewinąć — user zna tę konsekwencję i ją akceptuje. Komentarz
+w `lookbook-grid-6.blade.php` mówi to samo, żeby nikt tego nie „naprawił" przy okazji.
+
+Gdyby kiedyś jednak wrócić do niższej wersji przy zachowaniu prostokątów: duże `aspect-[4/5]`
++ małe `aspect-[3/4]` = 862px (zapas ~8px, na styk).
+
+Deploy: `develop` 753ba77 → `staging` df2b509 → `main` d1fb7b6 na obu serwerach (`app-BW0Qa6KB.css`).
+
 ### Do zrobienia
-- [ ] Wstawić grid-6 na realnym wpisie i ocenić kadry (duże kwadratowe = ryzyko przycięcia sylwetki)
+- [ ] Wstawić grid-6 na realnym wpisie i ocenić kadry na żywych zdjęciach
 - [ ] Wstawić `blog-soft-cta` na końcu wpisu i ocenić, czy jest wystarczająco delikatny
 - [ ] Sprawdzić w edytorze prod: placeholder pustego bloku + przełączenie lookbooka na `grid-5-right`
 - [ ] Rozważyć `mode => 'auto'` dla lookbooka (klik w blok otwiera formularz zamiast ołówka) —
