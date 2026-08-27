@@ -1914,8 +1914,33 @@ sitemap i zawiera 4 marki.
 > ze stagingu trzeba je odtworzyć (analogicznie do `pt_*_sitemap` z 2026-07-07).
 > Staging ma osobną bazę i tych terminów NIE ma.
 
+### Opisy SEO archiwów marek (2026-08-28) — ZROBIONE
+
+Archiwa tagów nie miały **żadnego** `<meta name="description">` — bo opisy terminów były puste,
+a Rank Math ma dla nich szablon `tax_post_tag_description = "%term_description%"`.
+
+Dlatego uzupełniony został **opis terminu** (jedno źródło prawdy), a nie osobne `rank_math_description`:
+Rank Math ciągnie go automatycznie do `description` i `og:description`. Treści oparte na tym,
+co Dominik faktycznie napisał o każdej marce we wpisie, nie na generycznych formułkach.
+
+| Tag | Długość | Opis |
+|---|---|---|
+| Zara (12) | 150 zn. | workwearowa linia z Aaronem Levine + bazowe rzeczy na jesień |
+| Massimo Dutti (13) | 154 zn. | spodnie w dobrych proporcjach, marka dla wysokich i szczupłych |
+| COS (14) | 145 zn. | minimalizm, klasyka, krój regular |
+| Arket (15) | 136 zn. | skromniejsza, ale solidna oferta: wełna, kaszmir, bawełna |
+
+Wszystkie w przedziale 136–154 znaków (mieszczą się w snippecie Google). Zapis przez
+`wp_update_term` + `wp_slash`, przesłane base64 żeby polskie znaki nie zginęły w quotingu SSH.
+Zweryfikowane w bazie (0 backslashy, poprawne UTF-8) i na żywym HTML — `description`
+oraz `og:description` obecne na wszystkich czterech archiwach.
+
+> **Uwaga:** `index.blade.php` renderuje na archiwum wyłącznie `<h1>` (patrz `partials/page-header`),
+> więc opis terminu **nie pojawia się na stronie** — działa tylko jako SEO. Gdyby miał być widoczny
+> dla czytelnika, to zmiana w szablonie archiwum.
+
 ### Do rozważenia przy kolejnych wpisach z cyklu
 - Kategoria `Garderoba` dla Loafersów i „6 elementów" — dziś zostały w `Moda` świadomie
-- Dedykowany szablon archiwum kategorii (teraz fallback na `index.blade.php`)
-- Opisy SEO dla archiwów tagów marek, skoro są indeksowane
+- Dedykowany szablon archiwum kategorii/tagu (teraz fallback na `index.blade.php`, sam `<h1>`)
+- Opis SEO dla kategorii `Przeglądy sieciówek` ma już treść z `term description`; sezon `Jesień` — nie ma
 
