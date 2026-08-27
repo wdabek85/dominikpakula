@@ -343,11 +343,12 @@ resources/images/
 | primary_navigation | app/setup.php | Zarejestrowana (na wypadek standardowego nav, ale faktycznie używamy mega-menu z CPT) |
 | footer_navigation | app/setup.php | Wyświetlana w stopce (kolumna "Nawigacja"); dynamiczna z `Wygląd → Menu` |
 
-## Komponenty Blade (12)
+## Komponenty Blade (13)
 | Komponent | Plik | Opis |
 |-----------|------|------|
 | Alert | components/alert.blade.php | Komponent alertu |
 | Badge | components/badge.blade.php | Reużywalny badge z border |
+| Block Placeholder | components/block-placeholder.blade.php | Podgląd pustego bloku w edytorze (tytuł + hint + slot na szkielet layoutu). Tylko edytor, nigdy front. |
 | Blog Card | components/blog-card.blade.php | + propsy: category, authorAvatar, authorRole, withShadow, hover zoom obrazu |
 | Button | components/button.blade.php | Primary/secondary, lg/sm, z ikoną |
 | Eyebrow | components/eyebrow.blade.php | Mały label nad tytułami |
@@ -1641,3 +1642,48 @@ Przy okazji: `data-newsletter` dostało wartości (`blok-newsletter`, `blog-wpis
 - [ ] Zmienne dataLayer w GTM dla `pageType`, `postCategory`, `service`, `placement` (Data Layer Variable)
 - [ ] Sprawdzić Tag Assistantem: snippet w `<head>`, `<noscript>` zaraz po `<body>`, zdarzenia lecą po sukcesie formularza
 - [ ] Po uruchomieniu analityki polityka prywatności przestaje kłamać w § 5 lit. c/d, § 8, § 9 — zweryfikować czy zapisy zgadzają się ze stanem faktycznym (Cookiebot tak, Google Ads na razie nie)
+
+## Sesja 2026-08-27 — lookbook: podgląd pustego bloku w edytorze + wybór strony dużego zdjęcia
+
+### Problem
+Blok `lookbook-section` przy pustych polach nie renderował nic (bloki mają `mode => 'preview'`),
+więc w edytorze był pustym obszarem — do formularza dało się dostać dopiero ołówkiem na pasku bloku.
+Dodatkowo layout `split` miał duże zdjęcie zabetonowane po lewej.
+
+### Zrobione
+- **Nowy komponent `components/block-placeholder.blade.php`** — kafelek z przerywaną ramką: nazwa bloku,
+  podpowiedź i opcjonalny slot na szkielet layoutu. Reużywalny, do wykorzystania w kolejnych blokach.
+- **Nowy partial `blocks/partials/lookbook-skeleton.blade.php`** — szare prostokąty odwzorowujące
+  ten sam grid co realny render (`grid-3` / `grid-4` / `split`), z uwzględnieniem strony dużego zdjęcia.
+- **`app/blocks.php`** — `render_callback` przyjmuje teraz `$isPreview` (ACF podaje flagę TRZECIM ARGUMENTEM,
+  nie w tablicy `$block`) i normalizuje ją do `$block['preview']`. Zmiana globalna dla wszystkich bloków —
+  każdy widok/composer ma odtąd jedno miejsce na sprawdzenie „czy renderuję w edytorze".
+- **`LookbookSectionBlockComposer`** — nowe klucze `isEmpty`, `isPreview`, `featuredFirst`;
+  wyliczanie layoutu wyniesione do `layout()`.
+- **`blocks/lookbook-section.blade.php`** — gałąź pustego bloku (placeholder tylko w edytorze, front bez zmian)
+  + `lg:order-1` / `lg:order-2` na kolumnach layoutu `split`. Na mobile duże zdjęcie zawsze pierwsze.
+
+### Pole ACF do utworzenia ręcznie w panelu
+| Nazwa pola | Typ | Wartości | Default | Warunek |
+|---|---|---|---|---|
+| `lookbook_featured_position` | Button Group | `left : Po lewej`, `right : Po prawej` | `left` | pokaż gdy `lookbook_layout` = `split` (lub `grid-5`) |
+
+Composer traktuje wszystko poza jawnym `right` jako lewą stronę, więc **brak pola nie psuje istniejących wpisów**.
+
+### Weryfikacja
+- `php -l` czysty na `app/blocks.php` i `LookbookSectionBlockComposer.php` (PHP 8.5 z Local).
+- Wszystkie 3 szablony Blade skompilowane przez `BladeCompiler::compileString()` + `php -l` na wyjściu — bez błędów.
+- `npm run build` przechodzi; sprawdzone, że `editor.css` zawiera użyte utilities
+  (`aspect-[4/5]`, `lg:order-1/2`, `min-h-[64px]`, `border-dashed`, `bg-black/[0.02]`, `text-black/70`).
+- **Uwaga:** `editor.css` kompiluje własny Tailwind BEZ tokenów z `@theme` (są tylko w `app.css`),
+  więc `font-poppins` i `not-prose` w edytorze NIE istnieją. Placeholder używa gołych utilities,
+  a tekst siedzi w `span` (nie `p`), bo `.editor-styles-wrapper p` nadpisałoby rozmiary.
+- Cache skompilowanych widoków wyczyszczony (`app/public/app/cache/acorn/framework/views`).
+- **Local nie był uruchomiony** — render w edytorze do sprawdzenia po starcie strony.
+
+### Do zrobienia
+- [ ] Założyć pole `lookbook_featured_position` w panelu i sprawdzić podgląd w edytorze
+- [ ] Rozważyć `mode => 'auto'` dla lookbooka (klik w blok otwiera formularz zamiast ołówka) —
+      wymaga per-blokowego nadpisania `mode` w pętli rejestracji w `app/blocks.php`
+- [ ] Placeholder w pozostałych blokach (komponent jest już gotowy)
+

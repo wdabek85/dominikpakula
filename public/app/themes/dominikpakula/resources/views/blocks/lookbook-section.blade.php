@@ -1,3 +1,20 @@
+@if ($isEmpty)
+
+  {{-- Pusty blok: w edytorze pokazujemy szkielet wybranego layoutu, na froncie nic. --}}
+  @if ($isPreview)
+    <x-block-placeholder
+      title="Lookbook — sekcja produktowa"
+      hint="Pusto — uzupełnij tytuł, opis i zdjęcia w panelu po prawej (albo ołówek na pasku bloku)."
+    >
+      @include('blocks.partials.lookbook-skeleton', [
+        'layout' => $layout,
+        'featuredFirst' => $featuredFirst,
+      ])
+    </x-block-placeholder>
+  @endif
+
+@else
+
 <section class="not-prose py-10 lg:py-14">
 
   {{-- Header sekcji: tytuł + kreska + opis (wycentrowane) --}}
@@ -22,18 +39,20 @@
     <div data-lightbox-gallery>
 
       @if ($layout === 'split' && count($items) >= 2)
-        {{-- SPLIT: pierwszy item duży po lewej, reszta w grid 2x2 po prawej (matched heights) --}}
+        {{-- SPLIT: pierwszy item duży, reszta w grid 2x2 obok (matched heights).
+             Strona dużego zdjęcia sterowana polem `lookbook_featured_position`.
+             Na mobile duże zdjęcie zawsze pierwsze — kolejność zmienia się od lg. --}}
         @php
           $featured = $items[0];
           $rest = array_slice($items, 1, 4);
         @endphp
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
-          {{-- Lewa: featured (model) z aspect-[4/5] --}}
-          <div>
+          {{-- Featured (model) z aspect-[4/5] --}}
+          <div class="{{ $featuredFirst ? '' : 'lg:order-2' }}">
             @include('blocks.partials.lookbook-item', ['item' => $featured, 'aspect' => 'aspect-[4/5]'])
           </div>
-          {{-- Prawa: ten sam aspect-[4/5] na containerze => identyczna wysokość; wewnątrz 2x2 grid stretched --}}
-          <div class="lg:aspect-[4/5] grid grid-cols-2 grid-rows-2 gap-4 lg:gap-5">
+          {{-- Ten sam aspect-[4/5] na containerze => identyczna wysokość; wewnątrz 2x2 grid stretched --}}
+          <div class="lg:aspect-[4/5] grid grid-cols-2 grid-rows-2 gap-4 lg:gap-5 {{ $featuredFirst ? '' : 'lg:order-1' }}">
             @foreach ($rest as $item)
               @include('blocks.partials.lookbook-item', ['item' => $item, 'aspect' => null, 'fillHeight' => true])
             @endforeach
@@ -61,3 +80,5 @@
   @endif
 
 </section>
+
+@endif
