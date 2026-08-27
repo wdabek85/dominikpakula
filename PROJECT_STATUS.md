@@ -1681,8 +1681,19 @@ Composer traktuje wszystko poza jawnym `right` jako lewą stronę, więc **brak 
 - Cache skompilowanych widoków wyczyszczony (`app/public/app/cache/acorn/framework/views`).
 - **Local nie był uruchomiony** — render w edytorze do sprawdzenia po starcie strony.
 
+### Deploy na produkcję (2026-08-27) — ZROBIONE
+`develop` 504699a → `staging` 35faec2 → `main` ea9ab81, push origin, na serwerze `git pull`
++ `npm run build` (Node 20.20.0, nowe hashe: `editor-DiVlTR1T.css`, `app-MjUv3vzt.css`)
++ `wp acorn view:clear` + `wp cache flush`.
+
+Zweryfikowane na żywej produkcji: `/`, `/blog/`, `/uslugi/` → 200; w `editor-DiVlTR1T.css`
+obecne `lg:order-1`, `lg:order-2`, `border-dashed`, `aspect-[4/5]`, `bg-black/[0.02]`, `grid-rows-2`.
+
+Deploy **nie** obejmuje pola ACF — `lookbook_featured_position` trzeba założyć ręcznie w panelu prod,
+inaczej przełącznika lewo/prawo nie widać (kod leci wtedy na default = lewa, czyli bez zmian).
+
 ### Do zrobienia
-- [ ] Założyć pole `lookbook_featured_position` w panelu i sprawdzić podgląd w edytorze
+- [ ] Założyć pole `lookbook_featured_position` w panelu prod i sprawdzić podgląd w edytorze
 - [ ] Rozważyć `mode => 'auto'` dla lookbooka (klik w blok otwiera formularz zamiast ołówka) —
       wymaga per-blokowego nadpisania `mode` w pętli rejestracji w `app/blocks.php`
 - [ ] Placeholder w pozostałych blokach (komponent jest już gotowy)
