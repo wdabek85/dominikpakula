@@ -1692,8 +1692,38 @@ obecne `lg:order-1`, `lg:order-2`, `border-dashed`, `aspect-[4/5]`, `bg-black/[0
 Deploy **nie** obejmuje pola ACF — `lookbook_featured_position` trzeba założyć ręcznie w panelu prod,
 inaczej przełącznika lewo/prawo nie widać (kod leci wtedy na default = lewa, czyli bez zmian).
 
+### Poprawka 2026-08-27 (druga tura) — `grid-5-right` zamiast osobnego pola
+
+Osobne pole `lookbook_featured_position` wymagało ręcznego założenia w panelu, więc w praktyce
+przełącznika nie było widać. Zamiast tego **druga opcja w istniejącym dropdownie `lookbook_layout`**:
+
+| Wartość | Znaczenie |
+|---|---|
+| `grid-3` | siatka 3 kolumny |
+| `grid-4` | siatka 4 kolumny |
+| `grid-5` | 1 duże + 2x2, duże zdjęcie po **lewej** |
+| `grid-5-right` | 1 duże + 2x2, duże zdjęcie po **prawej** |
+
+Composer: `layout()` mapuje `grid-5` ORAZ `grid-5-right` na `split`; `featuredFirst()` zwraca false
+tylko dla `grid-5-right`. Opcjonalne pole `lookbook_featured_position` jest dalej honorowane,
+gdyby kiedyś powstało — ale nie istnieje i nic nie robi.
+
+**Pole ACF zmienione przez WP-CLI na produkcji** (`acf_update_field` na `field_69f1b8a14e1e8`,
+grupa „LookBook" `group_69f1b8816b165`, post 277): dodany choice `grid-5-right` + czytelne etykiety
+dla pozostałych. Wartości `grid-3`/`grid-4`/`grid-5` bez zmian, więc istniejące wpisy nietknięte.
+Zapis zweryfikowany w świeżym procesie wp-cli (deserializuje się, polskie znaki całe).
+
+Deploy: `develop` e4b5d9b → `staging` f855722 → `main` 98aaf51, pull + `acorn view:clear` + `cache flush`
+(bez `npm run build` — zmiana czysto PHP, zero nowych klas Tailwind).
+
+Zweryfikowane na żywej produkcji: wpis „Przegląd nowości z sieciówek – jesień #1" ma 4 lookbooki
+w układzie split, wszystkie bez klas `lg:order-*` = duże zdjęcie po lewej, czyli jak przed zmianą.
+
+**Staging ma osobną bazę — tam choice `grid-5-right` NIE został dodany.**
+
 ### Do zrobienia
-- [ ] Założyć pole `lookbook_featured_position` w panelu prod i sprawdzić podgląd w edytorze
+- [ ] W razie potrzeby dodać choice `grid-5-right` także w ACF na stagingu
+- [ ] Sprawdzić w edytorze prod: placeholder pustego bloku + przełączenie lookbooka na `grid-5-right`
 - [ ] Rozważyć `mode => 'auto'` dla lookbooka (klik w blok otwiera formularz zamiast ołówka) —
       wymaga per-blokowego nadpisania `mode` w pętli rejestracji w `app/blocks.php`
 - [ ] Placeholder w pozostałych blokach (komponent jest już gotowy)
