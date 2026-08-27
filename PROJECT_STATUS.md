@@ -1756,9 +1756,23 @@ Choice `grid-6` dopisany do pola ACF przez WP-CLI na prodzie. Pełna lista warto
 
 Zweryfikowane: `/` i wpis z lookbookami → 200, `aspect-[2/3]` obecne w żywym `editor.css`.
 
+### Staging dociągnięty (2026-08-27) — ZROBIONE
+
+Staging stał na `50641e6` (sprzed GTM), **18 commitów w tyle**. Pull + `npm run build`
+(Node 20.20.0, hashe identyczne z prodem: `editor-CsJw_yUA.css`, `app-CQyTf_cj.css`)
++ `acorn view:clear` + `cache flush`. HEAD: `9c431eb`.
+
+Choices `grid-5-right` i `grid-6` dopisane do `field_69f1b8a14e1e8` (ten sam klucz co na prodzie,
+bo baza prod powstała z importu stagingu). Zweryfikowane w świeżym procesie wp-cli.
+Smoke test: `/` i `/blog/` → 200, `aspect-[2/3]` w żywym `editor.css`.
+
+**⚠️ Serwer stagingowy ma LOKALNE, niezacommitowane zmiany** w `composer.json`, `composer.lock`
+i `package-lock.json` — z `composer.json` usunięty jest `wpengine/advanced-custom-fields-pro`
+(stary workaround na limit aktywacji ACF). Pull ich nie dotknął i **nie wolno ich zresetować**,
+bo `composer install` zacznie się wykrackać na 402 activation_limit.
+
 ### Do zrobienia
 - [ ] Wstawić grid-6 na realnym wpisie i sprawdzić proporcje kadrów (2/3 i 3/4 są do strojenia)
-- [ ] W razie potrzeby dodać choice `grid-5-right` i `grid-6` także w ACF na stagingu
 - [ ] Sprawdzić w edytorze prod: placeholder pustego bloku + przełączenie lookbooka na `grid-5-right`
 - [ ] Rozważyć `mode => 'auto'` dla lookbooka (klik w blok otwiera formularz zamiast ołówka) —
       wymaga per-blokowego nadpisania `mode` w pętli rejestracji w `app/blocks.php`
