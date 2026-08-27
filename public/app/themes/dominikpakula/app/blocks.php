@@ -410,6 +410,14 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.blog-callout',
         ],
         [
+            'name' => 'blog-soft-cta',
+            'title' => 'Delikatne CTA (zaczep w treści)',
+            'description' => 'Cichy zaczep w toku czytania: kreska, wyśrodkowany tekst serif i dyskretny link ze strzałką. Lżejszy od calloutu — bez tła, ramki i ikony.',
+            'icon' => 'external',
+            'group' => 'article',
+            'render_template' => 'blocks.blog-soft-cta',
+        ],
+        [
             'name' => 'blog-personal-quote',
             'title' => 'Cytat osobisty (Dominik z foto)',
             'description' => 'Cytat od Dominika z jego foto i rolą — buduje personal brand wewnątrz artykułu.',
