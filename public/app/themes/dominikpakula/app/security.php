@@ -371,3 +371,49 @@ add_action('dp_admin_audit', function () {
 
     update_option('dp_known_admins', $currentIds, false);
 });
+
+/*
+|--------------------------------------------------------------------------
+| Hardening po incydencie 2026-08-26 / 2026-09-02 (REST /batch/v1)
+|--------------------------------------------------------------------------
+| Wektor ustalony z logów: POST /?rest_route=/batch/v1 zwracał 207 BEZ autoryzacji
+| i pozwalał napastnikowi działać w kontekście konta administratora (ID 22) —
+| artefakty `customize_changeset` z `"user_id":22` w bazie. Limiter prób logowania
+| tego nie łapie: batch pakuje wiele pod-żądań w jedno żądanie HTTP.
+|
+| /batch/v1 to endpoint używany wyłącznie przez edytor bloków dla zalogowanych
+| redaktorów. Front-end serwisu go nie potrzebuje, więc dla anonimowych znika
+| całkowicie, a dla zalogowanych wymaga uprawnień edycji treści.
+*/
+add_filter('rest_endpoints', function (array $endpoints): array {
+    if (! is_user_logged_in() || ! current_user_can('edit_posts')) {
+        unset($endpoints['/batch/v1']);
+    }
+
+    return $endpoints;
+}, 20);
+
+/**
+ * Druga warstwa: nawet gdyby trasa została zarejestrowana inną drogą, odetnij
+ * żądanie przed dispatchem. rest_pre_dispatch widzi realną trasę niezależnie od
+ * tego, czy przyszła jako ?rest_route=, czy jako /wp-json/batch/v1.
+ */
+add_filter('rest_pre_dispatch', function ($result, $server, $request) {
+    if ($result !== null) {
+        return $result;
+    }
+
+    if (strpos((string) $request->get_route(), '/batch/v1') !== 0) {
+        return $result;
+    }
+
+    if (is_user_logged_in() && current_user_can('edit_posts')) {
+        return $result;
+    }
+
+    return new \WP_Error(
+        'dp_batch_disabled',
+        __('Ten endpoint jest niedostępny.', 'sage'),
+        ['status' => 401]
+    );
+}, 10, 3);
