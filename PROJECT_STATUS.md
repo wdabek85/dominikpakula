@@ -2096,3 +2096,10 @@ Stara treść Krakowa była w 40% kopią `/uslugi/zakupy-ze-stylista/` (te same 
 
 ### Kopia produkcji przed wdrożeniem audytu (28.09 15:44)
 Serwer: `~/meskistylista.pl/app/sql/backup/prod-before-audyt-20260928.sql` (+ `-uploads.tar.gz` 52 MB, `-commit.txt` = `98c4136`). Kopia bazy także lokalnie w `app/sql/backup/`.
+
+### ✅ PRODUKCJA 28.09.2026 (~15:50) — audyt + 4 miasta wdrożone
+- `main` = `fba7be4`, build OK; migracje: audyt → warszawa → wroclaw → krakow → kielce → audyt (kolejność Warszawy)
+- produkcja: 0 grup ACF w bazie, 39 plików acf-json; 22 strony 200 bez błędów, stary slug Krakowa 301
+- sitemapa Rank Math była w cache (stary `…-krakow-2`, brak nowych miast) — wyczyszczona `\RankMath\Sitemap\Cache::invalidate_storage()`; teraz 9 usług
+- kopia sprzed wdrożenia: `~/meskistylista.pl/app/sql/backup/prod-before-audyt-20260928.*` (+ baza lokalnie)
+- Otwarte: zdjęcie Kielc; tekst bloku Newsletter; frazy Rank Math „Przegląd szafy + zakupy” (kanibalizacja z przegląd szafy / zakupy ze stylistą)
