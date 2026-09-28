@@ -1,13 +1,11 @@
 {{-- Subscribe — 2 karty: Newsletter + Instagram (Instagram ma gradient blob) --}}
-<section class="mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16">
+<x-section>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
     {{-- Card A: Newsletter --}}
     <div class="flex flex-col gap-5 bg-[#f1f1f1] p-6 lg:p-10 rounded-sm" data-newsletter="blog-wpis">
-      <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">Newsletter</span>
-      <h2 class="font-poppins text-[30px] lg:text-4xl leading-tight text-black">
-        Nie przegap kolejnego wpisu
-      </h2>
+      <x-eyebrow label="Newsletter" />
+      <x-heading>Nie przegap kolejnego wpisu</x-heading>
       <p class="font-poppins text-base text-black/80 leading-relaxed">
         Raz w miesiącu wysyłam maila z nowymi poradami o stylu i odpowiedziami na najczęstsze pytania. Bez spamu, bez kiczu.
       </p>
@@ -67,10 +65,8 @@
       ></div>
 
       <div class="relative z-10 flex flex-col gap-5">
-        <span class="font-metro text-xs uppercase tracking-[3px] text-white/60">Instagram</span>
-        <h2 class="font-poppins text-[30px] lg:text-4xl leading-tight">
-          Codzienne inspiracje stylowe
-        </h2>
+        <x-eyebrow label="Instagram" color="text-white" />
+        <x-heading tone="light">Codzienne inspiracje stylowe</x-heading>
         <p class="font-poppins text-base text-white/85 leading-relaxed">
           Pokazuję stylizacje na różne okazje, kawałki z mojej szafy, pytania od klientów i kulisy pracy ze stylistą. Krótkie, konkretne, codziennie.
         </p>
@@ -82,11 +78,11 @@
           class="group inline-flex items-center gap-2 bg-white text-black font-poppins font-medium text-sm py-3 px-5 rounded-sm w-fit hover:bg-white/90 transition-colors mt-2"
         >
           <x-icons.instagram class="size-5" />
-          <span>Śledź @{{ $social['instagram_handle'] }}</span>
+          <span>Śledź {{ '@' . $social['instagram_handle'] }}</span>
           <x-icons.arrow-right class="size-4 transition-transform group-hover:translate-x-1" />
         </a>
       </div>
     </div>
 
   </div>
-</section>
+</x-section>

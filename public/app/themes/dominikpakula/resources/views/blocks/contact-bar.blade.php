@@ -6,7 +6,7 @@
   $addressLine2 = $contact['address_line2'] ?? '';
 @endphp
 
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-6 lg:py-8">
+<x-section spacing="tight">
   <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-12 text-[#19121e]">
 
     {{-- Lewa: adres --}}
@@ -41,4 +41,4 @@
     </div>
 
   </div>
-</section>
+</x-section>

@@ -57,15 +57,13 @@
   };
 @endphp
 
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+<x-section>
 
   {{-- Nagłówek sekcji --}}
   @if ($channelsHeading || $channelsSubtitle)
     <div class="flex flex-col gap-3 mb-8 lg:mb-10 text-center max-w-[640px] mx-auto">
       @if ($channelsHeading)
-        <h2 class="font-poppins font-semibold text-2xl lg:text-3xl leading-tight text-[#19121e]">
-          {{ $channelsHeading }}
-        </h2>
+        <x-heading>{{ $channelsHeading }}</x-heading>
       @endif
       @if ($channelsSubtitle)
         <p class="font-poppins text-base text-[#19121e]/70 leading-relaxed">
@@ -121,4 +119,4 @@
     </div>
   @endif
 
-</section>
+</x-section>

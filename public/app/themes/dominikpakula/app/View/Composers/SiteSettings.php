@@ -30,7 +30,26 @@ class SiteSettings extends Composer
         return [
             'contact' => $this->contact(),
             'social' => $this->social(),
+            'serviceTexts' => $this->serviceTexts(),
         ];
+    }
+
+    /**
+     * Stałe teksty na stronach usług (zakładka „Teksty na stronach usług”).
+     */
+    protected function serviceTexts(): array
+    {
+        $defaults = [
+            'guarantee' => ['service_guarantee_text', '30-dniowa gwarancja zwrotu pieniędzy'],
+            'booking' => ['service_booking_label', 'Zarezerwuj rozmowę'],
+            'price_note' => ['service_price_note', 'Rozmowa jest bezpłatna. Podana cena to koszt usługi — płacisz dopiero, gdy po konsultacji zdecydujesz się na współpracę.'],
+            'gift_title' => ['gift_banner_title', 'Pomysł na prezent (voucher)'],
+            'gift_text' => ['gift_banner_text', 'To bardzo dobry prezent "z efektem", bo realnie zmienia codzienność: mniej chaosu, więcej pewności, szybsze poranki.'],
+            'about_heading' => ['about_cta_heading', 'Zanim zaczniemy poznaj mnie'],
+            'about_button' => ['about_cta_button', 'Poznaj mnie'],
+        ];
+
+        return array_map(fn (array $d) => $this->option($d[0]) ?: $d[1], $defaults);
     }
 
     protected function contact(): array

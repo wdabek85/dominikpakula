@@ -1,16 +1,14 @@
 @if (! empty($items))
-  <section class="py-10 lg:py-14">
+  <section>
 
     {{-- Nagłówek --}}
     @if ($eyebrow || $heading)
-      <div class="flex flex-col gap-3 mb-8 lg:mb-10">
+      <div class="flex flex-col gap-6 lg:gap-8 mb-6 lg:mb-8">
         @if ($eyebrow)
-          <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">{{ $eyebrow }}</span>
+          <x-badge :label="$eyebrow" class="self-start" />
         @endif
         @if ($heading)
-          <h2 class="font-poppins font-medium text-[30px] lg:text-4xl leading-tight text-[#19121e]">
-            {{ $heading }}
-          </h2>
+          <x-heading variant="column">{{ $heading }}</x-heading>
         @endif
       </div>
     @endif

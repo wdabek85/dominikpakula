@@ -294,6 +294,171 @@
             "default_value": "",
             "allow_in_bindings": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_settings_tab_service",
+            "label": "Teksty na stronach usług",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_service_guarantee_text",
+            "label": "Gwarancja (box z ceną)",
+            "name": "service_guarantee_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "30-dniowa gwarancja zwrotu pieniędzy",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_service_booking_label",
+            "label": "Przycisk rezerwacji (box z ceną, pasek mobile)",
+            "name": "service_booking_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Zarezerwuj rozmowę",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_service_price_note",
+            "label": "Dopisek pod ceną",
+            "name": "service_price_note",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 2,
+            "placeholder": "Rozmowa jest bezpłatna. Podana cena to koszt usługi — płacisz dopiero, gdy po konsultacji zdecydujesz się na współpracę.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_gift_banner_title",
+            "label": "Baner vouchera — tytuł",
+            "name": "gift_banner_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Pomysł na prezent (voucher)",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_gift_banner_text",
+            "label": "Baner vouchera — tekst",
+            "name": "gift_banner_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 2,
+            "placeholder": "To bardzo dobry prezent \"z efektem\", bo realnie zmienia codzienność: mniej chaosu, więcej pewności, szybsze poranki.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_about_cta_heading",
+            "label": "„Poznaj mnie” — nagłówek na zdjęciu",
+            "name": "about_cta_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Zanim zaczniemy poznaj mnie",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_about_cta_button",
+            "label": "„Poznaj mnie” — przycisk",
+            "name": "about_cta_button",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Poznaj mnie",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -314,5 +479,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1790000010
+    "modified": 1790000040
 }

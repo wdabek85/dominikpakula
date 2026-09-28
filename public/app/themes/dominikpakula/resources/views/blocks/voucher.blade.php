@@ -19,9 +19,7 @@
     <div class="order-2 flex-1 flex flex-col gap-8 py-8 lg:py-10 lg:max-w-[516px]">
       <div class="flex flex-col gap-4">
         @if ($title)
-          <h2 class="font-poppins text-4xl leading-[38px] text-black">
-            {{ $title }}
-          </h2>
+          <x-heading>{{ $title }}</x-heading>
         @endif
 
         @if ($description)

@@ -21,7 +21,7 @@
       </aside>
 
       {{-- Content: Gutenberg bloki (różne per usługę) --}}
-      <div class="mt-8 lg:mt-0 lg:col-start-1">
+      <div class="mt-12 lg:mt-10 lg:col-start-1 flex flex-col gap-12 lg:gap-16">
         @php(the_content())
       </div>
 
@@ -52,7 +52,7 @@
           class="booking-trigger bg-primary flex items-center gap-2 rounded-sm px-4 py-2.5 text-white font-poppins text-sm leading-none hover:opacity-90 transition-opacity shrink-0 cursor-pointer"
           data-service="{{ $sidebarTitle }}"
         >
-          <span>Zarezerwuj rozmowę</span>
+          <span>{{ $serviceTexts['booking'] }}</span>
           <x-icons.arrow-right class="size-4" />
         </button>
       </div>

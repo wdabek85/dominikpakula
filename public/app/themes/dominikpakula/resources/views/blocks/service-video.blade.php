@@ -1,6 +1,6 @@
 {{-- Blok "Opis Usługi / Video CTA" — zdjęcie + CTA otwierające modal "Poznaj mnie".
      Treść modala: Ustawienia → "Sekcja: Poznaj mnie". Modal globalny w layouts/app. --}}
-<div class="py-10 lg:py-14">
+<div>
   <section class="group relative h-[400px] lg:h-[420px] overflow-hidden rounded-sm">
     {{-- Tło (subtelny zoom na hover) --}}
     <img
@@ -16,7 +16,7 @@
     <div class="relative flex flex-col justify-end h-full px-5 lg:px-8 py-6">
       <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6">
         <h2 class="font-sans font-medium text-[26px] lg:text-[34px] text-white leading-tight max-w-[18ch] shrink">
-          Zanim zaczniemy poznaj mnie
+          {{ $serviceTexts['about_heading'] }}
         </h2>
 
         <button
@@ -25,7 +25,7 @@
           aria-haspopup="dialog"
           aria-controls="about-modal"
         >
-          <span>Poznaj mnie</span>
+          <span>{{ $serviceTexts['about_button'] }}</span>
           <x-icons.arrow-right class="size-4 transition-transform group-hover/btn:translate-x-1" />
         </button>
       </div>
