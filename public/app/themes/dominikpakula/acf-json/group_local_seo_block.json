@@ -45,6 +45,30 @@
             "append": ""
         },
         {
+            "key": "field_local_source",
+            "label": "Źródło kart",
+            "name": "local_source",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "„Podstrony tej usługi” = automatycznie wszystkie opublikowane podstrony (np. miasta), zdjęcie wyróżniające + tytuł, kolejność wg Atrybutów strony.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "children": "Podstrony tej usługi",
+                "manual": "Ręcznie"
+            },
+            "default_value": "manual",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal",
+            "allow_in_bindings": 0
+        },
+        {
             "key": "field_local_items",
             "label": "Karty / linki",
             "name": "local_items",
@@ -52,7 +76,15 @@
             "type": "repeater",
             "instructions": "Każda karta: zdjęcie + tytuł + link do podstrony (miasto, okazja itp.).",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_local_source",
+                        "operator": "==",
+                        "value": "manual"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -154,5 +186,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1780000000
+    "modified": 1790000022
 }

@@ -1,28 +1,20 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+<x-section>
 
   {{-- Nagłówek: etykieta + linia + heading --}}
   <div class="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-[87px] mb-6">
-    <div class="flex items-center gap-6 shrink-0">
-      @if ($label)
-        <span class="font-metro text-2xl leading-none text-[#19121e] tracking-[6px] whitespace-nowrap">
-          {{ $label }}
-        </span>
-      @endif
-      <div class="h-px bg-[#19121e] w-[180px] hidden lg:block"></div>
-      <div class="h-px bg-[#19121e] flex-1 lg:hidden"></div>
-    </div>
+    @if ($label)
+      <x-eyebrow :label="$label" variant="large" class="shrink-0" />
+    @endif
 
     @if ($title)
-      <h2 class="font-poppins text-[30px] leading-none text-[#19121e]">
-        {!! $title !!}
-      </h2>
+      <x-heading>{!! $title !!}</x-heading>
     @endif
   </div>
 
   {{-- Grid kart --}}
   @if ($cards)
     {{-- Tablet w pionie (md): 2 kolumny zamiast jednej --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 {{ $gridColumns }} gap-6 mb-6">
       @foreach ($cards as $card)
         <x-service-card
           :variant="$cardVariant"
@@ -52,4 +44,4 @@
     </div>
   @endif
 
-</section>
+</x-section>

@@ -1,5 +1,5 @@
 <header class="bg-white relative z-50">
-  <div class="mx-auto max-w-[1440px] flex items-center justify-between px-5 lg:px-20 py-2">
+  <div class="mx-auto max-w-[1440px] flex items-center justify-between px-4 lg:px-20 py-2">
 
     {{-- Logo --}}
     <a href="{{ home_url('/') }}" class="shrink-0" aria-label="{{ $siteName }} — Strona główna">

@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+<x-section>
 
   {{-- Pasek filtrów --}}
   @if (! empty($categories) || ! empty($seasons))
@@ -101,4 +101,4 @@
     </p>
   @endif
 
-</section>
+</x-section>

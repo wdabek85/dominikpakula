@@ -1,13 +1,10 @@
 @php
   $email = $contact['email'] ?? '';
-  $emailFallback = 'kontakt@meskistylista.pl';
   $phone = $contact['phone'] ?? '';
-  $phoneFallback = '+48 577 190 949';
   $phoneLink = $contact['phone_link'] ?? '';
-  $phoneLinkFallback = '+48577190949';
   $addressLine1 = $contact['address_line1'] ?? '';
   $addressLine2 = $contact['address_line2'] ?? '';
-  $instagramHandle = $social['instagram_handle'] ?? 'dpakula_stylist';
+  $instagramHandle = $social['instagram_handle'] ?? '';
 
   // Sztywne tory mieszczą się dopiero od xl (1280 px). Niżej: 1 → 2 → 3 kolumny.
   // Ostatni tor to minmax(0,_1fr), bo samo 1fr ma min-width:auto i nie pozwala kolumnie się zwęzić.
@@ -55,7 +52,7 @@
           <div class="flex items-start gap-2">
             <x-icons.location class="size-4 shrink-0 mt-0.5" />
             <div class="flex flex-col">
-              <span>{{ $addressLine1 ?: 'Kraków' }}</span>
+              <span>{{ $addressLine1 }}</span>
               @if ($addressLine2)
                 <span>{{ $addressLine2 }}</span>
               @endif
@@ -73,17 +70,17 @@
         <div class="flex flex-col gap-4 text-sm font-poppins">
           <div class="flex flex-col gap-2">
             <p class="font-semibold">Zadzwoń:</p>
-            <a href="tel:{{ $phoneLink ?: $phoneLinkFallback }}" class="flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="tel:{{ $phoneLink }}" class="flex items-center gap-2 hover:text-primary transition-colors">
               <x-icons.phone class="size-5 shrink-0" />
-              <span>{{ $phone ?: $phoneFallback }}</span>
+              <span>{{ $phone }}</span>
             </a>
           </div>
 
           <div class="flex flex-col gap-2">
             <p class="font-semibold">Napisz:</p>
-            <a href="mailto:{{ $email ?: $emailFallback }}" class="flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="mailto:{{ $email }}" class="flex items-center gap-2 hover:text-primary transition-colors">
               <x-icons.envelope class="size-5 shrink-0" />
-              <span>{{ $email ?: $emailFallback }}</span>
+              <span>{{ $email }}</span>
             </a>
           </div>
 

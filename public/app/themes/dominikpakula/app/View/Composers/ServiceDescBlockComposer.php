@@ -11,7 +11,6 @@ class ServiceDescBlockComposer extends Composer
     // w treści nie gubi tekstów wpisanych per usługa.
     protected static $views = [
         'blocks.service-desc',
-        'blocks.service-desc-cards',
     ];
 
     public function with(): array

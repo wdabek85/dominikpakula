@@ -61,7 +61,8 @@ function get_booking_services(): array
             'title' => get_the_title($post->ID),
             'slug' => $post->post_name,
             'url' => get_permalink($post->ID),
-            'excerpt' => wp_trim_words(get_the_excerpt($post->ID), 20, '...'),
+            // Krótki opis z „Karta usługi” (CPT nie ma zajawki WP)
+            'excerpt' => trim((string) \get_field('service_card_excerpt', $post->ID)),
             'price' => $price,
         ];
     }

@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16">
+<x-section>
   <div class="bg-[#f1f1f1] rounded-[12px] p-6 lg:p-12">
     <div class="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
 
@@ -30,9 +30,7 @@
         @endif
 
         @if ($introHeading)
-          <h2 class="font-poppins font-semibold text-2xl lg:text-[32px] leading-tight text-[#19121e]">
-            {{ $introHeading }}
-          </h2>
+          <x-heading>{{ $introHeading }}</x-heading>
         @endif
 
         @if ($introText)
@@ -52,4 +50,4 @@
 
     </div>
   </div>
-</section>
+</x-section>

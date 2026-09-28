@@ -90,12 +90,14 @@ class ServiceComposer extends Composer
     protected function relatedServices(): array
     {
         $currentId = get_the_ID();
+        // Na podstronie (np. miasto) pomijamy też usługę-rodzica — to ta sama usługa.
+        $exclude = array_filter([$currentId, $currentId ? wp_get_post_parent_id($currentId) : 0]);
 
         $posts = get_posts([
             'post_type' => 'service',
             'posts_per_page' => 3,
             'post_parent' => 0, // tylko usługi główne — podstrony ukryte z panelu
-            'post__not_in' => $currentId ? [$currentId] : [],
+            'post__not_in' => $exclude,
             'orderby' => 'menu_order',
             'order' => 'ASC',
             'post_status' => 'publish',
@@ -119,24 +121,7 @@ class ServiceComposer extends Composer
             return $items;
         }
 
-        // Fallback dla MVP — gdy brak innych usług w CPT, pokaż przykładowe.
-        return [
-            [
-                'title' => 'Przegląd szafy',
-                'url' => home_url('/uslugi/przeglad-szafy/'),
-                'image' => '',
-            ],
-            [
-                'title' => 'Zakupy ze stylistą',
-                'url' => home_url('/uslugi/zakupy-ze-stylista/'),
-                'image' => '',
-            ],
-            [
-                'title' => 'Stylizacja na okazję',
-                'url' => home_url('/uslugi/stylizacja-na-okazje/'),
-                'image' => '',
-            ],
-        ];
+        return [];
     }
 
     // ACF repeater `service_included_items` (z polem `service_included_item`)

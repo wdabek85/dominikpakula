@@ -1,17 +1,13 @@
 {{-- CTA rezerwacji na końcu treści usługi — ciemna karta, przycisk otwiera modal rezerwacji (.booking-trigger) --}}
-<div class="py-10 lg:py-14">
+<div>
   <div class="relative overflow-hidden rounded-lg bg-primary px-6 py-10 lg:px-12 lg:py-14 text-white">
 
     <div class="flex flex-col gap-4 lg:gap-5 max-w-2xl">
       @if ($eyebrow)
-        <p class="font-metro text-sm uppercase tracking-wider text-white/75">
-          {{ $eyebrow }}
-        </p>
+        <x-eyebrow :label="$eyebrow" color="text-white" />
       @endif
 
-      <h2 class="font-poppins text-2xl lg:text-[28px] font-semibold leading-tight text-white">
-        {{ $heading }}
-      </h2>
+      <x-heading tone="light">{{ $heading }}</x-heading>
 
       @if ($text)
         <p class="font-poppins text-base leading-relaxed text-white/85">

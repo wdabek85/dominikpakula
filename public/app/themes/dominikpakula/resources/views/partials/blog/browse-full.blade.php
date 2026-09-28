@@ -1,14 +1,10 @@
 {{-- Browse full blog — category chips + "Wszystkie wpisy" CTA --}}
-<section class="mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16">
+<x-section>
   <div class="flex flex-col items-center gap-6 text-center">
 
-    <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">
-      Więcej do przeczytania
-    </span>
+    <x-eyebrow label="Więcej do przeczytania" align="center" />
 
-    <h2 class="font-poppins text-[30px] lg:text-4xl leading-tight text-black">
-      Przeglądaj cały blog
-    </h2>
+    <x-heading>Przeglądaj cały blog</x-heading>
 
     <p class="font-poppins text-base text-black/80 leading-relaxed max-w-[560px]">
       Zacznij od kategorii, która Cię interesuje, albo zobacz wszystkie wpisy po kolei.
@@ -47,4 +43,4 @@
     </a>
 
   </div>
-</section>
+</x-section>

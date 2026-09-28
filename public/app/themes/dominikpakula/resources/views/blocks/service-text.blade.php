@@ -1,6 +1,7 @@
 {{-- Tekst w kolumnie usługi. attached = nagłówek + wstęp do bloku poniżej (mniejszy odstęp pod spodem) --}}
 @if ($heading || $body || $imageHtml)
-  <div class="{{ $attached ? 'pt-10 lg:pt-14 -mb-4 lg:-mb-6' : 'py-10 lg:py-14' }}">
+  {{-- attached: odstęp do bloku poniżej o połowę mniejszy niż między blokami (gap w single-service) --}}
+  <div @class(['-mb-6 lg:-mb-8' => $attached])>
 
     {{-- Badge --}}
     @if ($label)
@@ -14,9 +15,7 @@
       {{-- Tekst --}}
       <div class="flex-1 min-w-0">
         @if ($heading)
-          <h2 class="font-poppins text-xl font-bold leading-snug text-black {{ $body ? 'mb-4 lg:mb-5' : '' }}">
-            {{ $heading }}
-          </h2>
+          <x-heading variant="column" @class(['mb-4 lg:mb-5' => $body])>{{ $heading }}</x-heading>
         @endif
 
         @if ($body)

@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+<x-section>
 
   <div class="bg-[#d9d9d9] flex flex-col lg:flex-row items-center gap-8 px-5 lg:px-8 py-6">
 
@@ -7,9 +7,7 @@
 
       {{-- Nagłówek + opis --}}
       <div class="flex flex-col gap-4 text-center lg:text-left text-black">
-        <h2 class="font-poppins font-medium text-4xl leading-[44px] lg:text-[52px] lg:leading-[56px] lg:tracking-[-1.04px]">
-          Bądź na Bieżąco
-        </h2>
+        <x-heading variant="display">Bądź na bieżąco</x-heading>
         <p class="font-poppins text-xs leading-[14px] lg:text-sm lg:leading-4">
           Zapisz się do naszego newslettera i jako pierwszy otrzymuj info o nowych kolekcjach, limitowanych dropach i specjalnych promocjach. Dorzucamy też porady dotyczące stylu, żebyś zawsze wyglądał dobrze – bez względu na okazję.
         </p>
@@ -91,4 +89,4 @@
 
   </div>
 
-</section>
+</x-section>

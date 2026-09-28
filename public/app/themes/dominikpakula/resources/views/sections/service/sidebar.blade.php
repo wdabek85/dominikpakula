@@ -34,7 +34,7 @@
       <div class="bg-[#dbdbdb] flex items-center rounded-sm px-3 py-2">
         <p class="text-[10px]">
           <span class="font-sans font-semibold text-black">Zarezerwuj Termin Telefonicznie</span>
-          <a href="tel:{{ $contact['sidebar_phone_link'] ?: $contact['sidebar_phone'] }}" class="font-sans text-[#655098] underline ml-2">{{ $contact['sidebar_phone'] }}</a>
+          <a href="tel:{{ $contact['sidebar_phone_link'] ?: $contact['sidebar_phone'] }}" class="font-sans text-[#655098] underline ml-2 whitespace-nowrap">{{ $contact['sidebar_phone'] }}</a>
         </p>
       </div>
     @endif
@@ -50,7 +50,7 @@
           <svg class="size-3 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
-          <span class="font-metro text-[10px] text-black underline">30-dniowa gwarancja zwrotu pieniędzy</span>
+          <span class="font-metro text-[10px] text-black underline">{{ $serviceTexts['guarantee'] }}</span>
         </div>
         <div class="flex items-center gap-1">
           <x-icons.phone class="size-3 text-black" />
@@ -59,7 +59,7 @@
       </div>
 
       {{-- Cena (ACF) + CTA (hardcode) --}}
-      <div class="flex gap-6 items-start">
+      <div class="flex gap-6 items-start lg:flex-col lg:gap-3 xl:flex-row xl:gap-6">
         <div class="flex flex-col gap-1 shrink-0">
           <span class="font-sans text-[10px] text-black leading-normal">cena usługi</span>
           <span class="font-poppins text-[32px] leading-none text-primary">
@@ -67,12 +67,12 @@
           </span>
         </div>
 
-        <div class="flex flex-col gap-2 flex-1">
+        <div class="flex flex-col gap-2 flex-1 lg:w-full xl:w-auto">
           <button
             class="booking-trigger bg-primary flex items-center justify-between rounded-sm px-4 py-2 text-white font-poppins text-sm leading-none hover:opacity-90 transition-opacity cursor-pointer w-full"
             data-service="{{ $sidebarTitle }}"
           >
-            <span>Zarezerwuj rozmowę</span>
+            <span>{{ $serviceTexts['booking'] }}</span>
             <x-icons.arrow-right class="size-4" />
           </button>
 
@@ -81,7 +81,7 @@
               <circle cx="12" cy="12" r="10" />
               <path d="M12 8h.01M11 12h1v4h1" />
             </svg>
-            <span class="font-sans text-[10px] text-black leading-normal">Rozmowa jest bezpłatna. Podana cena to koszt usługi — płacisz dopiero, gdy po konsultacji zdecydujesz się na współpracę.</span>
+            <span class="font-sans text-[10px] text-black leading-normal">{{ $serviceTexts['price_note'] }}</span>
           </div>
         </div>
       </div>

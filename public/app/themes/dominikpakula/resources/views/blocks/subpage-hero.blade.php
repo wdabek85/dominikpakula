@@ -16,7 +16,7 @@
       {{-- Tytuł + opis --}}
       <div class="flex flex-col gap-2.5">
         @if ($title)
-          <h1 class="font-poppins text-[52px] leading-[56px] tracking-tight text-black">
+          <h1 class="font-poppins text-[34px] md:text-[44px] lg:text-[52px] leading-tight lg:leading-[56px] tracking-tight text-black">
             {{ $title }}
           </h1>
         @endif

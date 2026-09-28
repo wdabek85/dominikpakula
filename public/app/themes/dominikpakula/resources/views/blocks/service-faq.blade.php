@@ -1,9 +1,9 @@
-<div class="py-10 lg:py-14">
+<div>
 
   {{-- Badge --}}
   @if ($label)
     <div class="mb-6 lg:mb-8">
-      <x-badge :label="$label" />
+      <x-badge :label="$label" as="h2" />
     </div>
   @endif
 

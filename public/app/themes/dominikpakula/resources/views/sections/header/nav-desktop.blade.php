@@ -1,6 +1,6 @@
 {{-- Desktop Navigation --}}
 @if (has_nav_menu('primary_navigation'))
-  <nav class="hidden lg:flex items-center gap-12" aria-label="{{ wp_get_nav_menu_name('primary_navigation') }}">
+  <nav class="hidden lg:flex items-center gap-6 xl:gap-12" aria-label="{{ wp_get_nav_menu_name('primary_navigation') }}">
     @php
       $menuItems = $primaryMenuItems ?? [];
       $currentUrl = home_url(add_query_arg([], $GLOBALS['wp']->request ?? ''));

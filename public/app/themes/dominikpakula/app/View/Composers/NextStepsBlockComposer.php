@@ -21,9 +21,24 @@ class NextStepsBlockComposer extends Composer
 
     protected function steps(): array
     {
-        // Hardcoded — w razie potrzeby zmiany tekstu edytuj tutaj.
-        // Pola ACF mogą być dodane jako repeater 'steps_items' jeśli klient
-        // potrzebuje pełnej kontroli z panelu (na razie 3 stałe kroki wystarczą).
+        $steps = [];
+
+        foreach (\get_field('steps_items') ?: [] as $row) {
+            if (empty($row['steps_item_title'])) {
+                continue;
+            }
+            $steps[] = [
+                'number' => $row['steps_item_number'] ?? '',
+                'title' => $row['steps_item_title'],
+                'text' => $row['steps_item_text'] ?? '',
+            ];
+        }
+
+        if ($steps) {
+            return $steps;
+        }
+
+        // Domyślne kroki, dopóki w bloku nie wpisano własnych (repeater steps_items)
         return [
             [
                 'number' => '01',

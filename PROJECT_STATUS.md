@@ -2060,3 +2060,23 @@ Kolejność bloków (sekcja „Ile kosztują…” usunięta — dublowała box 
 - [ ] Literówka na prod: Kraków `service_sidebar_title` = „Zakupy ze Stylista Karków”
 - [ ] Karta Kraków w local-seo rodzica wskazuje stary slug `zakupy-ze-stylista-karkow` (działa przez redirect, można poprawić)
 - [ ] Do potwierdzenia przez Dominika (z wireframe'u): „Budżet na ubrania ustalamy osobno”
+
+---
+
+## Sesja 2026-09-28 (cd.) — audyt całości + realizacja (lokalnie, `develop`)
+
+Pełny raport i status: **`AUDYT-2026-09-28.md`**. Commity: `7e36274` (etapy 1–4), `ac8e027` (etapy 5–6). **Nie wdrożone na staging/prod.**
+
+Najważniejsze zmiany w architekturze:
+- **Usługi z CPT:** zakładka „Karta usługi” (`group_service_card.json`), helper `App\Services\ServiceCatalog`, bloki `services`/`offer` mają źródło kart (ręcznie / wszystkie / wybrane), `local-seo` — „Podstrony tej usługi”. Kolejność usług = Atrybuty strony → Kolejność (10/20/30/40/50).
+- **Ustawienia strony:** `group_site_settings.json` — kontakt, sociale, teksty stron usług. Jedyne fallbacki: `App\View\Composers\SiteSettings` (`$contact`, `$social`, `$serviceTexts`).
+- **ACF:** wszystkie grupy w `acf-json/` (baza: 0). ⚠️ nie usuwać grup przez API/panel ACF — kasuje pliki JSON.
+- **Komponenty sekcji:** `x-section`, `x-heading` (section/display/column), `x-eyebrow` (default/large), `x-badge as="h2"`. Nowe bloki budować na nich.
+- **Kolumna usługi:** bloki bez własnego `py`, odstęp z rodzica w `single-service.blade.php` (`gap-12 lg:gap-16`).
+- **Usunięte bloki:** service-trust, service-desc-cards, blog-pullquote, blog-callout, blog-personal-quote.
+- **Migracje treści:** katalog `migrations/` (README z tabelą statusu per środowisko).
+
+### Wdrożenie (do zrobienia)
+1. merge develop → staging, pull + build na serwerze
+2. `wp eval-file migrations/2026-09-28-audyt.php dry` → bez `dry` → `wp acorn view:clear && wp cache flush`
+3. przegląd stagingu (home, /uslugi/, /voucher/, usługi, /kontakt/) → prod tym samym trybem (backup bazy!)
