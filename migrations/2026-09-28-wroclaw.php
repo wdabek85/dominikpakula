@@ -142,10 +142,29 @@ update_field('service_included_items', array_map(fn ($t) => ['service_included_i
     'Wsparcie e-mailowe przez 14 dni.',
 ]), $postId);
 
-// Zdjęcie: brak zdjęcia Wrocławia w bibliotece — tymczasowo zdjęcie usługi-rodzica (bez widoków miasta).
-// Nie nadpisuje zdjęcia ustawionego później w panelu.
-if (! has_post_thumbnail($postId) && ($thumb = get_post_thumbnail_id($parent->ID))) {
-    set_post_thumbnail($postId, $thumb);
+// Zdjęcie: panorama Wrocławia z migrations/assets — import do biblioteki (raz), potem jako wyróżniające.
+// Nie nadpisuje zdjęcia ustawionego później w panelu (podmienia tylko brak zdjęcia albo tymczasowe zdjęcie rodzica).
+$imageFile = 'zakupy-ze-stylista-wroclaw.webp';
+$imageId = (int) $GLOBALS['wpdb']->get_var($GLOBALS['wpdb']->prepare(
+    "SELECT post_id FROM {$GLOBALS['wpdb']->postmeta} WHERE meta_key = '_wp_attached_file' AND meta_value LIKE %s ORDER BY post_id LIMIT 1",
+    '%/' . $GLOBALS['wpdb']->esc_like($imageFile)
+));
+if (! $imageId) {
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    $tmp = wp_tempnam($imageFile);
+    copy(__DIR__ . '/assets/' . $imageFile, $tmp);
+    $imageId = media_handle_sideload(['name' => $imageFile, 'tmp_name' => $tmp], 0, 'Zakupy ze stylistą Wrocław');
+    if (is_wp_error($imageId)) {
+        WP_CLI::error('Import zdjęcia: ' . $imageId->get_error_message());
+    }
+    update_post_meta($imageId, '_wp_attachment_image_alt', 'Panorama Wrocławia ze Sky Tower o zachodzie słońca');
+    WP_CLI::log("Zaimportowano zdjęcie Wrocławia (ID {$imageId})");
+}
+$currentThumb = (int) get_post_thumbnail_id($postId);
+if (! $currentThumb || $currentThumb === (int) get_post_thumbnail_id($parent->ID)) {
+    set_post_thumbnail($postId, $imageId);
 }
 
 // --- Rank Math ---

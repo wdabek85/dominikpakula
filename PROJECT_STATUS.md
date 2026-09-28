@@ -2083,7 +2083,7 @@ Najważniejsze zmiany w architekturze:
 
 ### Podstrona Wrocławia (lokalnie, ID 854)
 `/uslugi/zakupy-ze-stylista/wroclaw/` z wireframe'u v1 — `migrations/2026-09-28-wroclaw.php`, ten sam układ co Warszawa (bez sekcji ceny, „Poznajmy się” = service-video). Karta w local-seo rodzica pojawia się automatycznie (tryb „Podstrony tej usługi”).
-- [ ] **Zdjęcie Wrocławia** — w bibliotece (lokal i prod) nie ma żadnego; tymczasowo zdjęcie usługi-rodzica
+- [x] Zdjęcie Wrocławia: panorama ze Sky Tower, `migrations/assets/zakupy-ze-stylista-wroclaw.webp` — skrypt importuje je sam na każdym środowisku
 - [ ] staging → prod (po audycie)
 
 ### Kraków przebudowany (lokalnie, ID 477) — kanibalizacja
