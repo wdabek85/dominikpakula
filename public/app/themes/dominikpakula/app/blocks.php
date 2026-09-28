@@ -264,6 +264,22 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.service-desc-alt',
         ],
         [
+            'name' => 'service-text',
+            'title' => 'Tekst (usługa)',
+            'description' => 'Badge + nagłówek H2 + treść, opcjonalnie zdjęcie i przycisk (link albo rezerwacja). Może służyć jako nagłówek sekcji dla bloku poniżej.',
+            'icon' => 'text',
+            'group' => 'service',
+            'render_template' => 'blocks.service-text',
+        ],
+        [
+            'name' => 'service-cta',
+            'title' => 'CTA rezerwacji',
+            'description' => 'Ciemna karta: nadtytuł + H2 + tekst + przycisk otwierający formularz rezerwacji i opcjonalny drugi przycisk (np. voucher).',
+            'icon' => 'calendar-alt',
+            'group' => 'service',
+            'render_template' => 'blocks.service-cta',
+        ],
+        [
             'name' => 'local-seo',
             'title' => 'Karty linkowe (SEO) — miasta / okazje',
             'description' => 'Siatka kart z linkami (zdjęcie + tytuł + „Dowiedz się więcej”). Do podstron miast, okazji itp. Pod SEO.',
