@@ -2088,4 +2088,4 @@ Najważniejsze zmiany w architekturze:
 
 ### Kraków przebudowany (lokalnie, ID 477) — kanibalizacja
 Stara treść Krakowa była w 40% kopią `/uslugi/zakupy-ze-stylista/` (te same H2, blok korzyści 1:1, 330 słów). Nowa z wireframe'u v1 (`migrations/2026-09-28-krakow.php`), układ jak Warszawa/Wrocław. Wspólna treść z rodzicem: 3% (tyle co inne miasta), 598 słów. Zdjęcie (Sukiennice) i przekierowanie starego sluga bez zmian.
-- [ ] staging: `wp eval-file migrations/2026-09-28-wroclaw.php` i `...-krakow.php`
+- [x] staging 28.09 (`5e0698a`): Wrocław (ID 625, zdjęcie ID 626) i Kraków przebudowany; backup `sql/backup/staging-before-miasta-20260928.sql`
