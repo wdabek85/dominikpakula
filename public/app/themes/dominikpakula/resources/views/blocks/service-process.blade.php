@@ -46,9 +46,9 @@
                 </p>
               @endif
               @if ($step['title'])
-                <p class="font-poppins text-base font-bold leading-snug text-black">
+                <h3 class="font-poppins text-base font-bold leading-snug text-black">
                   {{ $step['title'] }}
-                </p>
+                </h3>
               @endif
 
               @if ($step['description'])

@@ -2023,3 +2023,39 @@ wyłącznie Gutenberga, front-end serwisu go nie używa.
 > **Uwaga na przyszłość:** przy każdym zgłoszeniu „ktoś mi zmienił hasło" pierwszym krokiem
 > jest `wp user meta get <ID> session_tokens` — obce IP w sesjach to dowód przejęcia, a nie
 > zapominalstwa. Dopiero potem lista adminów na wszystkich instalacjach i reset hasła.
+
+---
+
+## Sesja 2026-09-28 — lokal 1:1 z produkcją + podstrona „Zakupy ze stylistą → Warszawa”
+
+### Lokal zsynchronizowany z produkcją
+Lokalna baza była z lipca (1 usługa). Zrobione (produkcja tylko czytana):
+- backup starej bazy lokalnej → `sql/backup/local-before-prod-sync-20260928.sql`
+- dump prod (`wp db export -` przez SSH) → import lokalnie → `search-replace https://meskistylista.pl → http://dominikpakula.local` (174 zamiany)
+- `uploads/` z prod (53 MB, 853 pliki), `view:clear`, `cache flush`, `rewrite flush`
+- kod: prod = `98c4136`, lokalny `develop` = to samo + commit z docsami; pluginy identyczne
+- **Loginy/hasła lokalnie = produkcyjne.** Procedura syncu w pamięci Claude (reference_local_env).
+
+### Nowe bloki (grupa „Podstrona usługi”, do wąskiej kolumny single-service)
+| Blok | Pliki | Pola (acf-json) |
+|---|---|---|
+| `service-text` — Tekst (usługa) | `blocks/service-text.blade.php`, `ServiceTextBlockComposer.php`, `acf-json/group_service_text_block.json` | `stext_label`, `stext_heading` (H2), `stext_body` (wysiwyg), `stext_image` (ID, lazy + srcset), `stext_button_text/url` (pusty URL = `.booking-trigger` z nazwą usługi), `stext_attached` (nagłówek+wstęp dla bloku poniżej — mniejszy odstęp) |
+| `service-cta` — CTA rezerwacji | `blocks/service-cta.blade.php`, `ServiceCtaBlockComposer.php`, `acf-json/group_service_cta_block.json` | `scta_eyebrow`, `scta_heading`, `scta_text`, `scta_button_text` (booking), `scta_service` (puste = tytuł usługi), `scta_secondary_text/url` |
+
+Inne zmiany w kodzie:
+- `components/button.blade.php` — nowe warianty `light` i `outline-light` (na ciemne tło); kolor focus ringa przeniesiony do wariantu (primary/secondary bez zmian wizualnych)
+- `blocks/service-process.blade.php` — tytuł kroku `<p>` → `<h3>` (hierarchia nagłówków, wygląd bez zmian)
+
+### Podstrona Warszawy (TYLKO LOKALNIE — ID 850)
+`/uslugi/zakupy-ze-stylista/warszawa/`, treść z wireframe v4 (`Documents/Codex/2026-09-28/.../wireframe-zakupy-ze-stylista-warszawa-v4.html`).
+Tworzona skryptem **`sql/content/warszawa.php`** (gitignored, idempotentny, linki z `home_url()`):
+`wp eval-file sql/content/warszawa.php`. Skrypt ustawia też pola sidebaru (H1, opis, cena „1 800 zł”, „Co obejmuje cena?” 5 pkt, podpis hero), Rank Math (title/description/frazy) i link karty „Warszawa” w `local-seo` na usłudze-rodzicu (backup: `sql/backup/post-362-before-warszawa.html`).
+
+Kolejność bloków (sekcja „Ile kosztują…” usunięta — dublowała box ceny w sidebarze): service-text[attached] + service-process (plan zakupów) → service-text (gdzie w Warszawie) → service-desc-alt (kiedy warto; 5 punktów rozbite 3 + 2 „Szczególnie, jeśli”) → service-text[attached] + service-what (co zyskasz, 6) → service-video („Zanim zaczniemy poznaj mnie” + modal #about-modal, jak na innych usługach — decyzja usera zamiast sekcji „Cześć, jestem Dominik” z wireframe'u) → service-cta. Opinie + blog z szablonu.
+
+### Do zrobienia
+- [x] Zdjęcie główne: ID 439 `zakupy-ze-stylista-warszawa.webp` (to samo co karta Warszawy w local-seo)
+- [ ] Akceptacja usera → commit (develop) → staging → prod; na prod po deployu kodu: `wp eval-file` skryptu warszawa.php (skopiować plik na serwer) + `acorn view:clear`
+- [ ] Literówka na prod: Kraków `service_sidebar_title` = „Zakupy ze Stylista Karków”
+- [ ] Karta Kraków w local-seo rodzica wskazuje stary slug `zakupy-ze-stylista-karkow` (działa przez redirect, można poprawić)
+- [ ] Do potwierdzenia przez Dominika (z wireframe'u): „Budżet na ubrania ustalamy osobno”
