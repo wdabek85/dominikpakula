@@ -1,23 +1,20 @@
 @php
   $phone = $contact['phone'] ?? '';
-  $phoneFallback = '+48 577 190 949';
   $phoneLink = $contact['phone_link'] ?? '';
-  $phoneLinkFallback = '+48577190949';
   $email = $contact['email'] ?? '';
-  $emailFallback = 'kontakt@meskistylista.pl';
   $instagram = $social['instagram'] ?? '';
-  $instagramHandle = $social['instagram_handle'] ?? 'dpakula_stylist';
+  $instagramHandle = $social['instagram_handle'] ?? '';
   $whatsapp = $social['whatsapp'] ?? '';
 
   // Każdy kanał: tylko jeśli ma podstawowe dane
   $channels = [];
 
-  if ($phone || $phoneFallback) {
+  if ($phone) {
     $channels[] = [
       'icon' => 'phone',
       'label' => 'Zadzwoń',
-      'value' => $phone ?: $phoneFallback,
-      'href' => 'tel:' . ($phoneLink ?: $phoneLinkFallback),
+      'value' => $phone,
+      'href' => 'tel:' . $phoneLink,
       'external' => false,
     ];
   }
@@ -42,12 +39,12 @@
     ];
   }
 
-  if ($email || $emailFallback) {
+  if ($email) {
     $channels[] = [
       'icon' => 'envelope',
       'label' => 'Email',
-      'value' => $email ?: $emailFallback,
-      'href' => 'mailto:' . ($email ?: $emailFallback),
+      'value' => $email,
+      'href' => 'mailto:' . $email,
       'external' => false,
     ];
   }

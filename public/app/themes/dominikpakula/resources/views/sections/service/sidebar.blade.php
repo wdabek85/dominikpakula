@@ -59,7 +59,7 @@
       </div>
 
       {{-- Cena (ACF) + CTA (hardcode) --}}
-      <div class="flex gap-6 items-start">
+      <div class="flex gap-6 items-start lg:flex-col lg:gap-3 xl:flex-row xl:gap-6">
         <div class="flex flex-col gap-1 shrink-0">
           <span class="font-sans text-[10px] text-black leading-normal">cena usługi</span>
           <span class="font-poppins text-[32px] leading-none text-primary">
@@ -67,7 +67,7 @@
           </span>
         </div>
 
-        <div class="flex flex-col gap-2 flex-1">
+        <div class="flex flex-col gap-2 flex-1 lg:w-full xl:w-auto">
           <button
             class="booking-trigger bg-primary flex items-center justify-between rounded-sm px-4 py-2 text-white font-poppins text-sm leading-none hover:opacity-90 transition-opacity cursor-pointer w-full"
             data-service="{{ $sidebarTitle }}"

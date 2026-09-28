@@ -1,9 +1,8 @@
 {{--
   Delikatne CTA w treści wpisu.
 
-  Świadomie lżejsze od `blog-callout` (szare tło + kolorowa ramka + ikona) i od
-  `blog-pullquote` (wyróżniona myśl) — to ma być cichy zaczep w toku czytania,
-  nie baner. Stąd sam hairline 60px u góry, ten sam motyw co nagłówek lookbooka.
+  Świadomie lekkie (bez tła, ramki i ikony) — to ma być cichy zaczep w toku
+  czytania, nie baner. Stąd sam hairline 60px u góry, ten sam motyw co nagłówek lookbooka.
 --}}
 @if ($isEmpty)
 

@@ -1,32 +1,11 @@
 {
-    "key": "group_local_seo_block",
-    "title": "Blok: Linki lokalne (SEO)",
+    "key": "group_69f1b8816b165",
+    "title": "LookBook",
     "fields": [
         {
-            "key": "field_local_eyebrow",
-            "label": "Etykieta (eyebrow)",
-            "name": "local_eyebrow",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Mała etykieta nad nagłówkiem.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "Okolica",
-            "maxlength": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_local_heading",
-            "label": "Nagłówek sekcji",
-            "name": "local_heading",
+            "key": "field_69f1b8814e1e6",
+            "label": "lookbook_title",
+            "name": "lookbook_title",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -37,7 +16,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Zakupy ze stylistą w Twoim mieście",
+            "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
             "placeholder": "",
@@ -45,12 +24,33 @@
             "append": ""
         },
         {
-            "key": "field_local_source",
-            "label": "Źródło kart",
-            "name": "local_source",
+            "key": "field_69f1b8924e1e7",
+            "label": "lookbook_description",
+            "name": "lookbook_description",
             "aria-label": "",
-            "type": "button_group",
-            "instructions": "„Podstrony tej usługi” = automatycznie wszystkie opublikowane podstrony (np. miasta), zdjęcie wyróżniające + tytuł, kolejność wg Atrybutów strony.",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_69f1b8a14e1e8",
+            "label": "lookbook_layout",
+            "name": "lookbook_layout",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -59,49 +59,49 @@
                 "id": ""
             },
             "choices": {
-                "children": "Podstrony tej usługi",
-                "manual": "Ręcznie"
+                "grid-3": "grid-3 — siatka 3 kolumny",
+                "grid-4": "grid-4 — siatka 4 kolumny",
+                "grid-5": "grid-5 — duże zdjęcie po LEWEJ",
+                "grid-5-right": "grid-5-right — duże zdjęcie po PRAWEJ",
+                "grid-6": "grid-6 — mozaika 6 zdjęć (duże po przekątnej)"
             },
-            "default_value": "manual",
+            "default_value": "grid-3",
             "return_format": "value",
+            "multiple": 0,
             "allow_null": 0,
-            "layout": "horizontal",
-            "allow_in_bindings": 0
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
         },
         {
-            "key": "field_local_items",
-            "label": "Karty / linki",
-            "name": "local_items",
+            "key": "field_69f1b8b54e1e9",
+            "label": "lookbook_items",
+            "name": "lookbook_items",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "Każda karta: zdjęcie + tytuł + link do podstrony (miasto, okazja itp.).",
+            "instructions": "",
             "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_local_source",
-                        "operator": "==",
-                        "value": "manual"
-                    }
-                ]
-            ],
+            "conditional_logic": 0,
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
+            "layout": "table",
             "pagination": 0,
             "min": 0,
             "max": 0,
-            "collapsed": "field_local_item_title",
-            "button_label": "Dodaj kartę",
+            "collapsed": "",
+            "button_label": "Dodaj wiersz",
             "rows_per_page": 20,
             "sub_fields": [
                 {
-                    "key": "field_local_item_image",
-                    "label": "Zdjęcie",
-                    "name": "image",
+                    "key": "field_69f1b8cb4e1ea",
+                    "label": "item_image",
+                    "name": "item_image",
                     "aria-label": "",
                     "type": "image",
                     "instructions": "",
@@ -123,15 +123,15 @@
                     "mime_types": "",
                     "allow_in_bindings": 0,
                     "preview_size": "medium",
-                    "parent_repeater": "field_local_items"
+                    "parent_repeater": "field_69f1b8b54e1e9"
                 },
                 {
-                    "key": "field_local_item_title",
-                    "label": "Tytuł",
-                    "name": "title",
+                    "key": "field_69f1b8d64e1eb",
+                    "label": "item_brand",
+                    "name": "item_brand",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "np. Zakupy ze stylistą Kraków",
+                    "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -145,15 +145,15 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
-                    "parent_repeater": "field_local_items"
+                    "parent_repeater": "field_69f1b8b54e1e9"
                 },
                 {
-                    "key": "field_local_item_url",
-                    "label": "Link (URL)",
-                    "name": "url",
+                    "key": "field_69f1b8e14e1ec",
+                    "label": "item_url",
+                    "name": "item_url",
                     "aria-label": "",
                     "type": "url",
-                    "instructions": "Adres podstrony lokalnej, np. /zakupy-ze-stylista-krakow/",
+                    "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -162,8 +162,39 @@
                         "id": ""
                     },
                     "default_value": "",
+                    "allow_in_bindings": 0,
                     "placeholder": "",
-                    "parent_repeater": "field_local_items"
+                    "parent_repeater": "field_69f1b8b54e1e9"
+                },
+                {
+                    "key": "field_69f1b8f04e1ed",
+                    "label": "item_type",
+                    "name": "item_type",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "model": "model",
+                        "product": "product"
+                    },
+                    "default_value": "product",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "allow_in_bindings": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_69f1b8b54e1e9"
                 }
             ]
         }
@@ -173,7 +204,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf/local-seo"
+                "value": "acf/lookbook-section"
             }
         ]
     ],
@@ -186,5 +217,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1790000022
+    "display_title": "",
+    "modified": 1777449288
 }

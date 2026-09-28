@@ -1,10 +1,7 @@
 @php
   $email = $contact['email'] ?? '';
-  $emailFallback = 'kontakt@meskistylista.pl';
   $phone = $contact['phone'] ?? '';
-  $phoneFallback = '+48 577 190 949';
   $phoneLink = $contact['phone_link'] ?? '';
-  $phoneLinkFallback = '+48577190949';
   $addressLine1 = $contact['address_line1'] ?? '';
   $addressLine2 = $contact['address_line2'] ?? '';
 @endphp
@@ -17,7 +14,7 @@
       <div class="flex items-start gap-2">
         <x-icons.location class="size-4 shrink-0 mt-0.5" />
         <div class="flex flex-col font-poppins text-sm leading-tight">
-          <span>{{ $addressLine1 ?: 'Kraków' }}</span>
+          <span>{{ $addressLine1 }}</span>
           @if ($addressLine2)
             <span>{{ $addressLine2 }}</span>
           @endif
@@ -28,18 +25,18 @@
     {{-- Środek: telefon --}}
     <div class="flex flex-col gap-3 font-poppins">
       <p class="font-semibold text-sm">Zadzwoń:</p>
-      <a href="tel:{{ $phoneLink ?: $phoneLinkFallback }}" class="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+      <a href="tel:{{ $phoneLink }}" class="flex items-center gap-2 text-sm hover:text-primary transition-colors">
         <x-icons.phone class="size-5 shrink-0" />
-        <span>{{ $phone ?: $phoneFallback }}</span>
+        <span>{{ $phone }}</span>
       </a>
     </div>
 
     {{-- Prawa: email --}}
     <div class="flex flex-col gap-3 font-poppins">
       <p class="font-semibold text-sm">Napisz:</p>
-      <a href="mailto:{{ $email ?: $emailFallback }}" class="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+      <a href="mailto:{{ $email }}" class="flex items-center gap-2 text-sm hover:text-primary transition-colors">
         <x-icons.envelope class="size-5 shrink-0" />
-        <span>{{ $email ?: $emailFallback }}</span>
+        <span>{{ $email }}</span>
       </a>
     </div>
 

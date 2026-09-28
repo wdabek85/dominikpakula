@@ -17,10 +17,9 @@
     </div>
   @endif
 
-  {{-- Grid: highlight card + service cards.
-       Tablet w pionie (md): 2-kolumnowy grid; od lg wracamy na rząd flexa,
-       bo karty mają tam stałe 300 px, a highlight rozpycha się na resztę. --}}
-  <div class="flex flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row gap-6">
+  {{-- Grid: highlight card + service cards. 1 → 2 kolumny (md) → 4 równe od xl
+       (przy 1440 to ~300 px na kartę jak w Figmie; sztywne 300 px ucinały ostatnią kartę na tablecie) --}}
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
     {{-- Highlight card --}}
     @if ($highlightImage)
@@ -33,7 +32,7 @@
 
     {{-- Service cards --}}
     @foreach ($cards as $card)
-      <div class="w-full lg:w-[300px] lg:min-w-[300px] lg:shrink-0">
+      <div class="w-full">
         <x-service-card
           :category="$card['name']"
           :title="$card['problem']"

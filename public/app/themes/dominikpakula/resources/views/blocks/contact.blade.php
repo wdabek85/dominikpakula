@@ -57,7 +57,7 @@
             <span class="font-poppins text-base leading-5">Adres:</span>
           </div>
           <p class="font-poppins text-sm leading-4">
-            {{ $contact['address_line1'] ?: 'Kraków' }}@if ($contact['address_line2'])<br>{{ $contact['address_line2'] }}@endif
+            {{ $contact['address_line1'] }}@if ($contact['address_line2'])<br>{{ $contact['address_line2'] }}@endif
           </p>
         </div>
 

@@ -1,0 +1,135 @@
+{
+    "key": "group_service_card",
+    "title": "Karta usługi (strona główna, oferta, voucher, rezerwacje)",
+    "fields": [
+        {
+            "key": "field_service_card_title",
+            "label": "Nazwa na kartach",
+            "name": "service_card_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Krótka nazwa na kartach oferty. Puste = tytuł usługi.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_service_card_problem",
+            "label": "Problem klienta",
+            "name": "service_card_problem",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Nagłówek karty w bloku „Usługi”, np. „Mam pełną szafę i nic do ubrania”.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_service_card_excerpt",
+            "label": "Krótki opis",
+            "name": "service_card_excerpt",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "1–2 zdania. Karty na stronie głównej, bloku „Usługi” i w oknie rezerwacji/vouchera.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_service_card_description",
+            "label": "Długi opis",
+            "name": "service_card_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Karty na stronie Oferta i Voucher (wariant „szczegółowy”). Puste = krótki opis.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_service_card_icon",
+            "label": "Ikona karty",
+            "name": "service_card_icon",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Ikona na kartach (PNG/SVG, czarna). Puste = ikona z nagłówka usługi.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "allow_in_bindings": 0,
+            "preview_size": "thumbnail"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "service"
+            }
+        ]
+    ],
+    "menu_order": 1,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Cena: pole „Cena” w grupie „Usługa”. Kolejność na listach: Atrybuty strony → Kolejność.",
+    "show_in_rest": 0,
+    "modified": 1790000024
+}
