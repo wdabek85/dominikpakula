@@ -1,7 +1,7 @@
 # Migracje treści
 
 Skrypty WP-CLI zmieniające treść/bazę (nie kod). Idempotentne — można puścić ponownie.
-Nowe podstrony: helpery bloków w `lib/blocks.php` (`mig_block()`), wzór — `2026-09-28-wroclaw.php`.
+Nowe podstrony miast: `lib/city.php` (`mig_city_page()`) + `lib/blocks.php` (`mig_block()`), wzór — `2026-09-28-kielce.php`.
 Odpalaj z roota Bedrocka **po** wdrożeniu kodu (`git pull` + `npm run build`):
 
 ```
@@ -19,5 +19,6 @@ Przed uruchomieniem na produkcji zrób backup bazy (`wp db export`).
 | 2026-09-28-audyt.php | audyt: grupy ACF → tylko acf-json, Ustawienia strony, Karta usługi, bloki usług z CPT | ✅ | ✅ | ⬜ |
 | 2026-09-28-wroclaw.php | podstrona Zakupy ze stylistą → Wrocław + import zdjęcia z `assets/` | ✅ | ✅ | ⬜ |
 | 2026-09-28-krakow.php | przebudowa Krakowa (usuwa kanibalizację z rodzicem: 40% → 3% wspólnej treści) | ✅ | ✅ | ⬜ |
+| 2026-09-28-kielce.php | podstrona Zakupy ze stylistą → Kielce (zdjęcie tymczasowe — z usługi-rodzica) | ✅ | ⬜ | ⬜ |
 
 > ⚠️ Grup pól ACF nie usuwaj przez `acf_delete_field_group()` ani przez kosz w panelu ACF — przy local JSON ACF kasuje też plik z `acf-json/`. Migracja audytu usuwa tylko wiersze z bazy.
