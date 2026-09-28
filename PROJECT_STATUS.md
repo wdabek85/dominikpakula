@@ -2080,3 +2080,8 @@ Najważniejsze zmiany w architekturze:
 1. ✅ staging 28.09: `e644199`, backup `sql/backup/staging-before-audyt-20260928.sql` na serwerze, migracja OK (0 grup ACF w bazie)
 2. `wp eval-file migrations/2026-09-28-audyt.php dry` → bez `dry` → `wp acorn view:clear && wp cache flush`
 3. przegląd stagingu (home, /uslugi/, /voucher/, usługi, /kontakt/) → prod tym samym trybem (backup bazy!)
+
+### Podstrona Wrocławia (lokalnie, ID 854)
+`/uslugi/zakupy-ze-stylista/wroclaw/` z wireframe'u v1 — `migrations/2026-09-28-wroclaw.php`, ten sam układ co Warszawa (bez sekcji ceny, „Poznajmy się” = service-video). Karta w local-seo rodzica pojawia się automatycznie (tryb „Podstrony tej usługi”).
+- [ ] **Zdjęcie Wrocławia** — w bibliotece (lokal i prod) nie ma żadnego; tymczasowo zdjęcie usługi-rodzica
+- [ ] staging → prod (po audycie)
