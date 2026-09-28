@@ -2077,6 +2077,6 @@ Najważniejsze zmiany w architekturze:
 - **Migracje treści:** katalog `migrations/` (README z tabelą statusu per środowisko).
 
 ### Wdrożenie (do zrobienia)
-1. merge develop → staging, pull + build na serwerze
+1. ✅ staging 28.09: `e644199`, backup `sql/backup/staging-before-audyt-20260928.sql` na serwerze, migracja OK (0 grup ACF w bazie)
 2. `wp eval-file migrations/2026-09-28-audyt.php dry` → bez `dry` → `wp acorn view:clear && wp cache flush`
 3. przegląd stagingu (home, /uslugi/, /voucher/, usługi, /kontakt/) → prod tym samym trybem (backup bazy!)
