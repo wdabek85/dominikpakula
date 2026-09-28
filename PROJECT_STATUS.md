@@ -2085,3 +2085,7 @@ Najważniejsze zmiany w architekturze:
 `/uslugi/zakupy-ze-stylista/wroclaw/` z wireframe'u v1 — `migrations/2026-09-28-wroclaw.php`, ten sam układ co Warszawa (bez sekcji ceny, „Poznajmy się” = service-video). Karta w local-seo rodzica pojawia się automatycznie (tryb „Podstrony tej usługi”).
 - [ ] **Zdjęcie Wrocławia** — w bibliotece (lokal i prod) nie ma żadnego; tymczasowo zdjęcie usługi-rodzica
 - [ ] staging → prod (po audycie)
+
+### Kraków przebudowany (lokalnie, ID 477) — kanibalizacja
+Stara treść Krakowa była w 40% kopią `/uslugi/zakupy-ze-stylista/` (te same H2, blok korzyści 1:1, 330 słów). Nowa z wireframe'u v1 (`migrations/2026-09-28-krakow.php`), układ jak Warszawa/Wrocław. Wspólna treść z rodzicem: 3% (tyle co inne miasta), 598 słów. Zdjęcie (Sukiennice) i przekierowanie starego sluga bez zmian.
+- [ ] staging: `wp eval-file migrations/2026-09-28-wroclaw.php` i `...-krakow.php`
