@@ -2088,4 +2088,11 @@ Najważniejsze zmiany w architekturze:
 
 ### Kraków przebudowany (lokalnie, ID 477) — kanibalizacja
 Stara treść Krakowa była w 40% kopią `/uslugi/zakupy-ze-stylista/` (te same H2, blok korzyści 1:1, 330 słów). Nowa z wireframe'u v1 (`migrations/2026-09-28-krakow.php`), układ jak Warszawa/Wrocław. Wspólna treść z rodzicem: 3% (tyle co inne miasta), 598 słów. Zdjęcie (Sukiennice) i przekierowanie starego sluga bez zmian.
-- [ ] staging: `wp eval-file migrations/2026-09-28-wroclaw.php` i `...-krakow.php`
+- [x] staging 28.09 (`5e0698a`): Wrocław (ID 625, zdjęcie ID 626) i Kraków przebudowany; backup `sql/backup/staging-before-miasta-20260928.sql`
+
+### Kielce (ID 856 lokalnie)
+`migrations/2026-09-28-kielce.php` na nowym `lib/city.php` (wspólny zapis podstrony miasta). Wspólna treść z rodzicem 3%, max między miastami 6%.
+- [ ] zdjęcie Kielc (tymczasowo zdjęcie usługi-rodzica) — plik do `migrations/assets/` + klucz `image` w skrypcie
+
+### Kopia produkcji przed wdrożeniem audytu (28.09 15:44)
+Serwer: `~/meskistylista.pl/app/sql/backup/prod-before-audyt-20260928.sql` (+ `-uploads.tar.gz` 52 MB, `-commit.txt` = `98c4136`). Kopia bazy także lokalnie w `app/sql/backup/`.
