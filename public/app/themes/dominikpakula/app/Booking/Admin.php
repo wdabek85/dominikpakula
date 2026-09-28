@@ -126,6 +126,10 @@ function render_meta_box($post): void
             $services = get_booking_services();
             echo '<select name="' . esc_attr($key) . '" id="' . esc_attr($key) . '" class="regular-text">';
             echo '<option value="">— Wybierz usługę —</option>';
+            // Zapisana wartość spoza listy (np. rezerwacja z podstrony miasta) — pokaż ją, żeby zapis jej nie wyczyścił.
+            if ($value && ! in_array($value, array_column($services, 'title'), true)) {
+                echo '<option value="' . esc_attr($value) . '" selected>' . esc_html($value) . '</option>';
+            }
             foreach ($services as $s) {
                 $selected = selected($value, $s['title'], false);
                 echo '<option value="' . esc_attr($s['title']) . '" ' . $selected . '>' . esc_html($s['title']) . '</option>';

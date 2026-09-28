@@ -2055,7 +2055,8 @@ Kolejność bloków (sekcja „Ile kosztują…” usunięta — dublowała box 
 
 ### Do zrobienia
 - [x] Zdjęcie główne: ID 439 `zakupy-ze-stylista-warszawa.webp` (to samo co karta Warszawy w local-seo)
-- [ ] Akceptacja usera → commit (develop) → staging → prod; na prod po deployu kodu: `wp eval-file` skryptu warszawa.php (skopiować plik na serwer) + `acorn view:clear`
+- [x] **Staging 2026-09-28**: kod `71ff3d9` (pull + build), strona założona skryptem → ID 621 na stagingu (backup rodzica: `sql/backup/staging-post-362-before-warszawa.html`)
+- [ ] Prod po akceptacji: merge staging → main, pull + build, na prod po deployu kodu: `wp eval-file` skryptu warszawa.php (skopiować plik na serwer) + `acorn view:clear`
 - [ ] Literówka na prod: Kraków `service_sidebar_title` = „Zakupy ze Stylista Karków”
 - [ ] Karta Kraków w local-seo rodzica wskazuje stary slug `zakupy-ze-stylista-karkow` (działa przez redirect, można poprawić)
 - [ ] Do potwierdzenia przez Dominika (z wireframe'u): „Budżet na ubrania ustalamy osobno”

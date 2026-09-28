@@ -37,13 +37,15 @@ add_action('init', function () {
 });
 
 /**
- * Helper: get all services for booking.
+ * Helper: usługi do rezerwacji / vouchera — tylko główne.
+ * Podstrony (np. miasta: Zakupy ze stylistą → Warszawa) nie są osobnymi usługami do wyboru.
  */
 function get_booking_services(): array
 {
     $posts = \get_posts([
         'post_type' => 'service',
         'posts_per_page' => -1,
+        'post_parent' => 0,
         'orderby' => 'menu_order',
         'order' => 'ASC',
         'post_status' => 'publish',
