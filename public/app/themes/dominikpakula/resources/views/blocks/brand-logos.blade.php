@@ -1,16 +1,14 @@
 @if ($heading || $eyebrow || ! empty($logos))
-  <section class="not-prose bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-16">
+  <x-section class="not-prose">
 
     {{-- Nagłówek --}}
     @if ($eyebrow || $heading || $lead)
       <div class="flex flex-col gap-3 mb-8 lg:mb-12 text-center max-w-[720px] mx-auto">
         @if ($eyebrow)
-          <span class="font-metro text-xs uppercase tracking-[3px] text-black/60">{{ $eyebrow }}</span>
+          <x-eyebrow :label="$eyebrow" align="center" />
         @endif
         @if ($heading)
-          <h2 class="font-poppins font-medium text-[28px] lg:text-4xl leading-tight text-[#19121e]">
-            {{ $heading }}
-          </h2>
+          <x-heading>{{ $heading }}</x-heading>
         @endif
         @if ($lead)
           <p class="font-poppins text-base text-[#19121e]/70 leading-relaxed">
@@ -57,5 +55,5 @@
       </ul>
     @endif
 
-  </section>
+  </x-section>
 @endif

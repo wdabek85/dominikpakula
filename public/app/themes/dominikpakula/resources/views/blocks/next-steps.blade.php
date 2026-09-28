@@ -1,12 +1,10 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+<x-section>
 
   {{-- Nagłówek --}}
   @if ($stepsHeading || $stepsSubtitle)
     <div class="flex flex-col gap-3 mb-10 lg:mb-12 text-center max-w-[720px] mx-auto">
       @if ($stepsHeading)
-        <h2 class="font-poppins font-semibold text-2xl lg:text-3xl leading-tight text-[#19121e]">
-          {{ $stepsHeading }}
-        </h2>
+        <x-heading>{{ $stepsHeading }}</x-heading>
       @endif
       @if ($stepsSubtitle)
         <p class="font-poppins text-base text-[#19121e]/70 leading-relaxed">
@@ -45,4 +43,4 @@
 
   </ol>
 
-</section>
+</x-section>

@@ -1,0 +1,483 @@
+{
+    "key": "group_site_settings",
+    "title": "Ustawienia strony",
+    "fields": [
+        {
+            "key": "field_settings_tab_contact",
+            "label": "Kontakt",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_contact_email",
+            "label": "E-mail",
+            "name": "contact_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": "kontakt@meskistylista.pl",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_phone",
+            "label": "Telefon (tak jak wyświetlany)",
+            "name": "contact_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "+48 577 190 949",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_phone_link",
+            "label": "Telefon do linku tel:",
+            "name": "contact_phone_link",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Same cyfry z +48, bez spacji.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "+48577190949",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_address_line1",
+            "label": "Adres — linia 1",
+            "name": "contact_address_line1",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Kraków",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_address_line2",
+            "label": "Adres — linia 2 (opcjonalnie)",
+            "name": "contact_address_line2",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_sidebar_phone",
+            "label": "Telefon w sidebarze usług",
+            "name": "contact_sidebar_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Baner „Zarezerwuj termin telefonicznie” na stronach usług. Puste = telefon główny.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_sidebar_phone_link",
+            "label": "Telefon w sidebarze — link tel:",
+            "name": "contact_sidebar_phone_link",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = link telefonu głównego.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_settings_tab_social",
+            "label": "Social media",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_social_instagram_url",
+            "label": "Instagram — link",
+            "name": "social_instagram_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": "https://www.instagram.com/dpakula_stylist/"
+        },
+        {
+            "key": "field_social_instagram_handle",
+            "label": "Instagram — nazwa (bez @)",
+            "name": "social_instagram_handle",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "dpakula_stylist",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_social_facebook_url",
+            "label": "Facebook — link",
+            "name": "social_facebook_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_social_tiktok_url",
+            "label": "TikTok — link",
+            "name": "social_tiktok_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_social_twitter_url",
+            "label": "X / Twitter — link",
+            "name": "social_twitter_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_social_whatsapp_url",
+            "label": "WhatsApp — link",
+            "name": "social_whatsapp_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Puste = link wa.me z telefonu głównego.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_settings_tab_service",
+            "label": "Teksty na stronach usług",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_service_guarantee_text",
+            "label": "Gwarancja (box z ceną)",
+            "name": "service_guarantee_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "30-dniowa gwarancja zwrotu pieniędzy",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_service_booking_label",
+            "label": "Przycisk rezerwacji (box z ceną, pasek mobile)",
+            "name": "service_booking_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Zarezerwuj rozmowę",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_service_price_note",
+            "label": "Dopisek pod ceną",
+            "name": "service_price_note",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 2,
+            "placeholder": "Rozmowa jest bezpłatna. Podana cena to koszt usługi — płacisz dopiero, gdy po konsultacji zdecydujesz się na współpracę.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_gift_banner_title",
+            "label": "Baner vouchera — tytuł",
+            "name": "gift_banner_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Pomysł na prezent (voucher)",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_gift_banner_text",
+            "label": "Baner vouchera — tekst",
+            "name": "gift_banner_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 2,
+            "placeholder": "To bardzo dobry prezent \"z efektem\", bo realnie zmienia codzienność: mniej chaosu, więcej pewności, szybsze poranki.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_about_cta_heading",
+            "label": "„Poznaj mnie” — nagłówek na zdjęciu",
+            "name": "about_cta_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Zanim zaczniemy poznaj mnie",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_about_cta_button",
+            "label": "„Poznaj mnie” — przycisk",
+            "name": "about_cta_button",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Poznaj mnie",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "site-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1790000040
+}

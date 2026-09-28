@@ -13,7 +13,7 @@
     {{-- Tytuł + opis --}}
     <div class="flex flex-col gap-2.5">
       @if ($headerTitle)
-        <h1 class="font-poppins text-5xl lg:text-[56px] leading-none text-black">
+        <h1 class="font-poppins text-[34px] md:text-5xl lg:text-[56px] leading-tight lg:leading-none text-black">
           {{ $headerTitle }}
         </h1>
       @endif

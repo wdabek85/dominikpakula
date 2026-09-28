@@ -17,10 +17,10 @@
   {{-- Treść --}}
   <div class="flex flex-col gap-2 flex-1 min-w-0">
     <p class="font-poppins font-bold text-sm lg:text-base leading-tight text-white">
-      Pomysł na prezent (voucher)
+      {{ $serviceTexts['gift_title'] }}
     </p>
     <p class="font-poppins text-sm lg:text-base leading-5 text-white">
-      To bardzo dobry prezent "z efektem", bo realnie zmienia codzienność: mniej chaosu, więcej pewności, szybsze poranki.
+      {{ $serviceTexts['gift_text'] }}
     </p>
     <p class="font-poppins font-medium text-sm lg:text-base leading-tight text-white">
       <span class="underline">Jest osobna strona do zakupu vouchera na {{ $serviceName ?: (get_the_title() ?: 'tę usługę') }}</span>.

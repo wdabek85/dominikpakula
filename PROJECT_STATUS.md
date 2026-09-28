@@ -1944,3 +1944,155 @@ oraz `og:description` obecne na wszystkich czterech archiwach.
 - Dedykowany szablon archiwum kategorii/tagu (teraz fallback na `index.blade.php`, sam `<h1>`)
 - Opis SEO dla kategorii `Przeglądy sieciówek` ma już treść z `term description`; sezon `Jesień` — nie ma
 
+
+---
+
+## 2026-09-03 — Incydent bezpieczeństwa: czwarte przejęcie konta admina + zamknięcie wektora REST /batch/v1
+
+Zgłoszenie brzmiało „znowu zmieniło się hasło do dpakula". To nie było zapomniane hasło —
+konto było przejęte, a napastnik siedział w nim od ~36 godzin.
+
+### Co się stało (02.09.2026)
+
+| Godzina | Zdarzenie |
+|---|---|
+| 00:43–00:46 | ~30× `POST /?rest_route=/batch/v1` z `95.111.235.240` (Contabo, FR) — **wszystkie 207, bez autoryzacji** |
+| 00:47–00:49 | Sweep skanera: `composer.json`, `backup.sql`, `debug.log`, wtyczki backupowe — wszystko 404, czysto |
+| 03:01:43 | **Udane logowanie na `dpakula` (ID 22) z `54.173.76.40`** (AWS, US), Chrome 146 / Windows |
+| 03.09 17:xx | Wykrycie — `wp user meta get 22 session_tokens` pokazał obcą sesję obok dwóch legalnych (`91.150.222.195`, PL) |
+
+Dowód, że batch daje kontekst administratora: artefakt `customize_changeset` ID 841 zawiera
+`"user_id":22`. Napastnik wykonywał operacje jako admin **nie znając hasła** — dlatego sam reset
+hasła nigdy nie był wystarczającym containmentem. Artefaktów (`customize_changeset` / `request`
+z datą `2020-01-01`) narosło ~70, ciągiem od 21.07 do 02.09. Tytuły ewoluowały:
+`changeset` → `c` → `p` → **`reentry`**.
+
+Limiter 5 prób / 15 min z `security.php` tej drogi nie łapie — batch pakuje wiele pod-żądań
+w jedno żądanie HTTP, więc dla licznika to jedna próba.
+
+### Containment (wykonany)
+
+1. `wp user session destroy 22 --all` → `session_tokens` puste (zweryfikowane)
+2. Reset hasła `dpakula`
+3. Potwierdzone czyste: brak obcych adminów (tylko ID 22), brak application passwords
+   (wyłączone kodem przez `wp_is_application_passwords_available`)
+
+### Fix w kodzie — `app/security.php`
+
+Commit `f162e0a` na `develop`, merge do `main` jako `98c4136`, wdrożone na produkcję
+(`git pull` + `acorn optimize:clear`; build Vite niepotrzebny — zmiana tylko w PHP).
+
+Dwie warstwy, bo jedna wystarczy tylko do pierwszej niespodzianki:
+
+- **`rest_endpoints`** (prio 20) — `/batch/v1` znika z rejestru dla anonimowych oraz dla
+  zalogowanych bez `edit_posts`
+- **`rest_pre_dispatch`** (prio 10) — odcina żądanie przed dispatchem, niezależnie od formy
+  trasy; łapie zarówno `?rest_route=/batch/v1`, jak i `/wp-json/batch/v1`
+
+Edytor bloków dla zalogowanego redaktora działa bez zmian — `/batch/v1` jest endpointem
+wyłącznie Gutenberga, front-end serwisu go nie używa.
+
+**Weryfikacja na żywo po wdrożeniu:**
+
+| Test | Przed | Po |
+|---|---|---|
+| `POST /?rest_route=/batch/v1` | 207 | **401** |
+| `POST /wp-json/batch/v1` | 207 | **401** |
+| Strona główna / blog / panel logowania | 200 | 200 |
+
+### Stan kont administratora na całym koncie `wiktor1249` (03.09.2026)
+
+| Instalacja | Obce konta | Uwagi |
+|---|---|---|
+| **weddingmasters.wdb-creative.pl** | **17** | `w2s_*` (11), `wp_svc_*` (4), `wp2_*` (2). Najnowsze **03.09 15:43** — atak aktywny |
+| **zahakowani.pl** | **2** | `wp2_*` z 07–08.08, znane od 11.08, wciąż nieusunięte |
+| meskistylista.pl | 0 | wektor zamknięty |
+| szklo-tech, miejskafala, wdb-creative, dominikpakula (staging), zahakowani `public_html_old` | 0 | czyste |
+
+### Otwarte — do zrobienia
+
+- [ ] **weddingmasters (patient zero)** — usunąć 17 obcych kont, przenieść hardening
+      z `security.php`, zamknąć `/batch/v1`. Konta przybywają co kilka godzin.
+- [ ] **zahakowani.pl** — usunąć 2 obce konta, przenieść hardening
+- [ ] **Rotacja hasła dhosting / SSH / MySQL** — otwarta od 05.08. Po zmianie podmienić
+      `DB_PASSWORD` w `.env` na wszystkich stronach
+- [ ] **2FA** — nadal brak
+- [ ] Głęboki skan `*/wp/*`, `*/vendor/*`, `*/node_modules/*` na weddingmasters
+- [ ] Aktualizacja ACF Pro (6.7.1) i Rank Math (1.0.266.1) — dostępne update'y
+
+> **Uwaga na przyszłość:** przy każdym zgłoszeniu „ktoś mi zmienił hasło" pierwszym krokiem
+> jest `wp user meta get <ID> session_tokens` — obce IP w sesjach to dowód przejęcia, a nie
+> zapominalstwa. Dopiero potem lista adminów na wszystkich instalacjach i reset hasła.
+
+---
+
+## Sesja 2026-09-28 — lokal 1:1 z produkcją + podstrona „Zakupy ze stylistą → Warszawa”
+
+### Lokal zsynchronizowany z produkcją
+Lokalna baza była z lipca (1 usługa). Zrobione (produkcja tylko czytana):
+- backup starej bazy lokalnej → `sql/backup/local-before-prod-sync-20260928.sql`
+- dump prod (`wp db export -` przez SSH) → import lokalnie → `search-replace https://meskistylista.pl → http://dominikpakula.local` (174 zamiany)
+- `uploads/` z prod (53 MB, 853 pliki), `view:clear`, `cache flush`, `rewrite flush`
+- kod: prod = `98c4136`, lokalny `develop` = to samo + commit z docsami; pluginy identyczne
+- **Loginy/hasła lokalnie = produkcyjne.** Procedura syncu w pamięci Claude (reference_local_env).
+
+### Nowe bloki (grupa „Podstrona usługi”, do wąskiej kolumny single-service)
+| Blok | Pliki | Pola (acf-json) |
+|---|---|---|
+| `service-text` — Tekst (usługa) | `blocks/service-text.blade.php`, `ServiceTextBlockComposer.php`, `acf-json/group_service_text_block.json` | `stext_label`, `stext_heading` (H2), `stext_body` (wysiwyg), `stext_image` (ID, lazy + srcset), `stext_button_text/url` (pusty URL = `.booking-trigger` z nazwą usługi), `stext_attached` (nagłówek+wstęp dla bloku poniżej — mniejszy odstęp) |
+| `service-cta` — CTA rezerwacji | `blocks/service-cta.blade.php`, `ServiceCtaBlockComposer.php`, `acf-json/group_service_cta_block.json` | `scta_eyebrow`, `scta_heading`, `scta_text`, `scta_button_text` (booking), `scta_service` (puste = tytuł usługi), `scta_secondary_text/url` |
+
+Inne zmiany w kodzie:
+- `components/button.blade.php` — nowe warianty `light` i `outline-light` (na ciemne tło); kolor focus ringa przeniesiony do wariantu (primary/secondary bez zmian wizualnych)
+- `blocks/service-process.blade.php` — tytuł kroku `<p>` → `<h3>` (hierarchia nagłówków, wygląd bez zmian)
+
+### Podstrona Warszawy (TYLKO LOKALNIE — ID 850)
+`/uslugi/zakupy-ze-stylista/warszawa/`, treść z wireframe v4 (`Documents/Codex/2026-09-28/.../wireframe-zakupy-ze-stylista-warszawa-v4.html`).
+Tworzona skryptem **`sql/content/warszawa.php`** (gitignored, idempotentny, linki z `home_url()`):
+`wp eval-file sql/content/warszawa.php`. Skrypt ustawia też pola sidebaru (H1, opis, cena „1 800 zł”, „Co obejmuje cena?” 5 pkt, podpis hero), Rank Math (title/description/frazy) i link karty „Warszawa” w `local-seo` na usłudze-rodzicu (backup: `sql/backup/post-362-before-warszawa.html`).
+
+Kolejność bloków (sekcja „Ile kosztują…” usunięta — dublowała box ceny w sidebarze): service-text[attached] + service-process (plan zakupów) → service-text (gdzie w Warszawie) → service-desc-alt (kiedy warto; 5 punktów rozbite 3 + 2 „Szczególnie, jeśli”) → service-text[attached] + service-what (co zyskasz, 6) → service-video („Zanim zaczniemy poznaj mnie” + modal #about-modal, jak na innych usługach — decyzja usera zamiast sekcji „Cześć, jestem Dominik” z wireframe'u) → service-cta. Opinie + blog z szablonu.
+
+### Do zrobienia
+- [x] Zdjęcie główne: ID 439 `zakupy-ze-stylista-warszawa.webp` (to samo co karta Warszawy w local-seo)
+- [x] **Staging 2026-09-28**: kod `71ff3d9` (pull + build), strona założona skryptem → ID 621 na stagingu (backup rodzica: `sql/backup/staging-post-362-before-warszawa.html`)
+- [ ] Prod po akceptacji: merge staging → main, pull + build, na prod po deployu kodu: `wp eval-file` skryptu warszawa.php (skopiować plik na serwer) + `acorn view:clear`
+- [ ] Literówka na prod: Kraków `service_sidebar_title` = „Zakupy ze Stylista Karków”
+- [ ] Karta Kraków w local-seo rodzica wskazuje stary slug `zakupy-ze-stylista-karkow` (działa przez redirect, można poprawić)
+- [ ] Do potwierdzenia przez Dominika (z wireframe'u): „Budżet na ubrania ustalamy osobno”
+
+---
+
+## Sesja 2026-09-28 (cd.) — audyt całości + realizacja (lokalnie, `develop`)
+
+Pełny raport i status: **`AUDYT-2026-09-28.md`**. Commity: `7e36274` (etapy 1–4), `ac8e027` (etapy 5–6). **Nie wdrożone na staging/prod.**
+
+Najważniejsze zmiany w architekturze:
+- **Usługi z CPT:** zakładka „Karta usługi” (`group_service_card.json`), helper `App\Services\ServiceCatalog`, bloki `services`/`offer` mają źródło kart (ręcznie / wszystkie / wybrane), `local-seo` — „Podstrony tej usługi”. Kolejność usług = Atrybuty strony → Kolejność (10/20/30/40/50).
+- **Ustawienia strony:** `group_site_settings.json` — kontakt, sociale, teksty stron usług. Jedyne fallbacki: `App\View\Composers\SiteSettings` (`$contact`, `$social`, `$serviceTexts`).
+- **ACF:** wszystkie grupy w `acf-json/` (baza: 0). ⚠️ nie usuwać grup przez API/panel ACF — kasuje pliki JSON.
+- **Komponenty sekcji:** `x-section`, `x-heading` (section/display/column), `x-eyebrow` (default/large), `x-badge as="h2"`. Nowe bloki budować na nich.
+- **Kolumna usługi:** bloki bez własnego `py`, odstęp z rodzica w `single-service.blade.php` (`gap-12 lg:gap-16`).
+- **Usunięte bloki:** service-trust, service-desc-cards, blog-pullquote, blog-callout, blog-personal-quote.
+- **Migracje treści:** katalog `migrations/` (README z tabelą statusu per środowisko).
+
+### Wdrożenie (do zrobienia)
+1. ✅ staging 28.09: `e644199`, backup `sql/backup/staging-before-audyt-20260928.sql` na serwerze, migracja OK (0 grup ACF w bazie)
+2. `wp eval-file migrations/2026-09-28-audyt.php dry` → bez `dry` → `wp acorn view:clear && wp cache flush`
+3. przegląd stagingu (home, /uslugi/, /voucher/, usługi, /kontakt/) → prod tym samym trybem (backup bazy!)
+
+### Podstrona Wrocławia (lokalnie, ID 854)
+`/uslugi/zakupy-ze-stylista/wroclaw/` z wireframe'u v1 — `migrations/2026-09-28-wroclaw.php`, ten sam układ co Warszawa (bez sekcji ceny, „Poznajmy się” = service-video). Karta w local-seo rodzica pojawia się automatycznie (tryb „Podstrony tej usługi”).
+- [x] Zdjęcie Wrocławia: panorama ze Sky Tower, `migrations/assets/zakupy-ze-stylista-wroclaw.webp` — skrypt importuje je sam na każdym środowisku
+- [ ] staging → prod (po audycie)
+
+### Kraków przebudowany (lokalnie, ID 477) — kanibalizacja
+Stara treść Krakowa była w 40% kopią `/uslugi/zakupy-ze-stylista/` (te same H2, blok korzyści 1:1, 330 słów). Nowa z wireframe'u v1 (`migrations/2026-09-28-krakow.php`), układ jak Warszawa/Wrocław. Wspólna treść z rodzicem: 3% (tyle co inne miasta), 598 słów. Zdjęcie (Sukiennice) i przekierowanie starego sluga bez zmian.
+- [x] staging 28.09 (`5e0698a`): Wrocław (ID 625, zdjęcie ID 626) i Kraków przebudowany; backup `sql/backup/staging-before-miasta-20260928.sql`
+
+### Kielce (ID 856 lokalnie)
+`migrations/2026-09-28-kielce.php` na nowym `lib/city.php` (wspólny zapis podstrony miasta). Wspólna treść z rodzicem 3%, max między miastami 6%.
+- [ ] zdjęcie Kielc (tymczasowo zdjęcie usługi-rodzica) — plik do `migrations/assets/` + klucz `image` w skrypcie
+
+### Kopia produkcji przed wdrożeniem audytu (28.09 15:44)
+Serwer: `~/meskistylista.pl/app/sql/backup/prod-before-audyt-20260928.sql` (+ `-uploads.tar.gz` 52 MB, `-commit.txt` = `98c4136`). Kopia bazy także lokalnie w `app/sql/backup/`.

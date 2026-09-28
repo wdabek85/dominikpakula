@@ -154,13 +154,6 @@ export default function booking() {
       title.textContent = s.title || '';
       info.appendChild(title);
 
-      if (s.excerpt) {
-        const excerpt = document.createElement('span');
-        excerpt.className = 'font-poppins text-xs text-gray-500 leading-relaxed';
-        excerpt.textContent = s.excerpt;
-        info.appendChild(excerpt);
-      }
-
       const right = document.createElement('div');
       right.className = 'flex flex-col items-end gap-1 shrink-0';
 

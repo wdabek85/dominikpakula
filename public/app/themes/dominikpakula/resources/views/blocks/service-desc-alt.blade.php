@@ -1,4 +1,4 @@
-<div class="py-10 lg:py-14">
+<div>
 
   {{-- Badge --}}
   @if ($label)
@@ -9,9 +9,7 @@
 
   {{-- Nagłówek --}}
   @if ($heading)
-    <h2 class="font-poppins text-xl font-bold leading-snug text-black mb-6 lg:mb-8">
-      {{ $heading }}
-    </h2>
+    <x-heading variant="column" class="mb-6 lg:mb-8">{{ $heading }}</x-heading>
   @endif
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">

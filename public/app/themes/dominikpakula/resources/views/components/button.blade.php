@@ -11,11 +11,14 @@
 @php
   $tag = $href ? 'a' : 'button';
 
-  $base = 'inline-flex items-center justify-center font-poppins font-medium text-base leading-[26px] rounded-[2px] border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary';
+  $base = 'inline-flex items-center justify-center font-poppins font-medium text-base leading-[26px] rounded-[2px] border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
 
+  // Kolor focus ringa siedzi w wariancie — na ciemnym tle (light / outline-light) ring jest biały.
   $variants = [
-    'primary' => 'bg-primary border-primary text-white hover:bg-primary/90',
-    'secondary' => 'bg-white border-primary text-black hover:bg-gray-50',
+    'primary' => 'bg-primary border-primary text-white hover:bg-primary/90 focus:ring-primary',
+    'secondary' => 'bg-white border-primary text-black hover:bg-gray-50 focus:ring-primary',
+    'light' => 'bg-white border-white text-primary hover:bg-white/90 focus:ring-white focus:ring-offset-primary',
+    'outline-light' => 'bg-transparent border-white text-white hover:bg-white/10 focus:ring-white focus:ring-offset-primary',
   ];
 
   $sizes = [

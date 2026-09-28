@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+<x-section>
 
   <div class="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-20">
 
@@ -7,11 +7,9 @@
 
       {{-- Nagłówek --}}
       <div class="flex flex-col gap-4 text-[#01000d]">
-        <p class="font-poppins font-medium text-lg leading-[22px]">Kontakt</p>
+        <x-eyebrow label="Kontakt" />
         <div class="flex flex-col gap-2">
-          <h2 class="font-poppins font-medium text-5xl leading-[48px] tracking-[-0.96px]">
-            Masz do mnie jakieś pytania?
-          </h2>
+          <x-heading variant="display">Masz do mnie jakieś pytania?</x-heading>
           <p class="font-poppins text-base leading-5">
             Napisz, zadzwoń albo wypełnij formularz — odezwę się w ciągu 24 godzin
           </p>
@@ -57,7 +55,7 @@
             <span class="font-poppins text-base leading-5">Adres:</span>
           </div>
           <p class="font-poppins text-sm leading-4">
-            {{ $contact['address_line1'] ?: 'Kraków' }}@if ($contact['address_line2'])<br>{{ $contact['address_line2'] }}@endif
+            {{ $contact['address_line1'] }}@if ($contact['address_line2'])<br>{{ $contact['address_line2'] }}@endif
           </p>
         </div>
 
@@ -182,4 +180,4 @@
 
   </div>
 
-</section>
+</x-section>

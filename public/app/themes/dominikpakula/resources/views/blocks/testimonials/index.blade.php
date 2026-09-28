@@ -1,12 +1,10 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14 overflow-hidden">
+<x-section class="overflow-hidden">
 
   {{-- Nagłówek --}}
   @if ($title || $subtitle)
     <div class="flex flex-col gap-2.5 mb-5 lg:mb-8">
       @if ($title)
-        <h2 class="font-serif text-[30px] leading-none text-[#19121e]">
-          {{ $title }}
-        </h2>
+        <x-heading>{{ $title }}</x-heading>
       @endif
 
       @if ($subtitle)
@@ -36,4 +34,4 @@
     </div>
   @endif
 
-</section>
+</x-section>

@@ -1,5 +1,5 @@
 @if ($text || $image)
-  <section class="not-prose bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-12 lg:py-16">
+  <x-section class="not-prose">
     <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-8 lg:gap-x-20 items-center">
 
       {{-- Cytat z cudzysłowem w tle (nachodzi od góry) --}}
@@ -28,5 +28,5 @@
       @endif
 
     </div>
-  </section>
+  </x-section>
 @endif

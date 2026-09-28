@@ -1,4 +1,4 @@
-<div class="py-10 lg:py-14">
+<div>
 
   {{-- Badge "Dla kogo" — POZA szarym tłem --}}
   @if ($label)
@@ -12,9 +12,7 @@
 
     {{-- Nagłówek sekcji --}}
     @if ($heading)
-      <h2 class="font-poppins text-lg font-bold leading-normal text-black max-w-[560px] mb-4 lg:mb-5">
-        {{ $heading }}
-      </h2>
+      <x-heading variant="column" class="max-w-[560px] mb-4 lg:mb-5">{{ $heading }}</x-heading>
     @endif
 
     {{-- 3 sekcje stackowane (editorial), z dużymi numerami jako visual filler --}}

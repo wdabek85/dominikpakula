@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-8 lg:pt-0 lg:pb-12">
+<x-section spacing="none" class="py-8 lg:pt-0 lg:pb-12">
   <div class="flex flex-col lg:flex-row lg:gap-10 lg:items-end">
 
     {{-- Lewa: najnowszy wpis blogowy --}}
@@ -99,4 +99,4 @@
     </div>
 
   </div>
-</section>
+</x-section>

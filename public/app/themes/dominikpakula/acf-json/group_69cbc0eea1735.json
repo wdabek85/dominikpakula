@@ -1,37 +1,11 @@
 {
-    "key": "group_6a0f41ba5be68",
-    "title": "Opis Usługi\/Zdjęcia",
+    "key": "group_69cbc0eea1735",
+    "title": "Hero Podstrona",
     "fields": [
         {
-            "key": "field_6a0f41bbdb86b",
-            "label": "Obrazek lewy",
-            "name": "trust_left_image",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "allow_in_bindings": 0,
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_6a0f41dcdb86c",
-            "label": "Lewa karta — tekst",
-            "name": "trust_left_text",
+            "key": "field_69cbc0ee1f36b",
+            "label": "Breadcrumb",
+            "name": "subpage_hero_breadcrumb",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -50,9 +24,51 @@
             "append": ""
         },
         {
-            "key": "field_6a0f41e5db86d",
-            "label": "Obrazek Prawy",
-            "name": "trust_right_image",
+            "key": "field_69cbc1071f36c",
+            "label": "Nagłówek",
+            "name": "subpage_hero_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_69cbc1121f36d",
+            "label": "Opis",
+            "name": "subpage_hero_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_69cbc11a1f36e",
+            "label": "Obrazek Lewy",
+            "name": "subpage_hero_image_left",
             "aria-label": "",
             "type": "image",
             "instructions": "",
@@ -76,9 +92,56 @@
             "preview_size": "medium"
         },
         {
-            "key": "field_6a0f41f2db86e",
-            "label": "Prawa karta — tekst",
-            "name": "trust_right_text",
+            "key": "field_69cbc1241f36f",
+            "label": "Opis obrazka lewego",
+            "name": "subpage_hero_caption_left",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_69cbc12f1f370",
+            "label": "Obrazek Prawy",
+            "name": "subpage_hero_image_right",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "allow_in_bindings": 0,
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_69cbc1381f371",
+            "label": "Opis Obrazka Prawego",
+            "name": "subpage_hero_caption_right",
             "aria-label": "",
             "type": "text",
             "instructions": "",
@@ -102,7 +165,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/service-trust"
+                "value": "acf/subpage-hero"
             }
         ]
     ],
@@ -116,5 +179,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1779385125
+    "modified": 1774961025
 }

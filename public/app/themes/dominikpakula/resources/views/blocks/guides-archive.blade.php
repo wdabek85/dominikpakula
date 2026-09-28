@@ -1,4 +1,4 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+<x-section>
 
   {{-- Pasek filtrów (chipsy kategorii) --}}
   @if (! empty($categories))
@@ -74,4 +74,4 @@
     </div>
   @endif
 
-</section>
+</x-section>

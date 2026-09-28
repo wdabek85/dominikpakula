@@ -1,7 +1,4 @@
-{{--
-  Template Name: Blog — Single Post
-  Description: Dedykowany szablon dla pojedynczego wpisu bloga.
---}}
+{{-- Szablon pojedynczego wpisu bloga. --}}
 
 @extends('layouts.app')
 

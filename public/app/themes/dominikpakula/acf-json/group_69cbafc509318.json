@@ -316,13 +316,6 @@
                 "operator": "==",
                 "value": "acf/service-desc"
             }
-        ],
-        [
-            {
-                "param": "block",
-                "operator": "==",
-                "value": "acf/service-desc-cards"
-            }
         ]
     ],
     "menu_order": 0,

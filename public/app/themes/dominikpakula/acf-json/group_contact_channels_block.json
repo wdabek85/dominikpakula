@@ -1,0 +1,67 @@
+{
+    "key": "group_contact_channels_block",
+    "title": "Blok: Kanały kontaktu",
+    "fields": [
+        {
+            "key": "field_channels_heading",
+            "label": "Nagłówek H2",
+            "name": "channels_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Wybierz wygodny kanał",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_channels_subtitle",
+            "label": "Podtytuł",
+            "name": "channels_subtitle",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Telefon, e-mail i Instagram: Ustawienia strony.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Każda wiadomość trafia bezpośrednio do mnie. Wybierz to, co dla Ciebie najwygodniejsze.",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/contact-channels"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1790000032
+}

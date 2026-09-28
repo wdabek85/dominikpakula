@@ -1,18 +1,14 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-10 lg:py-14">
+<x-section>
 
   {{-- Nagłówek: etykieta + tytuł (lewa) + lead (prawa) --}}
   <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 lg:mb-12">
     <div class="flex flex-col gap-2 shrink-0">
       @if ($label)
-        <span class="font-metro text-2xl leading-none text-[#19121e] tracking-[6px]">
-          {{ $label }}
-        </span>
+        <x-eyebrow :label="$label" variant="large" :line="false" />
       @endif
 
       @if ($title)
-        <h2 class="font-poppins text-[32px] lg:text-[44px] leading-tight text-[#19121e]">
-          {{ $title }}
-        </h2>
+        <x-heading>{{ $title }}</x-heading>
       @endif
     </div>
 
@@ -56,4 +52,4 @@
     @endif
   </div>
 
-</section>
+</x-section>

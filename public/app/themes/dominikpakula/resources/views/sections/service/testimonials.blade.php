@@ -1,10 +1,8 @@
-<section class="bg-white mx-auto max-w-[1440px] px-4 lg:px-20 py-8 lg:py-12 overflow-hidden">
+<x-section class="overflow-hidden">
 
   {{-- Nagłówek --}}
   <div class="flex flex-col gap-2.5 mb-5 lg:mb-8">
-    <h2 class="font-serif text-[30px] leading-none text-primary">
-      Co mówią nasi klienci
-    </h2>
+    <x-heading>Co mówią nasi klienci</x-heading>
     <p class="font-poppins text-base leading-5 text-black">
       Poznaj opinie osób, które skorzystały z naszych usług.
     </p>
@@ -29,4 +27,4 @@
     </div>
   @endif
 
-</section>
+</x-section>

@@ -1,9 +1,9 @@
-<div class="py-10 lg:py-14">
+<div>
 
   {{-- Badge --}}
   @if ($label)
     <div class="mb-6 lg:mb-8">
-      <x-badge :label="$label" />
+      <x-badge :label="$label" as="h2" />
     </div>
   @endif
 
@@ -46,9 +46,9 @@
                 </p>
               @endif
               @if ($step['title'])
-                <p class="font-poppins text-base font-bold leading-snug text-black">
+                <h3 class="font-poppins text-base font-bold leading-snug text-black">
                   {{ $step['title'] }}
-                </p>
+                </h3>
               @endif
 
               @if ($step['description'])

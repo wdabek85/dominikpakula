@@ -1,7 +1,4 @@
-{{--
-  Template Name: Poradnik — Single Guide
-  Description: Dedykowany szablon dla pojedynczego poradnika (CPT guide).
---}}
+{{-- Szablon pojedynczego poradnika (CPT guide). --}}
 
 @extends('layouts.app')
 
