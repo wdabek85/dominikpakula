@@ -1,11 +1,11 @@
 <x-section spacing="none" class="py-8 lg:pt-0 lg:pb-12">
-  <div class="flex flex-col lg:flex-row lg:gap-10 lg:items-end">
+  <div class="flex flex-col lg:flex-row lg:gap-10 lg:items-stretch">
 
     {{-- Lewa: najnowszy wpis blogowy --}}
     @if ($latestPost)
       <a
         href="{{ $latestPost['url'] }}"
-        class="relative flex flex-col gap-2.5 justify-end p-4 h-[367px] lg:flex-1 overflow-hidden group mb-6 lg:mb-0 rounded-sm"
+        class="relative flex flex-col gap-2.5 justify-end p-4 h-[367px] lg:h-auto lg:min-h-[367px] lg:flex-1 overflow-hidden group mb-6 lg:mb-0 rounded-sm"
       >
         @if ($latestPost['image'])
           <img
@@ -95,6 +95,8 @@
           </p>
         </div>
       @endif
+
+      @include('blocks.partials.glossary-teaser')
 
     </div>
 
