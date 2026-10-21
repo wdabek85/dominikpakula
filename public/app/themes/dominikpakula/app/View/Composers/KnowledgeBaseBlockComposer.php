@@ -15,6 +15,38 @@ class KnowledgeBaseBlockComposer extends Composer
         return [
             'latestPost' => $this->latestBlogPost(),
             'guides' => $this->latestGuides(4),
+            'glossary' => $this->glossaryTeaser(4),
+        ];
+    }
+
+    /**
+     * Zajawka słowniczka pod poradnikami: link do archiwum, licznik i kilka losowych haseł.
+     * Brak opublikowanych haseł = null (kafel się nie wyświetla).
+     */
+    protected function glossaryTeaser(int $limit): ?array
+    {
+        $count = (int) (wp_count_posts('glossary')->publish ?? 0);
+        if ($count === 0) {
+            return null;
+        }
+
+        $posts = get_posts([
+            'post_type' => 'glossary',
+            'posts_per_page' => $limit,
+            'orderby' => 'rand',
+            'post_status' => 'publish',
+            'no_found_rows' => true,
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
+        ]);
+
+        return [
+            'url' => get_post_type_archive_link('glossary') ?: home_url('/slowniczek/'),
+            'count' => \App\Services\Glossary::countLabel($count),
+            'terms' => array_map(fn ($post) => [
+                'title' => get_the_title($post),
+                'url' => get_permalink($post) ?: '',
+            ], $posts),
         ];
     }
 

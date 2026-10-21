@@ -23,5 +23,6 @@ Przed uruchomieniem na produkcji zrób backup bazy (`wp db export`).
 | 2026-09-28-krakow.php | przebudowa Krakowa (usuwa kanibalizację z rodzicem: 40% → 3% wspólnej treści) | ✅ | ✅ | ✅ |
 | 2026-09-28-kielce.php | podstrona Zakupy ze stylistą → Kielce (zdjęcie tymczasowe — z usługi-rodzica) | ✅ | ✅ | ✅ |
 | 2026-09-28-seo-przeglad-zakupy.php | Rank Math: frazy „Przegląd szafy + zakupy” bez fraz innych usług | ✅ | ✅ | ✅ |
+| 2026-09-28-faq-przeglad-zakupy.php | FAQ „Przegląd szafy + zakupy” zamiast zaślepki z szablonu | ✅ | ✅ | ⬜ |
 
 > ⚠️ Grup pól ACF nie usuwaj przez `acf_delete_field_group()` ani przez kosz w panelu ACF — przy local JSON ACF kasuje też plik z `acf-json/`. Migracja audytu usuwa tylko wiersze z bazy.
