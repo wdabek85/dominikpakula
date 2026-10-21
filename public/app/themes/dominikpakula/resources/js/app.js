@@ -20,6 +20,7 @@ import blogShare from './components/blog-share.js';
 import newsletterForm from './components/newsletter-form.js';
 import lightbox from './components/lightbox.js';
 import aboutModal from './components/about-modal.js';
+import glossarySidebar from './components/glossary-sidebar.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   mobileMenu();
@@ -38,4 +39,5 @@ document.addEventListener('DOMContentLoaded', () => {
   newsletterForm();
   lightbox();
   aboutModal();
+  glossarySidebar();
 });

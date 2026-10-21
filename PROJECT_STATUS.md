@@ -268,13 +268,14 @@ resources/images/
 | Opis Usługi / Proces Współpracy | blocks.service-process | ServiceProcessBlockComposer | Gotowy |
 | Opis Usługi / FAQ | blocks.service-faq | ServiceFaqBlockComposer | Gotowy |
 
-## Custom Post Types (4)
+## Custom Post Types (5)
 | CPT | Slug | Plik | Opis |
 |-----|------|------|------|
 | Opinie | testimonial | PostTypes/Testimonial.php | Opinie klientów (non-public) |
 | Realizacje | portfolio | PostTypes/Portfolio.php | Portfolio prac (public, /realizacje/) |
 | Usługi | service | PostTypes/Service.php | Usługi (public, /uslugi/, editor+thumbnail) |
 | Poradniki | guide | PostTypes/Guide.php | Poradniki (public, /poradniki/) |
+| Słowniczek | glossary | PostTypes/Glossary.php | Hasła słowniczka (public, archiwum /slowniczek/, title+editor+excerpt, archiwum bez paginacji) |
 
 ## Custom Taxonomies (2)
 | Taxonomia | Slug | Powiązana z | Plik | Opis |
@@ -289,6 +290,8 @@ resources/images/
 | Strona z blokami | template-blocks.blade.php | Podstrony bez tytułu (Usługi, Voucher, Baza Wiedzy, Blog) |
 | Single Service | single-service.blade.php | Pojedyncza usługa (grid 7fr/3fr + sticky sidebar) |
 | Single Post | single-post.blade.php | Pojedynczy wpis blogowy (z TOC, share, prev/next, autor, related) |
+| Archiwum Słowniczka | archive-glossary.blade.php | /slowniczek/ — nagłówek jak Baza Wiedzy (x-page-header) + pasek A–Ż ze strzałkami (bez sticky) + siatka liter (1/2/3 kol.) + booking CTA |
+| Single Glossary | single-glossary.blade.php | Pojedyncze hasło: grid treść + sidebar 375px (wyszukiwarka na żywo + akordeon liter, bieżące hasło wyróżnione); mobile: treść → sidebar → powrót; booking CTA |
 | Single Guide | single-guide.blade.php | Pojedynczy poradnik (hero + TOC + share + chipsy guide_category + related guides + newsletter + powrót) |
 
 ## Szablon usługi (single-service)
@@ -352,6 +355,8 @@ resources/images/
 | Blog Card | components/blog-card.blade.php | + propsy: category, authorAvatar, authorRole, withShadow, hover zoom obrazu |
 | Button | components/button.blade.php | Primary/secondary, lg/sm, z ikoną |
 | Eyebrow | components/eyebrow.blade.php | Mały label nad tytułami |
+| Glossary Letter | components/glossary-letter.blade.php | Kafel litery słowniczka (litera H2 + licznik haseł + lista linków), h-full = równa wysokość w rzędzie grida |
+| Page Header | components/page-header.blade.php | Breadcrumb tekstowy + H1 + opis. Używany przez blok acf/page-header i archiwum słowniczka |
 | Gift Banner | components/gift-banner.blade.php | Banner "Pomysł na prezent" |
 | Portfolio Card | components/portfolio-card.blade.php | Karta realizacji |
 | Section | components/section.blade.php | Wrapper sekcji z paddingami |
@@ -2103,3 +2108,42 @@ Serwer: `~/meskistylista.pl/app/sql/backup/prod-before-audyt-20260928.sql` (+ `-
 - sitemapa Rank Math była w cache (stary `…-krakow-2`, brak nowych miast) — wyczyszczona `\RankMath\Sitemap\Cache::invalidate_storage()`; teraz 9 usług
 - kopia sprzed wdrożenia: `~/meskistylista.pl/app/sql/backup/prod-before-audyt-20260928.*` (+ baza lokalnie)
 - Otwarte: zdjęcie Kielc; tekst bloku Newsletter; frazy Rank Math „Przegląd szafy + zakupy” (kanibalizacja z przegląd szafy / zakupy ze stylistą)
+
+## Sesja 2026-10-21 — Słowniczek (CPT glossary)
+
+Bez Figmy, w stylu istniejących podstron (Poppins, kontener 1440/px-4 lg:px-20, szary breadcrumbs, eyebrow).
+
+### Nowe pliki
+- `app/PostTypes/Glossary.php` — CPT `glossary`, slug `slowniczek`, `has_archive`; `pre_get_posts` → archiwum `posts_per_page=-1`. Dopisany do `functions.php`.
+- `app/View/Composers/ArchiveGlossaryComposer.php` — grupowanie po 1. literze, sortowanie `Collator('pl_PL')` (fallback remove_accents), stały alfabet A–Ż (bez Ą/Ę/Ń, z Q/V/X), litery bez haseł nieaktywne, kotwice `litera-x` (polskie: `litera-l-kreska`, `litera-z-kropka` itd.), odmiana „1 hasło / 2 hasła / 5 haseł”.
+- `app/View/Composers/SingleGlossaryComposer.php`
+- `resources/views/archive-glossary.blade.php`, `single-glossary.blade.php`
+- `resources/views/sections/glossary/` — `breadcrumbs` (wspólne, z tablicy `$breadcrumbs`), `hero`, `alphabet-nav` (sticky top-0), `letters` (grid), `term` (treść hasła)
+- `resources/views/components/glossary-letter.blade.php`
+
+### ACF
+- `acf-json/group_site_settings.json` — nowa zakładka „Słowniczek”: `glossary_title`, `glossary_description` (puste = fallback w Composerze).
+
+### Dane
+- Lokalnie dodane 34 testowe hasła (excerpt = krótka definicja, treść z dopiskiem „hasło testowe”). NA PROD/STAGING ich nie przenosić — usunąć lub uzupełnić przed publikacją.
+
+### Poprawki po review (ta sama sesja)
+- Pasek alfabetu: bez `sticky`, jeden rząd w kontenerze, przewijany strzałkami. Reużyty `slider-arrows.js` — dodane opcje `[data-slider-root]` (gdzie szukać przycisków), `data-slider-step="page"` (krok = 80% szerokości), `[data-slider-arrows]` (ukryte, gdy wszystko się mieści) + przeliczanie na resize. Portfolio działa po staremu.
+- Hero: usunięty eyebrow „Od A do Ż” i szary pasek breadcrumbs na archiwum — nagłówek 1:1 jak Baza Wiedzy. Markup bloku `page-header` wyciągnięty do komponentu `x-page-header` (blok tylko go wywołuje).
+- Baza Wiedzy: w bloku `knowledge-base` pod listą poradników kafel „Słowniczek” (`blocks/partials/glossary-teaser.blade.php`): licznik haseł, 4 losowe hasła jako chipy, link do archiwum. Dane z `KnowledgeBaseBlockComposer::glossaryTeaser()`; brak haseł = kafel ukryty. `ArchiveGlossaryComposer::countLabel()` jest teraz public static (wspólna odmiana).
+
+### Sidebar pojedynczego hasła (ta sama sesja)
+- Logika słowniczka wyciągnięta do `app/Services/Glossary.php` (grupowanie, sortowanie pl, kotwice, `countLabel`, `allPosts`) — używana przez archiwum, single i zajawkę w Bazie Wiedzy.
+- `sections/glossary/sidebar.blade.php` — `<aside>`, pole `type=search` z labelem sr-only, akordeon liter (przyciski z `aria-expanded`/`aria-controls`), lista z własnym scrollem `max-h-[640px]`, bez sticky.
+- `resources/js/components/glossary-sidebar.js` — rozwijanie liter + filtr bez polskich znaków (rozwija litery z wynikami, po wyczyszczeniu stan początkowy), przewija listę do litery bieżącego hasła.
+- Nowa ikona `icons/magnifying-glass` (Heroicons).
+
+### Deploy 2026-10-21
+- Kod na staging + produkcję (main). Na serwerach brak haseł — archiwum pokazuje stan pusty, kafel w Bazie Wiedzy ukryty do czasu dodania pierwszego hasła.
+- Przy okazji na main poszedł commit a8472f1 (plik migracji FAQ Przegląd szafy + zakupy) — sam plik, migracja na prod NIE uruchomiona (dalej ⬜ w `migrations/README.md`).
+
+### Do zrobienia
+- [ ] Prawdziwe treści haseł (od klienta)
+- [ ] Dodać „Słowniczek” do menu / stopki
+- [ ] Rank Math: włączyć CPT `glossary` w sitemapie i ustawić tytuł archiwum
+- [ ] Deploy na staging (nowe klasy Tailwind → wymaga `npm run build`)

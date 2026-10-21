@@ -459,6 +459,66 @@
             "placeholder": "Poznaj mnie",
             "prepend": "",
             "append": ""
+        },
+        {
+            "key": "field_settings_tab_glossary",
+            "label": "Słowniczek",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glossary_title",
+            "label": "Słowniczek — tytuł (H1)",
+            "name": "glossary_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Słowniczek stylu",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_description",
+            "label": "Słowniczek — opis pod tytułem",
+            "name": "glossary_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Puste = tekst domyślny (podpowiedź w polu).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 2,
+            "placeholder": "Pojęcia ze świata męskiej mody i stylizacji wyjaśnione prostym językiem — od A do Ż.",
+            "new_lines": ""
         }
     ],
     "location": [
@@ -479,5 +539,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1790000040
+    "modified": 1790000050
 }
