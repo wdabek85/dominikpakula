@@ -137,7 +137,7 @@
                 <div class="w-full h-[240px] rounded-lg overflow-hidden">
                   <img
                     src="{{ $service['image'] }}"
-                    alt=""
+                    alt="{{ $service['imageAlt'] }}"
                     class="size-full object-cover object-top"
                     width="600"
                     height="240"
@@ -211,7 +211,7 @@
                 <a href="{{ $post['url'] }}" class="flex gap-4 px-3 py-2 rounded-[2px] hover:bg-gray-50 transition-colors group/card">
                   @if ($post['image'])
                     <div class="w-[120px] h-[80px] rounded-[2px] overflow-hidden shrink-0">
-                      <img src="{{ $post['image'] }}" alt="" class="size-full object-cover" width="120" height="80" loading="lazy">
+                      <img src="{{ $post['image'] }}" alt="{{ $post['imageAlt'] }}" class="size-full object-cover" width="120" height="80" loading="lazy">
                     </div>
                   @else
                     <div class="w-[120px] h-[80px] rounded-[2px] bg-gray-100 shrink-0" aria-hidden="true"></div>
@@ -250,7 +250,7 @@
                 <a href="{{ $guide['url'] }}" class="flex gap-4 px-3 py-2 rounded-[2px] hover:bg-gray-50 transition-colors group/card">
                   @if ($guide['image'])
                     <div class="w-[120px] h-[80px] rounded-[2px] overflow-hidden shrink-0">
-                      <img src="{{ $guide['image'] }}" alt="" class="size-full object-cover" width="120" height="80" loading="lazy">
+                      <img src="{{ $guide['image'] }}" alt="{{ $guide['imageAlt'] }}" class="size-full object-cover" width="120" height="80" loading="lazy">
                     </div>
                   @else
                     <div class="w-[120px] h-[80px] rounded-[2px] bg-gray-100 shrink-0" aria-hidden="true"></div>

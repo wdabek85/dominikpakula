@@ -115,6 +115,7 @@ class NavigationComposer extends Composer
                 'title' => get_the_title($service->ID),
                 'url' => get_permalink($service->ID),
                 'image' => $thumbId ? (wp_get_attachment_image_url($thumbId, 'large') ?: '') : '',
+                'imageAlt' => $this->imageAlt((int) $thumbId, get_the_title($service->ID)),
                 'description' => \get_field('service_sidebar_description', $service->ID) ?: '',
             ];
         }
@@ -151,10 +152,21 @@ class NavigationComposer extends Composer
                 'title' => get_the_title($post->ID),
                 'url' => get_permalink($post->ID),
                 'image' => $thumbId ? (wp_get_attachment_image_url($thumbId, 'medium') ?: '') : '',
+                'imageAlt' => $this->imageAlt((int) $thumbId, get_the_title($post->ID)),
                 'excerpt' => $excerpt,
             ];
         }
 
         return $items;
+    }
+
+    /**
+     * Alt z biblioteki mediów; gdy pusty — tytuł wpisu/usługi (decode, bo get_the_title zwraca encje).
+     */
+    protected function imageAlt(int $thumbId, string $fallback): string
+    {
+        $alt = $thumbId ? trim((string) get_post_meta($thumbId, '_wp_attachment_image_alt', true)) : '';
+
+        return $alt !== '' ? $alt : html_entity_decode(wp_strip_all_tags($fallback), ENT_QUOTES, 'UTF-8');
     }
 }
