@@ -2175,8 +2175,14 @@ Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article
 - ⚠️ Treść: FAQ na /uslugi/przeglad-szafy/ i /uslugi/zakupy-online/ to wciąż zaślepka z szablonu agencji („2–6 tygodni”, „wycena dopasowana”) — trafia do FAQPage 1:1. Do podmiany przez usera.
 - Kopia prod przed wdrożeniem: `~/meskistylista.pl/app/sql/backup/meta-20261116/prod-before-seo-linkowanie.sql`; staging: `sql/backup/staging-before-seo-20261116.sql`. Po deployu PHP opcache potrzebuje ~1 min, zanim nowa wersja się pokaże.
 
-## Sesja 2026-11-16 (cd.) — prompt 4: podstrona Poznań
+## Sesja 2026-11-16 (cd.) — prompt 4: podstrona Poznań — WDROŻONE na staging + prod (merge 1030c41)
 - **Migracja** `migrations/2026-11-16-poznan.php` (bez zmian w kodzie motywu): post `service` /uslugi/zakupy-ze-stylista/poznan/ (menu_order 25, `service_city` = Poznań, zdjęcie rodzica — brak zdjęcia Poznania), bloki jak Warszawa + `acf/service-faq` (3 pytania), Rank Math title/description/frazy; na głównej „Gdzie działam” — zdanie + link do Poznania; meta description rodzica z Poznaniem.
 - Stopka, sekcja miast rodzica (`local_source=children`), „Zobacz też”, `areaServed` w ProfessionalService — automatycznie z podstron.
 - **Pominięte do potwierdzenia u właściciela:** pytanie FAQ o koszt dojazdu, zdanie z markami (COS, Massimo Dutti, Reserved), zdjęcie Poznania, opinia klienta z Poznania. Intro „H2: Zakupy ze stylistą w Poznaniu” — szablon miast nie ma takiego nagłówka (intro = opis pod H1), nie dodawany.
+
+## Sesja 2026-11-16 (cd.) — prompt 5: zróżnicowanie stron miast / kanibalizacja
+- **Poznań** (`2026-11-16-poznan.php`, puszczony ponownie): własne kroki Procesu, „Dla kogo”, „Co dają zakupy ze stylistą w Poznaniu?” + 2 zdania spoza promptu (opis pod krokami, wstęp do „Co dają”) — decyzja usera. Jaccard 5-gramów Warszawa–Poznań 72% → 38%.
+- **`2026-11-16-miasta-faq.php`:** FAQ (acf/service-faq po CTA) na Warszawie (3 pyt.), Krakowie, Wrocławiu, Kielcach (galeria — tylko nazwy już obecne na stronie — + „Ile trwają zakupy?”); title głównej „Stylista męski – Dominik Pakuła | zakupy, przegląd szafy, online”.
+- **Kod:** `ServiceAreasBlockComposer` — anchory miast w „Gdzie działam” = „stylista męski {Miasto}” (wszystkie miasta — decyzja usera).
+- Canonicale/robots bez zmian (celowo). Skrypt podobieństwa: scratchpad `similarity.py`.
 

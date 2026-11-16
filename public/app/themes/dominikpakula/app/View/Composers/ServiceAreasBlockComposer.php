@@ -2,6 +2,7 @@
 
 namespace App\View\Composers;
 
+use App\Services\ServiceCatalog;
 use Roots\Acorn\View\Composer;
 
 class ServiceAreasBlockComposer extends Composer
@@ -21,7 +22,7 @@ class ServiceAreasBlockComposer extends Composer
     }
 
     /**
-     * Wybrane usługi/miasta — tylko opublikowane; treść linku = tytuł strony.
+     * Wybrane usługi/miasta — tylko opublikowane; treść linku = tytuł strony (miasta: fraza lokalna).
      */
     protected function links(): array
     {
@@ -40,8 +41,13 @@ class ServiceAreasBlockComposer extends Composer
                 continue;
             }
 
+            // Miasta: anchor pod frazę lokalną („stylista męski Kraków”), jak w stopce; reszta — tytuł strony.
+            $label = \wp_get_post_parent_id($id)
+                ? 'stylista męski ' . ServiceCatalog::cityName($id)
+                : \html_entity_decode(\get_the_title($id), ENT_QUOTES, 'UTF-8');
+
             $links[] = [
-                'label' => \html_entity_decode(\get_the_title($id), ENT_QUOTES, 'UTF-8'),
+                'label' => $label,
                 'url' => \get_permalink($id),
             ];
         }
