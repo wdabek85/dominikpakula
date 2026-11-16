@@ -2186,3 +2186,8 @@ Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article
 - **Kod:** `ServiceAreasBlockComposer` — anchory miast w „Gdzie działam” = „stylista męski {Miasto}” (wszystkie miasta — decyzja usera).
 - Canonicale/robots bez zmian (celowo). Skrypt podobieństwa: scratchpad `similarity.py`.
 
+## Sesja 2026-11-16 (cd.) — prompt 6: FAQ usług + rozbudowa /konsultacje/
+- **`2026-11-16-faq-uslugi-konsultacje.php`:** FAQ (nagłówek „Najczęściej zadawane pytania”, bez podtytułu) na 5 usługach — zaślepki z szablonu agencji usunięte; nowe bloki na zakupach ze stylistą i stylizacji okazjonalnej (5 pyt., bez „Na ile przed wydarzeniem” — czeka na liczbę dni od właściciela). /voucher/ w odpowiedziach → „na stronie voucherów” (decyzja usera).
+- **/konsultacje/:** poprawione literówki w nagłówku; 3 sekcje `text-columns` (Dla kogo / Czego dowiesz się — z linkami do 5 usług / Jak się przygotować) + FAQ (4 pyt.) między krokami a kontaktem.
+- **Kod:** `service-faq` — treść w `blocks/partials/faq-content`, poza usługą (`standalone`) owinięta w `x-section`; `text-columns` — style list (`[&_ul]:list-disc` itd., bez `>` — wptexturize).
+

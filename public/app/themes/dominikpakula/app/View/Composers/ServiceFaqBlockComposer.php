@@ -29,6 +29,8 @@ class ServiceFaqBlockComposer extends Composer
             'label' => $label,
             'description' => $description,
             'items' => $items,
+            // Poza podstroną usługi (np. /konsultacje/) blok renderuje własny kontener sekcji.
+            'standalone' => ! \is_singular('service'),
         ];
     }
 }
