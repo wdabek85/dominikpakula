@@ -25,19 +25,19 @@ $blocks[] = mig_block('service-text', [
     'stext_attached' => 1,
 ]);
 $blocks[] = mig_block('service-process', [
-    'process_description' => 'Na przymiarki i decyzje mamy tyle czasu, ile potrzebujesz. Usługa nie ma limitu godzin ani liczby odwiedzonych sklepów.',
+    'process_description' => 'Dzień zakupów układam pod Ciebie: bez limitu godzin i bez ustalonej z góry liczby sklepów. Kończymy, gdy masz to, po co przyszedłeś.',
     'process_steps' => [
         [
-            'process_step_title' => 'Spotkanie przed zakupami',
-            'process_step_description' => 'Przed każdymi zakupami spotykamy się, żeby omówić Twoje potrzeby, budżet i organizację dnia. Wyjaśniam, jak się przygotować, odpowiadam na pytania i na tej podstawie dobieram sklepy.',
+            'process_step_title' => 'Najpierw rozmowa, potem trasa',
+            'process_step_description' => 'Na rozmowie przed zakupami ustalamy, czego szukasz, na jakie okazje i w jakim budżecie. Na tej podstawie wybieram galerię (albo dwie) i sklepy, żeby w Poznaniu nie krążyć bez celu.',
         ],
         [
-            'process_step_title' => 'Pomoc przy każdej przymiarce',
-            'process_step_description' => 'Wyszukuję ubrania i sprawdzam z Tobą, jak leżą: w ramionach, w pasie, na całej sylwetce. Porównujemy fasony i rozmiary. Wyjaśniam, co warto wybrać i dlaczego, a Ty oceniasz, w czym czujesz się dobrze.',
+            'process_step_title' => 'Przymierzasz, ja patrzę na detale',
+            'process_step_description' => 'Ty skupiasz się na tym, czy dobrze się czujesz. Ja sprawdzam linię ramion, długość rękawa i nogawki, to, jak materiał układa się w ruchu. Mówię wprost, co odpuścić, a co warto wziąć.',
         ],
         [
-            'process_step_title' => 'Zestawy sprawdzone przed zakupem',
-            'process_step_description' => 'Już podczas przymiarek pokazuję Ci, z czym nosić wybrane rzeczy. Sprawdzamy, jak pasują do pozostałych zakupów i ubrań, które masz. Dzięki temu przy kasie wiesz, kiedy i do czego założysz każdą z nich.',
+            'process_step_title' => 'Wychodzisz z gotowymi zestawami',
+            'process_step_description' => 'Zanim zapłacisz, zestawiamy nowe rzeczy ze sobą i z tym, co masz w domu. Każdy zakup ma swoje miejsce w szafie i konkretne okazje, na które go założysz.',
         ],
     ],
 ]);
@@ -57,20 +57,20 @@ $blocks[] = mig_block('service-text', [
         . '<p>Pełną listę sklepów dobieram indywidualnie do Twojego stylu, sylwetki i budżetu.</p>',
 ]);
 
-// Dla kogo (bez zmian)
+// Dla kogo (prompt 5: własne teksty Poznania zamiast kopii Warszawy)
 $blocks[] = mig_block('service-desc-alt', [
     'descb_label' => 'Dla kogo',
-    'descb_heading' => 'Kiedy warto wybrać się ze mną na zakupy?',
-    'descb_positive_title' => 'Pomogę Ci, jeśli:',
+    'descb_heading' => 'Kiedy zakupy ze stylistą w Poznaniu mają największy sens?',
+    'descb_positive_title' => 'Napisz do mnie, jeśli:',
     'descb_positive_items' => [
-        ['item_text' => 'wracasz ze sklepów z kolejną rzeczą, do której brakuje reszty stroju;'],
-        ['item_text' => 'nosisz wciąż te same ubrania, bo w pozostałych nie czujesz się dobrze;'],
-        ['item_text' => 'zależy Ci na dobrym wyglądzie, ale wybieranie ubrań zabiera Ci zbyt dużo czasu.'],
+        ['item_text' => 'masz w szafie dużo ubrań, ale codziennie sięgasz po te same trzy rzeczy;'],
+        ['item_text' => 'kupujesz pod wpływem chwili, a potem nie wiesz, z czym to nosić;'],
+        ['item_text' => 'nie lubisz chodzić po sklepach i chcesz załatwić to raz, a porządnie.'],
     ],
-    'descb_highlight_title' => 'Szczególnie, jeśli:',
+    'descb_highlight_title' => 'Szczególnie gdy:',
     'descb_highlight_items' => [
-        ['item_text' => 'nowa praca lub częstsze spotkania wymagają zmiany sposobu ubierania;'],
-        ['item_text' => 'zmieniła się Twoja sylwetka i trudno Ci znaleźć odpowiedni fason.'],
+        ['item_text' => 'przed Tobą ważne spotkania, wystąpienia albo wyjazdy służbowe i chcesz wyglądać pewnie;'],
+        ['item_text' => 'awansowałeś lub zmieniłeś branżę i Twoja garderoba za tym nie nadąża.'],
     ],
     'descb_negative_title' => 'Potrzebujesz czegoś innego?',
     'descb_negative_items' => [
@@ -79,21 +79,21 @@ $blocks[] = mig_block('service-desc-alt', [
     ],
 ]);
 
-// Dlaczego warto (bez zmian)
+// Dlaczego warto (prompt 5: własne teksty Poznania)
 $blocks[] = mig_block('service-text', [
     'stext_label' => 'Dlaczego Warto',
-    'stext_heading' => 'Co zyskasz dzięki wspólnym zakupom?',
-    'stext_body' => '<p>Przy każdej propozycji wyjaśniam, na co patrzę i dlaczego warto ją przymierzyć. Te wskazówki wykorzystasz także wtedy, gdy znów wybierzesz się do sklepu sam.</p>',
+    'stext_heading' => 'Co dają zakupy ze stylistą w Poznaniu?',
+    'stext_body' => '<p>Przy każdej przymiarce mówię, dlaczego coś działa, a coś nie. Po zakupach zostają Ci nie tylko nowe ubrania, ale też wiedza, jak samodzielnie wybierać kolejne.</p>',
     'stext_attached' => 1,
 ]);
 $blocks[] = mig_block('service-what', [
     'what_items' => [
-        ['what_item_title' => 'Łatwiejsze decyzje w sklepie.', 'what_item_description' => 'Masz obok kogoś, kto zawęża wybór i wyjaśnia różnice między ubraniami. Możesz skupić się na przymierzaniu i porównaniu rzeczy, które odpowiadają Twoim potrzebom.'],
-        ['what_item_title' => 'Lepsze dopasowanie ubrań.', 'what_item_description' => 'Zobaczysz, jak długość spodni, szerokość koszuli czy krój marynarki wpływają na wygląd sylwetki. Nauczysz się rozpoznawać, kiedy ubranie dobrze na Tobie leży.'],
-        ['what_item_title' => 'Styl, w którym czujesz się sobą.', 'what_item_description' => 'Biorę pod uwagę to, jak pracujesz, spędzasz wolny czas i co lubisz nosić. Twoje odczucia podczas przymiarek są równie ważne jak dopasowanie ubrania.'],
-        ['what_item_title' => 'Więcej rozeznania w jakości.', 'what_item_description' => 'Na konkretnych ubraniach pokażę Ci, jak czytać skład i oceniać wykończenie. Wyjaśnię też, jakie znaczenie materiał ma dla wygody i pielęgnacji.'],
-        ['what_item_title' => 'Przemyślane wydatki.', 'what_item_description' => 'Ustalamy, czego potrzebujesz najbardziej, i do tego dobieramy zakupy. Każdą propozycję oceniamy także pod kątem ceny oraz tego, jak często będziesz ją nosić.'],
-        ['what_item_title' => 'Pomoc także po spotkaniu.', 'what_item_description' => 'Przez 14 dni po zakupach możesz napisać do mnie mailowo. Jeśli przy układaniu stroju pojawi się pytanie, pomogę Ci dobrać połączenie.'],
+        ['what_item_title' => 'Mniej przypadkowych zakupów.', 'what_item_description' => 'Kupujesz rzeczy, które pasują do siebie i do Twojego trybu życia, a nie pojedyncze „okazje” bez pary.'],
+        ['what_item_title' => 'Ubrania, które leżą jak trzeba.', 'what_item_description' => 'Na przymiarkach pokażę Ci, po czym poznać dobry krój – tę wiedzę zabierzesz na kolejne zakupy.'],
+        ['what_item_title' => 'Twój styl, nie mój.', 'what_item_description' => 'Dobieram ubrania do tego, jak pracujesz i odpoczywasz, a Twoje zdanie przy przymiarce jest decydujące.'],
+        ['what_item_title' => 'Jakość, za którą warto zapłacić.', 'what_item_description' => 'Na miejscu porównamy materiały i wykończenie, żebyś wiedział, gdzie dopłata ma sens, a gdzie nie.'],
+        ['what_item_title' => 'Budżet pod kontrolą.', 'what_item_description' => 'Zaczynamy od rzeczy, których brakuje Ci najbardziej, i pilnujemy kwoty ustalonej na rozmowie.'],
+        ['what_item_title' => 'Wsparcie po zakupach.', 'what_item_description' => 'Przez 14 dni możesz napisać do mnie mailowo, jeśli przy łączeniu ubrań pojawią się pytania.'],
     ],
 ]);
 
