@@ -52,6 +52,66 @@ class ServiceCatalog
     }
 
     /**
+     * Wszystkie opublikowane podstrony usług (dziś: miasta „Zakupy ze stylistą”),
+     * w kolejności z „Atrybuty strony → Kolejność”.
+     *
+     * @return int[]
+     */
+    public static function cityIds(): array
+    {
+        return \get_posts([
+            'post_type' => 'service',
+            'post_status' => 'publish',
+            'post_parent__not_in' => [0],
+            'posts_per_page' => -1,
+            'orderby' => ['menu_order' => 'ASC', 'title' => 'ASC'],
+            'fields' => 'ids',
+            'no_found_rows' => true,
+        ]);
+    }
+
+    /**
+     * Nazwa miasta w mianowniku: pole „Miasto” (service_city), a gdy puste —
+     * tytuł podstrony bez tytułu rodzica („Zakupy ze stylistą Kraków” → „Kraków”).
+     */
+    public static function cityName(int $id): string
+    {
+        $city = trim((string) \get_field('service_city', $id));
+
+        if ($city !== '') {
+            return $city;
+        }
+
+        $title = \html_entity_decode(\get_the_title($id), ENT_QUOTES, 'UTF-8');
+        $parent = (int) \wp_get_post_parent_id($id);
+        $parentTitle = $parent ? \html_entity_decode(\get_the_title($parent), ENT_QUOTES, 'UTF-8') : '';
+
+        if ($parentTitle !== '' && str_starts_with($title, $parentTitle)) {
+            return trim(substr($title, strlen($parentTitle))) ?: $title;
+        }
+
+        return $title;
+    }
+
+    /**
+     * Kwota z pola ceny („1 800 zł” → „1800”); pusty string, gdy brak liczby.
+     */
+    public static function priceAmount(int $id): string
+    {
+        return (string) preg_replace('/\D+/', '', (string) \get_field('service_price', $id));
+    }
+
+    /**
+     * ID opublikowanej usługi po ścieżce (np. „zakupy-online”); 0, gdy jej nie ma.
+     */
+    public static function idByPath(string $path): int
+    {
+        $post = \get_page_by_path($path, OBJECT, 'service');
+
+        return $post && $post->post_status === 'publish' ? (int) $post->ID : 0;
+    }
+
+    /**
      * Karty dla listy ID — pomija nieopublikowane / nie-usługi (np. usuniętą usługę w relacji).
      *
      * @param  int[]  $ids

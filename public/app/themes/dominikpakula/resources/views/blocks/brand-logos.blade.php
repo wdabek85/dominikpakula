@@ -1,4 +1,4 @@
-@if ($heading || $eyebrow || ! empty($logos))
+@if ($heading || $eyebrow || ! empty($logos) || ! empty($links))
   <x-section class="not-prose">
 
     {{-- Nagłówek --}}
@@ -53,6 +53,15 @@
           </li>
         @endforeach
       </ul>
+    @endif
+
+    {{-- Linki pod logotypami (np. „Zobacz realizacje”) --}}
+    @if (! empty($links))
+      <div class="mt-10 lg:mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        @foreach ($links as $index => $link)
+          <x-button :variant="$index === 0 ? 'primary' : 'secondary'" size="sm" :href="$link['url']" :label="$link['label']" />
+        @endforeach
+      </div>
     @endif
 
   </x-section>

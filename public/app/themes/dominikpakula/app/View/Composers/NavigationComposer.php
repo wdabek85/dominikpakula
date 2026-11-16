@@ -2,6 +2,7 @@
 
 namespace App\View\Composers;
 
+use App\Services\ServiceCatalog;
 use Roots\Acorn\View\Composer;
 
 class NavigationComposer extends Composer
@@ -25,6 +26,8 @@ class NavigationComposer extends Composer
             'navBlog' => $this->postsForNav('post', 3),
             'navGuides' => $this->postsForNav('guide', 3),
             'footerMenu' => $this->menuForLocation('footer_navigation'),
+            'footerInfoMenu' => $this->menuForLocation('footer_info_navigation'),
+            'footerCities' => $this->cityLinks(),
             'primaryMenuItems' => $primaryItems,
             'primaryLastItemId' => $this->lastTopLevelId($primaryItems),
         ];
@@ -86,6 +89,26 @@ class NavigationComposer extends Composer
         }
 
         return $links;
+    }
+
+    /**
+     * Podstrony miast do stopki: „Stylista męski Kraków” → permalink.
+     * Nowe miasto (podstrona usługi) pojawia się tu automatycznie.
+     */
+    protected function cityLinks(): array
+    {
+        $current = untrailingslashit(home_url(add_query_arg(null, null)));
+
+        return array_map(function (int $id) use ($current) {
+            $url = get_permalink($id);
+
+            return [
+                'label' => 'Stylista męski ' . ServiceCatalog::cityName($id),
+                'url' => $url,
+                'target' => '_self',
+                'isCurrent' => untrailingslashit($url) === $current,
+            ];
+        }, ServiceCatalog::cityIds());
     }
 
     protected function services(): array

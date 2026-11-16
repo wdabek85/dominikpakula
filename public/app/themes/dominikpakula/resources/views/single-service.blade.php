@@ -23,6 +23,8 @@
       {{-- Content: Gutenberg bloki (różne per usługę) --}}
       <div class="mt-12 lg:mt-10 lg:col-start-1 flex flex-col gap-12 lg:gap-16">
         @php(the_content())
+
+        @include('sections.service.related')
       </div>
 
     </div>

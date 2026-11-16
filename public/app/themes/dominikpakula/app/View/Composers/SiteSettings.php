@@ -35,6 +35,19 @@ class SiteSettings extends Composer
     }
 
     /**
+     * Te same dane kontaktowe/sociale poza widokami (np. dane strukturalne w app/Schema).
+     */
+    public static function data(): array
+    {
+        $settings = new static();
+
+        return [
+            'contact' => $settings->contact(),
+            'social' => $settings->social(),
+        ];
+    }
+
+    /**
      * Stałe teksty na stronach usług (zakładka „Teksty na stronach usług”).
      */
     protected function serviceTexts(): array

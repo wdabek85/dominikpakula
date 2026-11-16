@@ -107,7 +107,7 @@
         <div class="px-5 py-6 border-t border-gray-200 shrink-0">
           <x-button
             label="Kontakt"
-            href="/kontakt"
+            :href="home_url('/kontakt/')"
             size="sm"
             icon="right"
             class="w-full"

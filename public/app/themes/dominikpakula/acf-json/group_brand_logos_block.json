@@ -11,7 +11,11 @@
             "instructions": "Mała etykieta nad nagłówkiem.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "default_value": "Współpraca",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -28,7 +32,11 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "default_value": "Marki, z którymi współpracuję",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -45,7 +53,11 @@
             "instructions": "Opcjonalny krótki opis.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "default_value": "Stylizuję sesje e-commerce i kampanie reklamowe dla topowych marek modowych.",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -62,7 +74,11 @@
             "instructions": "Dodaj logotypy marek. Najlepiej PNG/SVG na przezroczystym tle.",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "layout": "block",
             "pagination": 0,
             "min": 0,
@@ -80,7 +96,11 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
                     "return_format": "array",
                     "library": "all",
                     "min_width": "",
@@ -103,7 +123,11 @@
                     "instructions": "Do atrybutu alt (dostępność).",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
@@ -121,10 +145,78 @@
                     "instructions": "Adres strony marki.",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
                     "default_value": "",
                     "placeholder": "",
                     "parent_repeater": "field_logos_items"
+                }
+            ]
+        },
+        {
+            "key": "field_logos_links",
+            "label": "Linki pod logotypami",
+            "name": "logos_links",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Opcjonalne przyciski pod logotypami (np. „Zobacz realizacje”). Adres wewnętrzny podawaj z ukośnikiem na końcu.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 2,
+            "collapsed": "",
+            "button_label": "Dodaj link",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_logos_link_label",
+                    "label": "Treść",
+                    "name": "label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_logos_links",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_logos_link_url",
+                    "label": "Adres",
+                    "name": "url",
+                    "aria-label": "",
+                    "type": "url",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_logos_links"
                 }
             ]
         }
@@ -147,5 +239,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1780000001
+    "modified": 1794816000
 }
