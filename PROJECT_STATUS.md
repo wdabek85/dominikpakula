@@ -2147,3 +2147,15 @@ Bez Figmy, w stylu istniejących podstron (Poppins, kontener 1440/px-4 lg:px-20,
 - [ ] Dodać „Słowniczek” do menu / stopki
 - [ ] Rank Math: włączyć CPT `glossary` w sitemapie i ustawić tytuł archiwum
 - [ ] Deploy na staging (nowe klasy Tailwind → wymaga `npm run build`)
+
+## Sesja 2026-11-16 — meta title/description na produkcji (Rank Math)
+- Wg `meta-meskistylista.csv` (17 URL) ustawione na **prod** `rank_math_title` + `rank_math_description` (16 wpisów: page/service) oraz archiwum `/realizacje/` (CPT `portfolio`) w opcji Rank Math `pt_portfolio_archive_title/_description`. Tekst dosłowny, bez zmiennych.
+- Kopia do cofnięcia: `~/meskistylista.pl/app/sql/backup/meta-20261116/meta-backup.csv` + pełny dump `prod-before-meta.sql`.
+- Zweryfikowane curl-em: wszystkie 17 URL — title i description zgodne z CSV. Blog/poradniki nietknięte.
+- Uwaga: lokalna baza nie ma tych zmian (różni się od prod) — przy kolejnym syncu ściągnąć z prod.
+
+## Sesja 2026-11-16 (cd.) — prompt 3: noindex tagów + alty (PROD, bez kodu)
+- Rank Math: `tax_post_tag_robots=["noindex"]` (custom robots on), `tax_post_tag_sitemap=off`, cache sitemapy wyczyszczony. 4 tagi → `follow, noindex`, `post_tag-sitemap.xml` zniknął z indeksu. Kopie opcji: `sql/backup/meta-20261116/rank-math-options-*.before.json`.
+- Alty w bibliotece mediów: 20 załączników (lista + stare wartości w `sql/backup/meta-20261116/alt-backup.csv`).
+- OTWARTE (kod, czeka na akceptację): mega-menu `nav-desktop`/`nav-mobile` ma na sztywno `alt=""` dla zdjęć usług i miniatur wpisów — 16 pustych altów na każdej stronie.
+- OTWARTE: plany promptu 1 (linkowanie wewnętrzne) i promptu 2 (schema) czekają na decyzje usera.

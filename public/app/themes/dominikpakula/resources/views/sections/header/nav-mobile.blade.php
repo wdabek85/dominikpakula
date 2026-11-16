@@ -207,7 +207,7 @@
                   <div class="w-full h-[200px] rounded-lg overflow-hidden">
                     <img
                       src="{{ $service['image'] }}"
-                      alt=""
+                      alt="{{ $service['imageAlt'] }}"
                       class="size-full object-cover object-top"
                       loading="lazy"
                     >
@@ -276,7 +276,7 @@
                   <a href="{{ $post['url'] }}" class="flex gap-3 group">
                     @if ($post['image'])
                       <div class="w-[80px] h-[56px] rounded overflow-hidden shrink-0">
-                        <img src="{{ $post['image'] }}" alt="" class="size-full object-cover" width="80" height="56" loading="lazy">
+                        <img src="{{ $post['image'] }}" alt="{{ $post['imageAlt'] }}" class="size-full object-cover" width="80" height="56" loading="lazy">
                       </div>
                     @else
                       <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0" aria-hidden="true"></div>
@@ -312,7 +312,7 @@
                   <a href="{{ $guide['url'] }}" class="flex gap-3 group">
                     @if ($guide['image'])
                       <div class="w-[80px] h-[56px] rounded overflow-hidden shrink-0">
-                        <img src="{{ $guide['image'] }}" alt="" class="size-full object-cover" width="80" height="56" loading="lazy">
+                        <img src="{{ $guide['image'] }}" alt="{{ $guide['imageAlt'] }}" class="size-full object-cover" width="80" height="56" loading="lazy">
                       </div>
                     @else
                       <div class="w-[80px] h-[56px] rounded bg-gray-100 shrink-0" aria-hidden="true"></div>
