@@ -2175,7 +2175,7 @@ Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article
 - ⚠️ Treść: FAQ na /uslugi/przeglad-szafy/ i /uslugi/zakupy-online/ to wciąż zaślepka z szablonu agencji („2–6 tygodni”, „wycena dopasowana”) — trafia do FAQPage 1:1. Do podmiany przez usera.
 - Kopia prod przed wdrożeniem: `~/meskistylista.pl/app/sql/backup/meta-20261116/prod-before-seo-linkowanie.sql`; staging: `sql/backup/staging-before-seo-20261116.sql`. Po deployu PHP opcache potrzebuje ~1 min, zanim nowa wersja się pokaże.
 
-## Sesja 2026-11-16 (cd.) — prompt 4: podstrona Poznań
+## Sesja 2026-11-16 (cd.) — prompt 4: podstrona Poznań — WDROŻONE na staging + prod (merge 1030c41)
 - **Migracja** `migrations/2026-11-16-poznan.php` (bez zmian w kodzie motywu): post `service` /uslugi/zakupy-ze-stylista/poznan/ (menu_order 25, `service_city` = Poznań, zdjęcie rodzica — brak zdjęcia Poznania), bloki jak Warszawa + `acf/service-faq` (3 pytania), Rank Math title/description/frazy; na głównej „Gdzie działam” — zdanie + link do Poznania; meta description rodzica z Poznaniem.
 - Stopka, sekcja miast rodzica (`local_source=children`), „Zobacz też”, `areaServed` w ProfessionalService — automatycznie z podstron.
 - **Pominięte do potwierdzenia u właściciela:** pytanie FAQ o koszt dojazdu, zdanie z markami (COS, Massimo Dutti, Reserved), zdjęcie Poznania, opinia klienta z Poznania. Intro „H2: Zakupy ze stylistą w Poznaniu” — szablon miast nie ma takiego nagłówka (intro = opis pod H1), nie dodawany.
