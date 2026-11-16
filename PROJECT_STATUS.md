@@ -2191,7 +2191,7 @@ Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article
 - **/konsultacje/:** poprawione literówki w nagłówku; 3 sekcje `text-columns` (Dla kogo / Czego dowiesz się — z linkami do 5 usług / Jak się przygotować) + FAQ (4 pyt.) między krokami a kontaktem.
 - **Kod:** `service-faq` — treść w `blocks/partials/faq-content`, poza usługą (`standalone`) owinięta w `x-section`; `text-columns` — style list (`[&_ul]:list-disc` itd., bez `>` — wptexturize).
 
-## Sesja 2026-11-16 (cd.) — FAQ: dojazd wliczony w cenę
+## Sesja 2026-11-16 (cd.) — FAQ: dojazd wliczony w cenę — WDROŻONE na staging + prod (merge 1a1eef8)
 - Właściciel potwierdził: dojazd zawsze wliczony w cenę. `2026-11-16-faq-dojazd.php` dopisuje pytanie: 5 miast (1. pytanie), /uslugi/zakupy-ze-stylista/ (4., po „W jakich miastach…” — decyzja usera), przegląd szafy i pakiet (2., po cenie). Idempotentny; po ponownym uruchomieniu `poznan`/`faq-uslugi-konsultacje` puścić go jeszcze raz.
 - Nadal czeka na właściciela: minimum dni przed wydarzeniem (stylizacja okazjonalna), marki w Poznaniu, zdjęcie Poznania.
 
