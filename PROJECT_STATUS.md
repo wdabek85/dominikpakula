@@ -2180,9 +2180,14 @@ Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article
 - Stopka, sekcja miast rodzica (`local_source=children`), „Zobacz też”, `areaServed` w ProfessionalService — automatycznie z podstron.
 - **Pominięte do potwierdzenia u właściciela:** pytanie FAQ o koszt dojazdu, zdanie z markami (COS, Massimo Dutti, Reserved), zdjęcie Poznania, opinia klienta z Poznania. Intro „H2: Zakupy ze stylistą w Poznaniu” — szablon miast nie ma takiego nagłówka (intro = opis pod H1), nie dodawany.
 
-## Sesja 2026-11-16 (cd.) — prompt 5: zróżnicowanie stron miast / kanibalizacja
+## Sesja 2026-11-16 (cd.) — prompt 5: zróżnicowanie stron miast / kanibalizacja — WDROŻONE na staging + prod (merge 8f38347)
 - **Poznań** (`2026-11-16-poznan.php`, puszczony ponownie): własne kroki Procesu, „Dla kogo”, „Co dają zakupy ze stylistą w Poznaniu?” + 2 zdania spoza promptu (opis pod krokami, wstęp do „Co dają”) — decyzja usera. Jaccard 5-gramów Warszawa–Poznań 72% → 38%.
 - **`2026-11-16-miasta-faq.php`:** FAQ (acf/service-faq po CTA) na Warszawie (3 pyt.), Krakowie, Wrocławiu, Kielcach (galeria — tylko nazwy już obecne na stronie — + „Ile trwają zakupy?”); title głównej „Stylista męski – Dominik Pakuła | zakupy, przegląd szafy, online”.
 - **Kod:** `ServiceAreasBlockComposer` — anchory miast w „Gdzie działam” = „stylista męski {Miasto}” (wszystkie miasta — decyzja usera).
 - Canonicale/robots bez zmian (celowo). Skrypt podobieństwa: scratchpad `similarity.py`.
+
+## Sesja 2026-11-16 (cd.) — prompt 6: FAQ usług + rozbudowa /konsultacje/
+- **`2026-11-16-faq-uslugi-konsultacje.php`:** FAQ (nagłówek „Najczęściej zadawane pytania”, bez podtytułu) na 5 usługach — zaślepki z szablonu agencji usunięte; nowe bloki na zakupach ze stylistą i stylizacji okazjonalnej (5 pyt., bez „Na ile przed wydarzeniem” — czeka na liczbę dni od właściciela). /voucher/ w odpowiedziach → „na stronie voucherów” (decyzja usera).
+- **/konsultacje/:** poprawione literówki w nagłówku; 3 sekcje `text-columns` (Dla kogo / Czego dowiesz się — z linkami do 5 usług / Jak się przygotować) + FAQ (4 pyt.) między krokami a kontaktem.
+- **Kod:** `service-faq` — treść w `blocks/partials/faq-content`, poza usługą (`standalone`) owinięta w `x-section`; `text-columns` — style list (`[&_ul]:list-disc` itd., bez `>` — wptexturize).
 
