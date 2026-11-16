@@ -2195,3 +2195,7 @@ Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article
 - Właściciel potwierdził: dojazd zawsze wliczony w cenę. `2026-11-16-faq-dojazd.php` dopisuje pytanie: 5 miast (1. pytanie), /uslugi/zakupy-ze-stylista/ (4., po „W jakich miastach…” — decyzja usera), przegląd szafy i pakiet (2., po cenie). Idempotentny; po ponownym uruchomieniu `poznan`/`faq-uslugi-konsultacje` puścić go jeszcze raz.
 - Nadal czeka na właściciela: minimum dni przed wydarzeniem (stylizacja okazjonalna), marki w Poznaniu, zdjęcie Poznania.
 
+## Sesja 2026-11-16 (cd.) — strona główna: „Gdzie działam” niżej + mechanizm miast
+- **`2026-11-16-gdzie-dzialam.php`:** blok `acf/service-areas` przeniesiony pod blog (nad newsletter); nowy tekst „Działam w całej Polsce… przyjeżdżam do {miasta} – dojazd jest zawsze w cenie usługi…”; `areas_links` = tylko Zakupy online.
+- **Kod:** `ServiceAreasBlockComposer` — linki = wybrane w bloku, potem wszystkie miasta z `ServiceCatalog::cityIds()` (kolejność z menu_order); `{miasta}` w tekście → dopełniacze z nowego pola `service_city_genitive` (acf-json/group_69cbab9dbca4e.json), „i” przed ostatnim.
+- **Nowe miasto =** nowa podstrona „Zakupy ze stylistą” (rodzic zakupy-ze-stylista) z polami „Miasto (mianownik)”, „Miasto (dopełniacz)” i kolejnością — trafia samo do strony głównej, stopki, „Zobacz też” i areaServed.
