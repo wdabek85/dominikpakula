@@ -9,7 +9,7 @@
 
       {{-- Prawa: treść --}}
       @if ($body)
-        <div class="font-poppins text-base leading-5 text-black space-y-5">
+        <div class="font-poppins text-base leading-5 text-black space-y-5 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mt-2">
           {!! $body !!}
         </div>
       @endif
