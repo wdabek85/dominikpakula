@@ -2158,9 +2158,9 @@ Bez Figmy, w stylu istniejących podstron (Poppins, kontener 1440/px-4 lg:px-20,
 - Rank Math: `tax_post_tag_robots=["noindex"]` (custom robots on), `tax_post_tag_sitemap=off`, cache sitemapy wyczyszczony. 4 tagi → `follow, noindex`, `post_tag-sitemap.xml` zniknął z indeksu. Kopie opcji: `sql/backup/meta-20261116/rank-math-options-*.before.json`.
 - Alty w bibliotece mediów: 20 załączników (lista + stare wartości w `sql/backup/meta-20261116/alt-backup.csv`).
 - Mega-menu: `NavigationComposer` przekazuje `imageAlt` (alt z biblioteki, fallback tytuł) — WDROŻONE na prod (commit 1573ed8, merge eccc637). Na stronie głównej puste alty zostały tylko przy obrazach dekoracyjnych (aria-hidden) + lightbox.
-- Prompty 1 i 2: zrobione LOKALNIE (patrz niżej), czekają na OK usera przed deployem.
+- Prompty 1 i 2: wdrożone na prod 16.11 (patrz niżej).
 
-## Sesja 2026-11-16 (cd.) — prompt 1 (linkowanie) + prompt 2 (schema) — LOKALNIE, przed deployem
+## Sesja 2026-11-16 (cd.) — prompt 1 (linkowanie) + prompt 2 (schema) — WDROŻONE na staging + prod (merge ef4b2c0)
 Lokal zsynchronizowany 1:1 z prod (16.11, kopia lokalnej bazy: `sql/backup/local-before-sync-20261116.sql`).
 Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article usunięty na wszystkich `page`; schema w motywie (mu-plugins są w .gitignore); „Gdzie działam” jako blok ACF bez Figmy; nazwa w Rank Math zmieniona.
 - **Nowe komponenty:** `footer-links` (grupa linków w stopce, też dla „Nawigacja”), `link-list` (kafelki linków ze strzałką), `consultation-link` (link do /konsultacje/ obok przycisku modala).
@@ -2173,3 +2173,10 @@ Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article
 - **Schema** (`app/schema.php` + `app/Schema/{Graph,Business,ServiceNode,Faq}.php`): filtr `rank_math/json_ld` (prio 99) + `rank_math/schema/add_global_entities` dla `service`. #person = Person (worksFor #business), #business = ProfessionalService (dane z Ustawień strony / logo / CPT), Service na usługach, FAQPage z bloków `acf/service-faq` (Rank Math scala go z WebPage w jeden węzeł `#webpage` typu FAQPage — to jego natywne zachowanie). Article + węzeł autora usunięte z `page` i `service`.
 - **Migracje:** `2026-11-16-linkowanie.php`, `2026-11-16-schema.php` (odpalone lokalnie).
 - ⚠️ Treść: FAQ na /uslugi/przeglad-szafy/ i /uslugi/zakupy-online/ to wciąż zaślepka z szablonu agencji („2–6 tygodni”, „wycena dopasowana”) — trafia do FAQPage 1:1. Do podmiany przez usera.
+- Kopia prod przed wdrożeniem: `~/meskistylista.pl/app/sql/backup/meta-20261116/prod-before-seo-linkowanie.sql`; staging: `sql/backup/staging-before-seo-20261116.sql`. Po deployu PHP opcache potrzebuje ~1 min, zanim nowa wersja się pokaże.
+
+## Sesja 2026-11-16 (cd.) — prompt 4: podstrona Poznań
+- **Migracja** `migrations/2026-11-16-poznan.php` (bez zmian w kodzie motywu): post `service` /uslugi/zakupy-ze-stylista/poznan/ (menu_order 25, `service_city` = Poznań, zdjęcie rodzica — brak zdjęcia Poznania), bloki jak Warszawa + `acf/service-faq` (3 pytania), Rank Math title/description/frazy; na głównej „Gdzie działam” — zdanie + link do Poznania; meta description rodzica z Poznaniem.
+- Stopka, sekcja miast rodzica (`local_source=children`), „Zobacz też”, `areaServed` w ProfessionalService — automatycznie z podstron.
+- **Pominięte do potwierdzenia u właściciela:** pytanie FAQ o koszt dojazdu, zdanie z markami (COS, Massimo Dutti, Reserved), zdjęcie Poznania, opinia klienta z Poznania. Intro „H2: Zakupy ze stylistą w Poznaniu” — szablon miast nie ma takiego nagłówka (intro = opis pod H1), nie dodawany.
+
