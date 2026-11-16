@@ -36,6 +36,7 @@
                 class="booking-trigger cursor-pointer"
                 :data-service="$bookingService"
               />
+              <x-consultation-link class="mt-4 flex w-fit" />
             @endif
           </div>
         @endif

@@ -2157,5 +2157,19 @@ Bez Figmy, w stylu istniejących podstron (Poppins, kontener 1440/px-4 lg:px-20,
 ## Sesja 2026-11-16 (cd.) — prompt 3: noindex tagów + alty (PROD, bez kodu)
 - Rank Math: `tax_post_tag_robots=["noindex"]` (custom robots on), `tax_post_tag_sitemap=off`, cache sitemapy wyczyszczony. 4 tagi → `follow, noindex`, `post_tag-sitemap.xml` zniknął z indeksu. Kopie opcji: `sql/backup/meta-20261116/rank-math-options-*.before.json`.
 - Alty w bibliotece mediów: 20 załączników (lista + stare wartości w `sql/backup/meta-20261116/alt-backup.csv`).
-- OTWARTE (kod, czeka na akceptację): mega-menu `nav-desktop`/`nav-mobile` ma na sztywno `alt=""` dla zdjęć usług i miniatur wpisów — 16 pustych altów na każdej stronie.
-- OTWARTE: plany promptu 1 (linkowanie wewnętrzne) i promptu 2 (schema) czekają na decyzje usera.
+- Mega-menu: `NavigationComposer` przekazuje `imageAlt` (alt z biblioteki, fallback tytuł) — WDROŻONE na prod (commit 1573ed8, merge eccc637). Na stronie głównej puste alty zostały tylko przy obrazach dekoracyjnych (aria-hidden) + lightbox.
+- Prompty 1 i 2: zrobione LOKALNIE (patrz niżej), czekają na OK usera przed deployem.
+
+## Sesja 2026-11-16 (cd.) — prompt 1 (linkowanie) + prompt 2 (schema) — LOKALNIE, przed deployem
+Lokal zsynchronizowany 1:1 z prod (16.11, kopia lokalnej bazy: `sql/backup/local-before-sync-20261116.sql`).
+Decyzje usera: stopka = drugi rząd; „Zobacz też” = koniec treści; Article usunięty na wszystkich `page`; schema w motywie (mu-plugins są w .gitignore); „Gdzie działam” jako blok ACF bez Figmy; nazwa w Rank Math zmieniona.
+- **Nowe komponenty:** `footer-links` (grupa linków w stopce, też dla „Nawigacja”), `link-list` (kafelki linków ze strzałką), `consultation-link` (link do /konsultacje/ obok przycisku modala).
+- **Nowy blok ACF** `acf/service-areas` „Gdzie działam” (`acf-json/group_service_areas_block.json`, `ServiceAreasBlockComposer`).
+- **Stopka:** drugi rząd — miasta (auto z podstron usług, „Stylista męski {miasto}”) + menu WP „Stopka – Informacje” (lokalizacja `footer_info_navigation`).
+- **Usługi:** `sections/service/related` + `RelatedServicesComposer` — miasto: „Zobacz też” (rodzic, online, inne miasta); usługa: „Inne usługi”. Link do /konsultacje/ w sidebarze (boks ceny), `service-cta`, `service-text`.
+- **brand-logos:** repeater `logos_links` (przyciski pod logotypami) — na /o-mnie/ „Zobacz realizacje”, „Sprawdź usługi”.
+- **Pole** `service_city` (grupa „Usługa”) + `ServiceCatalog::cityIds/cityName/priceAmount/idByPath`.
+- **Linki:** `/kontakt` → `home_url('/kontakt/')` (header, nav-mobile), `/polityka-prywatnosci/` w modalach.
+- **Schema** (`app/schema.php` + `app/Schema/{Graph,Business,ServiceNode,Faq}.php`): filtr `rank_math/json_ld` (prio 99) + `rank_math/schema/add_global_entities` dla `service`. #person = Person (worksFor #business), #business = ProfessionalService (dane z Ustawień strony / logo / CPT), Service na usługach, FAQPage z bloków `acf/service-faq` (Rank Math scala go z WebPage w jeden węzeł `#webpage` typu FAQPage — to jego natywne zachowanie). Article + węzeł autora usunięte z `page` i `service`.
+- **Migracje:** `2026-11-16-linkowanie.php`, `2026-11-16-schema.php` (odpalone lokalnie).
+- ⚠️ Treść: FAQ na /uslugi/przeglad-szafy/ i /uslugi/zakupy-online/ to wciąż zaślepka z szablonu agencji („2–6 tygodni”, „wycena dopasowana”) — trafia do FAQPage 1:1. Do podmiany przez usera.

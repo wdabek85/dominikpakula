@@ -164,7 +164,7 @@
               class="mt-1 size-4 accent-primary shrink-0">
             <span class="font-poppins text-xs text-gray-500 leading-relaxed">
               Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z
-              <a href="/polityka-prywatnosci" class="text-primary underline" target="_blank">polityką prywatności</a>.
+              <a href="{{ home_url('/polityka-prywatnosci/') }}" class="text-primary underline" target="_blank">polityką prywatności</a>.
             </span>
           </label>
 

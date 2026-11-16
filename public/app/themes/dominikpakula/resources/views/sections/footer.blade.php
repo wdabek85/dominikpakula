@@ -97,27 +97,7 @@
       </div>
 
       {{-- Kolumna 4: szybka nawigacja (z menu WP "Footer Navigation") --}}
-      @if (! empty($footerMenu))
-        <div class="flex flex-col gap-6 min-w-0">
-          <p class="font-poppins font-semibold text-base text-[#19121e]">
-            Nawigacja
-          </p>
-
-          <ul class="flex flex-col gap-3 text-sm font-poppins">
-            @foreach ($footerMenu as $item)
-              <li>
-                <a
-                  href="{{ $item['url'] }}"
-                  @if ($item['target'] !== '_self') target="{{ $item['target'] }}" rel="noopener" @endif
-                  class="hover:text-primary transition-colors {{ $item['isCurrent'] ? 'font-semibold' : '' }}"
-                >
-                  {{ $item['label'] }}
-                </a>
-              </li>
-            @endforeach
-          </ul>
-        </div>
-      @endif
+      <x-footer-links heading="Nawigacja" :items="$footerMenu ?? []" />
 
       {{-- Kolumna 5: usługi (z CPT service przez NavigationComposer) --}}
       @if (! empty($navServices))
@@ -141,6 +121,14 @@
       @endif
 
     </div>
+
+    {{-- Drugi rząd: miasta (podstrony usług) + Informacje (menu WP "Footer — Informacje") --}}
+    @if (! empty($footerCities) || ! empty($footerInfoMenu))
+      <div class="mt-10 lg:mt-12 pt-10 lg:pt-12 border-t border-[#19121e]/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-12">
+        <x-footer-links heading="Zakupy ze stylistą w Twoim mieście" :items="$footerCities ?? []" />
+        <x-footer-links heading="Informacje" :items="$footerInfoMenu ?? []" />
+      </div>
+    @endif
   </div>
 
   {{-- Dolny pasek copyright --}}

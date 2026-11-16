@@ -272,6 +272,14 @@ add_action('acf/init', function () {
             'render_template' => 'blocks.local-seo',
         ],
         [
+            'name' => 'service-areas',
+            'title' => 'Gdzie działam (miasta + online)',
+            'description' => 'Nagłówek, jedno zdanie i linki tekstowe do wybranych usług/miast. Linkowanie wewnętrzne do podstron miast.',
+            'icon' => 'location',
+            'group' => 'section',
+            'render_template' => 'blocks.service-areas',
+        ],
+        [
             'name' => 'brand-logos',
             'title' => 'Logotypy marek',
             'description' => 'Nagłówek + siatka logotypów marek (grayscale, kolor na hover). Repeater: logo + nazwa + link.',

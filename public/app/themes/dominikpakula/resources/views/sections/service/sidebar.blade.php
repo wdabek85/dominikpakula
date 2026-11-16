@@ -54,7 +54,7 @@
         </div>
         <div class="flex items-center gap-1">
           <x-icons.phone class="size-3 text-black" />
-          <span class="font-metro text-[10px] text-black underline">Umów się na konsultacje</span>
+          <a href="{{ home_url('/konsultacje/') }}" class="font-metro text-[10px] text-black underline rounded-sm hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">Umów się na konsultacje</a>
         </div>
       </div>
 

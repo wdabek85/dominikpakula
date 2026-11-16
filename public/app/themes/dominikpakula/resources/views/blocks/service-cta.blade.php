@@ -30,5 +30,7 @@
       @endif
     </div>
 
+    <x-consultation-link tone="light" class="mt-5" />
+
   </div>
 </div>
