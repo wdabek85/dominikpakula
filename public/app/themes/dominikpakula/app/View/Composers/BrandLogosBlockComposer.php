@@ -17,7 +17,33 @@ class BrandLogosBlockComposer extends Composer
             'heading' => \get_field('logos_heading') ?: '',
             'lead' => \get_field('logos_lead') ?: '',
             'logos' => $this->logos(),
+            'links' => $this->links(),
         ];
+    }
+
+    /**
+     * Przyciski pod logotypami — tylko kompletne (treść + adres).
+     */
+    protected function links(): array
+    {
+        $rows = \get_field('logos_links');
+
+        if (! $rows || ! is_array($rows)) {
+            return [];
+        }
+
+        $links = [];
+
+        foreach ($rows as $row) {
+            $label = trim((string) ($row['label'] ?? ''));
+            $url = trim((string) ($row['url'] ?? ''));
+
+            if ($label !== '' && $url !== '') {
+                $links[] = ['label' => $label, 'url' => $url];
+            }
+        }
+
+        return $links;
     }
 
     /**

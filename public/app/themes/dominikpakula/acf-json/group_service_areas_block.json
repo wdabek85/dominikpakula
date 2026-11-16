@@ -1,0 +1,98 @@
+{
+    "key": "group_service_areas_block",
+    "title": "Blok: Gdzie działam",
+    "fields": [
+        {
+            "key": "field_areas_eyebrow",
+            "label": "Etykieta (eyebrow)",
+            "name": "areas_eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Mała etykieta nad nagłówkiem. Puste = brak.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_areas_heading",
+            "label": "Nagłówek sekcji",
+            "name": "areas_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Gdzie działam",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_areas_text",
+            "label": "Tekst",
+            "name": "areas_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Jedno–dwa zdania pod nagłówkiem.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_areas_links",
+            "label": "Linki",
+            "name": "areas_links",
+            "aria-label": "",
+            "type": "relationship",
+            "instructions": "Usługi i podstrony miast. Treść linku = tytuł strony.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "post_type": ["service"],
+            "post_status": ["publish"],
+            "taxonomy": "",
+            "filters": ["search"],
+            "return_format": "id",
+            "min": "",
+            "max": "",
+            "allow_in_bindings": 0,
+            "elements": "",
+            "bidirectional": 0,
+            "bidirectional_target": []
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/service-areas"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1794816000
+}
