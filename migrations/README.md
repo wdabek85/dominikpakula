@@ -30,6 +30,6 @@ Przed uruchomieniem na produkcji zrób backup bazy (`wp db export`).
 | 2026-11-16-miasta-faq.php | lokalne FAQ (galeria, czas) na Warszawie, Krakowie, Wrocławiu, Kielcach; title głównej bez „Kraków” | ✅ | ✅ | ✅ |
 | 2026-11-16-faq-uslugi-konsultacje.php | FAQ 5 usług zamiast zaślepek z szablonu (zastępuje `faq-przeglad-zakupy`), /konsultacje/: literówki w nagłówku, 3 sekcje text-columns + FAQ | ✅ | ✅ | ✅ |
 | 2026-11-16-faq-dojazd.php | pytanie o dojazd (zawsze wliczony) w FAQ 5 miast, zakupów ze stylistą, przeglądu szafy i pakietu — **puść ponownie po każdym uruchomieniu `poznan` / `faq-uslugi-konsultacje`** (nadpisują FAQ) | ✅ | ✅ | ✅ |
-| 2026-11-16-gdzie-dzialam.php | strona główna: „Gdzie działam” pod blogiem, tekst z `{miasta}`, `areas_links` = Zakupy online (miasta dopisuje composer); `service_city_genitive` na 5 miastach | ✅ | ⏳ | ⏳ |
+| 2026-11-16-gdzie-dzialam.php | strona główna: „Gdzie działam” pod blogiem, tekst z `{miasta}`, `areas_links` = Zakupy online (miasta dopisuje composer); `service_city_genitive` na 5 miastach | ✅ | ✅ | ✅ |
 
 > ⚠️ Grup pól ACF nie usuwaj przez `acf_delete_field_group()` ani przez kosz w panelu ACF — przy local JSON ACF kasuje też plik z `acf-json/`. Migracja audytu usuwa tylko wiersze z bazy.
