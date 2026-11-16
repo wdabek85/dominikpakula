@@ -26,5 +26,6 @@ Przed uruchomieniem na produkcji zrób backup bazy (`wp db export`).
 | 2026-09-28-faq-przeglad-zakupy.php | FAQ „Przegląd szafy + zakupy” zamiast zaślepki z szablonu | ✅ | ✅ | ⬜ |
 | 2026-11-16-linkowanie.php | linkowanie: `service_city` w miastach, blok „Gdzie działam” na głównej, przyciski pod logotypami na /o-mnie/, menu „Stopka – Informacje” | ✅ | ✅ | ✅ |
 | 2026-11-16-schema.php | Rank Math: nazwa strony / Knowledge Graph → „Dominik Pakuła – stylista męski” (graf JSON-LD robi kod `app/Schema`) | ✅ | ✅ | ✅ |
+| 2026-11-16-poznan.php | podstrona Zakupy ze stylistą → Poznań (kopia Warszawy + FAQ), Poznań w „Gdzie działam” na głównej, meta description rodzica | ✅ | ⬜ | ⬜ |
 
 > ⚠️ Grup pól ACF nie usuwaj przez `acf_delete_field_group()` ani przez kosz w panelu ACF — przy local JSON ACF kasuje też plik z `acf-json/`. Migracja audytu usuwa tylko wiersze z bazy.
