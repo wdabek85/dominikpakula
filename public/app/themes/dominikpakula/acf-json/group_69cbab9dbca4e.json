@@ -87,6 +87,27 @@
             "append": ""
         },
         {
+            "key": "field_service_city_genitive",
+            "label": "Miasto (dopełniacz – „do …”)",
+            "name": "service_city_genitive",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Tylko dla podstron miast, np. „Krakowa”. Używane w zdaniu sekcji „Gdzie działam” na stronie głównej („przyjeżdżam do Krakowa, Warszawy i …”). Puste = nazwa z pola „Miasto (mianownik)”.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "Krakowa",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_6a1009d7856d2",
             "label": "Ikona overlay (nad zdjęciem)",
             "name": "service_hero_icon",
@@ -153,5 +174,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1794816000
+    "modified": 1794873600
 }

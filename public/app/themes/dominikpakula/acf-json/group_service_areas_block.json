@@ -42,7 +42,7 @@
             "name": "areas_text",
             "aria-label": "",
             "type": "textarea",
-            "instructions": "Jedno–dwa zdania pod nagłówkiem.",
+            "instructions": "Jedno–dwa zdania pod nagłówkiem. Wpisz {miasta}, a w to miejsce wstawi się lista miast w dopełniaczu z podstron „Zakupy ze stylistą” (np. „Krakowa, Warszawy i Kielc”).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
@@ -59,7 +59,7 @@
             "name": "areas_links",
             "aria-label": "",
             "type": "relationship",
-            "instructions": "Usługi i podstrony miast. Treść linku = tytuł strony.",
+            "instructions": "Linki przed miastami (np. Zakupy online ze stylistą). Treść linku = tytuł strony. Miasta (opublikowane podstrony usług) dopisują się same po wybranych linkach, w kolejności z „Atrybuty strony → Kolejność”.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
@@ -94,5 +94,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1794816000
+    "modified": 1794873600
 }
